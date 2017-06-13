@@ -1,4 +1,4 @@
 # a_Data_Acquisition
 
-Timon and Rodrigo Almeida
+Timon Weitkamp and Rodrigo Almeida
 

@@ -36,7 +36,9 @@ Final directory should be something like this:
  
  For each component an .MD file (like this one) should be created where a short description and additional info is given about the component operation.
  If additional documents are required (for instance Latex report) they should be linked via a OneDrive link/Overleaf doc.
-    
+ 
+ Project OneDrive Repository: https://1drv.ms/f/s!AmrxdSlgxQEkgf4v3chnmTJsFPTGTQ
+ 
  ### Installing pycharm
 
     sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make

@@ -13,6 +13,7 @@ def get_extent(file_path):
             @param file_path: file path of the airborne data
             @rtype:    NULL
             @return:   NULL, creates file in Data
+            @creates: JSON file with bounding box in WGS84 coordinates
         '''
     raster = file_path
     ds = gdal.Open(raster)

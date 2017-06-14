@@ -14,3 +14,6 @@ ACTION POINTS:
 
 Installing sen2cor in terminal:
  http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370 
+ 
+ Installation issues:
+    L2A_Process should be added to your path variable to be able to run the program from any location.

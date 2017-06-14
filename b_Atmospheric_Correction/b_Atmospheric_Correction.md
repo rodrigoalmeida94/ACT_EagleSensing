@@ -13,4 +13,4 @@ ACTION POINTS:
 
 
 Installing sen2cor in terminal:
- http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370
+ http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370 

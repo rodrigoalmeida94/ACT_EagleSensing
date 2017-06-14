@@ -12,8 +12,8 @@ def get_extent(file_path):
 
             @type file_path: chr
             @param file_path: file path of the airborne data
-            @rtype:    NULL
-            @return:   NULL, creates file in Data
+            @rtype:    GeoJSON
+            @return:   export_file
             @creates: JSON file with bounding box in WGS84 coordinates
         '''
     raster = file_path
@@ -36,6 +36,9 @@ def get_extent(file_path):
 
     f = open('a_Data_Acquisition/Data/SearchExtent.json','w')
     json.dump(export_file,f)
+    f.close()
+
+    return export_file
 
 def GetExtent(gt,cols,rows):
     ''' Return list of corner coordinates from a geotransform

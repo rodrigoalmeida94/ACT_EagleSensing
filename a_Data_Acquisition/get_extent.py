@@ -1,6 +1,7 @@
 # a_Data_Acquisition
 # get_extent.py
 # Gets the extent of a raster file and saves it into GeoJSON.
+# Sources: https://gis.stackexchange.com/a/57837 @lpinner
 
 from osgeo import gdal,ogr,osr
 from geojson import Polygon

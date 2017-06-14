@@ -7,6 +7,10 @@ Sen2Cor is a processor for Sentinel-2 Level 2A product generation and formatting
 
 Sen2Cor should be installed according to the Release Note. After installation, the Sen2Cor processor can be launched from a command line or by integrating the processor in SNAP (as it is described in the chapter 3.2.2 of the Software User Manual).
 
+
 ACTION POINTS:
 
--Installing sen2cor 
+
+
+Installing sen2cor in terminal:
+ http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370

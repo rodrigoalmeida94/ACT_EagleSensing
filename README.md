@@ -8,12 +8,14 @@ Academic Consultancy Project for EagleSensing. Remote Sensing and GIS Integratio
 - Component name
 - Name of script/module (spaces should be underscore)
 - Brief description of content
+- Sources, if any
 
 For example:
 
      a_Data_Aquisition
      get_passwords.py
      Gets the passwords for Sentinel Hub from a text file.
+     Source: https://gis.stackexchange.com/a/57837 
 
 ### Data management
 

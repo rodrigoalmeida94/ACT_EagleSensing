@@ -433,3 +433,5 @@ plt.imshow(img)
 plt.show()
 
 img.save('clouds_removed2.jpg')
+
+# push and commit it to git

@@ -20,3 +20,5 @@ for elem in AOI['coordinates']:
 AOI_addition = 'footprint:"Intersects(POLYGON((%s,%s,%s,%s,%s)))"' % (points[0],points[1],points[2],points[3],points[0])
 
 os.system(search_url+AOI_addition)
+
+

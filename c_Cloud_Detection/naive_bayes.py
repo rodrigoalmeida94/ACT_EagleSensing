@@ -13,6 +13,7 @@ water_pixels = pd.read_csv('subset_0_of_labeled_resampled_reprojected_water_Mask
 bands = ['B1','B2','B3','B4','B5','B6','B7','B8','B8A','B9','B10','B11','B12']
 
 clf = GaussianNB()
+
 training_pixels = pd.concat( [shadow_pixels[bands], land_pixels[bands], cloud_pixels[bands], water_pixels[bands]] )
 
 classes = [1]*len(shadow_pixels) + [2]*len(land_pixels) + [3]*len(cloud_pixels) + [4]*len(water_pixels)

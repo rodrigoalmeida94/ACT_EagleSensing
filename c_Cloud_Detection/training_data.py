@@ -116,3 +116,5 @@ i = int(len(training_set)*0.8)
 
 training_set.iloc[random_index[:i]].to_csv('NN_training_data.csv', index=False, index_label=False)
 training_set.iloc[random_index[i:]].to_csv('NN_test_data.csv', index=False, index_label=False)
+
+

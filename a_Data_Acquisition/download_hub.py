@@ -22,6 +22,7 @@ def download_amz(file_path,
     owd = os.getcwd()  # original working directory (owd)
     new_dir = 'Data/hub%s' % time.strftime('%a%d%b%Y%H%M')
     os.mkdir(new_dir)
+    os.chdir(new_dir)
 
     # Credential management
     credentials = account(accounts_file)
@@ -40,21 +41,3 @@ def download_amz(file_path,
 
 if __name__ == '__main__':
     download_amz('../Source_Data/Phillipines/RGBtile.tif','Data/accounts_hub.txt')
-
-
-
-
-
-
-
-# amount of iterations
-def enumerate(list, start=0):
-    n = start
-    for element in list:
-        yield n, element
-        n += 1
-        print(idx)
-
-# or
-for idx, val in enumerate(ints):
-    print(idx, val)

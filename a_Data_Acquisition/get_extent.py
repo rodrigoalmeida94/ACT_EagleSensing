@@ -3,7 +3,8 @@
 # Gets the extent of a raster file and saves it into GeoJSON.
 # Sources: https://gis.stackexchange.com/a/57837 @lpinner
 
-from osgeo import gdal,ogr,osr
+import gdal
+import osr
 from geojson import Polygon
 import json
 
@@ -16,8 +17,7 @@ def get_extent(file_path):
             @return:   export_file
             @creates: JSON file with bounding box in WGS84 coordinates
         '''
-    raster = file_path
-    ds = gdal.Open(raster)
+    ds = gdal.Open(file_path)
 
     gt = ds.GetGeoTransform()
     cols = ds.RasterXSize
@@ -83,3 +83,6 @@ def ReprojectCoords(coords,src_srs,tgt_srs):
         x,y,z = transform.TransformPoint(x,y)
         trans_coords.append([x,y])
     return trans_coords
+
+if __name__ == '__main__':
+    get_extent("Source_Data/Phillipines/RGBtile.tif")

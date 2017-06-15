@@ -85,4 +85,4 @@ def ReprojectCoords(coords,src_srs,tgt_srs):
     return trans_coords
 
 if __name__ == '__main__':
-    get_extent("Source_Data/Phillipines/RGBtile.tif")
+    get_extent("./Source_Data/Phillipines/RGBtile.tif")

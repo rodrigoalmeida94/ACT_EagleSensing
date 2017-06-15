@@ -1,10 +1,10 @@
 # a_Data_Acquisition
 # get_products_aoi.py
 # Gets a list of product names matching a given time interval that intersect with a provided raster.
-# Sources:
 
 import sys
 from sentinelsat import SentinelAPI
+
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account

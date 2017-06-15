@@ -2,9 +2,11 @@
 # get_products_aoi.py
 # Gets a list of product names matching a given time interval that intersect with a provided raster.
 
+# Imports
 import sys
 from sentinelsat import SentinelAPI
 
+# Import project modules
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account
@@ -14,18 +16,34 @@ def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
                      start_date = 'NOW-30DAYS',
                      end_date = 'NOW'):
 
-    AOI = get_extent(extent_file)
-    credentials = account(accounts_file)
+    ''' Creates a ordered dictionary of products that intersect with the extent of a raster file in a provided date interval
 
+                @type extent_file: str
+                @param extent_file: file path of the airborne data
+                @type accounts_file: str
+                @param accounts_file: file path of the accounts text file
+                @type start_date: str or datetime
+                @param start_date: beggining of period of interest
+                @type end_date: str or datetime
+                @param end_date: end of period of interest
+                @rtype:    Ordered Dictionary
+                @return:   products
+
+    '''
+
+    # Sets up credential stuff and API
+    credentials = account(accounts_file)
     api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
 
+    # Gets the extent and puts it in WKT format
+    AOI = get_extent(extent_file)
     points = []
     for elem in AOI['coordinates']:
         x,y = elem
         points += [str(round(x,7))+' '+str(round(y,7))]
-
     AOI_wkt = 'POLYGON ((%s, %s, %s, %s, %s))' % (points[0],points[1],points[2],points[3],points[0])
 
+    # Calls the query to get the result of the query
     products = api.query(AOI_wkt, initial_date=start_date, end_date=end_date, platformname='Sentinel-2')
 
     return products

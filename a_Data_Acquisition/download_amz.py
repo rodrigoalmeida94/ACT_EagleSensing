@@ -2,15 +2,13 @@
 # download_amz.py
 # Downloads tiles captured in a given time interval that intersect with a provided raster, from AWS.
 
-# pip install sentinelhub
+import os
 import sentinelhub
-os.makedirs('a_Data_Acquisition/Data/')
-#still need to create timestamp so it does not override
+import time
 
-
-list = ['S2A_MSIL1C_20170414T003551_N0204_R016_T54HVH_20170414T003551','S2A_MSIL1C_20170414T003551_N0204_R016_T54HVH_20170414T003551']
-first_tile = list[0]
-
-sentinelhub.get_safe_format(list[0])
-
-sentinelhub.download_safe_format('S2A_MSIL1C_20170414T003551_N0204_R016_T54HVH_20170414T003551', 'a_Data_Acquisituin/Data')
+def dowload_amz(list)
+    new_dir = 'Data/%s'%time.strftime('%a%d%b%Y%H%M')
+    os.mkdir(new_dir)
+    os.chdir(new_dir)
+    for element in list:
+        sentinelhub.download_safe_format(element)

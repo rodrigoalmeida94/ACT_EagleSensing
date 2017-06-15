@@ -6,6 +6,7 @@
 import gdal
 import osr
 from geojson import Polygon
+import json
 
 def get_extent(file_path):
     ''' Creates a GeoJSON file with the search area (AOI)
@@ -31,9 +32,13 @@ def get_extent(file_path):
 
     geo_ext = ReprojectCoords(ext, src_srs, tgt_srs)
 
-    export_poly = Polygon(geo_ext)
+    export_file = Polygon(geo_ext)
 
-    return export_poly
+    f = open('a_Data_Acquisition/Data/SearchExtent.json','w')
+    json.dump(export_file,f)
+    f.close()
+
+    return export_file
 
 def GetExtent(gt,cols,rows):
     ''' Return list of corner coordinates from a geotransform
@@ -80,4 +85,4 @@ def ReprojectCoords(coords,src_srs,tgt_srs):
     return trans_coords
 
 if __name__ == '__main__':
-    get_extent("../Source_Data/Phillipines/RGBtile.tif")
+    get_extent("./Source_Data/Phillipines/RGBtile.tif")

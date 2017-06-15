@@ -34,10 +34,6 @@ def get_extent(file_path):
 
     export_file = Polygon(geo_ext)
 
-    f = open('a_Data_Acquisition/Data/SearchExtent.json','w')
-    json.dump(export_file,f)
-    f.close()
-
     return export_file
 
 def GetExtent(gt,cols,rows):

@@ -4,25 +4,34 @@
 # Sources:
 
 import sys
-from sentinelsat import SentinelAPI, geojson_to_wkt
+from sentinelsat import SentinelAPI
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account
 
-AOI = get_extent('../Source_Data/Phillipines/RGBtile.tif')
-credentials = account('Data/accounts_hub.txt')
-api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
+def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
+                     accounts_file = 'Data/accounts_hub.txt',
+                     start_date = 'NOW-30DAYS',
+                     end_date = 'NOW'):
 
-points = []
-for elem in AOI['coordinates']:
-    x,y = elem
-    points += [str(round(x,6))+' '+str(round(y,6))]
+    AOI = get_extent(extent_file)
+    credentials = account(accounts_file)
 
-AOI_wkt = 'POLYGON ((%s,%s,%s,%s,%s))' % (points[0],points[1],points[2],points[3],points[0])
+    api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
 
-products = api.query(area = AOI_wkt, platformname = 'Sentinel-2')
+    points = []
+    for elem in AOI['coordinates']:
+        x,y = elem
+        points += [str(round(x,7))+' '+str(round(y,7))]
 
-print(products)
+    AOI_wkt = 'POLYGON ((%s, %s, %s, %s, %s))' % (points[0],points[1],points[2],points[3],points[0])
+
+    products = api.query(AOI_wkt, initial_date=start_date, end_date=end_date, platformname='Sentinel-2')
+
+    return products
+
+if __name__ == '__main__':
+    print(get_products_aoi())
 
 ''' def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
               order_by=None, limit=None, offset=0,

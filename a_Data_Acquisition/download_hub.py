@@ -40,4 +40,9 @@ def download_amz(file_path,
     os.chdir(owd)
 
 if __name__ == '__main__':
-    download_amz('../Source_Data/Phillipines/RGBtile.tif','Data/accounts_hub.txt')
+    print(os.getcwd())
+    download_amz('../Source_Data/Phillipines/RGBtile.tif', accounts_file='Data/accounts_hub.txt')
+
+# ISSUE
+# Downloads zip file, we need to handle that.
+# Throws herror with Data/account_hub.txt, says file does not exist, I dont know why, in download_amz its fine.

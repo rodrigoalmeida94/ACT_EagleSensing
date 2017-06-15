@@ -24,5 +24,6 @@ def download_amz(file_path,
     os.chdir(owd)
 
 if __name__ == '__main__':
+    print(os.getcwd())
     download_amz('../Source_Data/Phillipines/RGBtile.tif','Data/accounts_hub.txt')
 

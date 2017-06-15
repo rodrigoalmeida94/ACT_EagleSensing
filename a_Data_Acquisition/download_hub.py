@@ -4,15 +4,13 @@
 # Sources: https://github.com/olivierhagolle/Sentinel-download
 
 # connect to the API:  pip install sentinelsat
-from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
+from sentinelsat.sentinel import SentinelAPI
 import sys
 import time
 
 sys.path.insert(0, 'a_Data_Acquisition')
 from accounts_hub import account
 from get_products_aoi import get_products_aoi
-
-
 
 credentials = account('a_Data_Acquisition/Data/accounts_hub.txt')
 

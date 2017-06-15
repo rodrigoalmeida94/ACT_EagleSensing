@@ -7,25 +7,39 @@
 from sentinelsat.sentinel import SentinelAPI
 import sys
 import time
+import os
 
 sys.path.insert(0, 'a_Data_Acquisition')
-from accounts_hub import account
 from get_products_aoi import get_products_aoi
+from accounts_hub import account
 
-credentials = account('a_Data_Acquisition/Data/accounts_hub.txt')
+def download_amz(file_path,
+                 accounts_file,
+                 start_date = 'NOW-30DAYS',
+                 end_date = 'NOW'):
 
-api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
+    # Creates directory for download files
+    owd = os.getcwd()  # original working directory (owd)
+    new_dir = 'Data/hub%s' % time.strftime('%a%d%b%Y%H%M')
+    os.mkdir(new_dir)
 
-owd = os.getcwd() #original working directory (owd)
-new_dir = 'a_Data_Acquisition/Data/hub%s'%time.strftime('%a%d%b%Y%H%M')
-os.mkdir(new_dir)
+    # Credential management
+    credentials = account(accounts_file)
 
-product = get_products_aoi('Source_Data/Phillipines/RGBtile.tif','a_Data_Acquisition/Data/accounts_hub.txt')
+    #for account in credentials:
+    #    account += [0]
+    # Try to add concurrent downloads
 
-api.download_all(product)
+    api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
 
-for elem in product:
-    print product[elem]['title']
+    product = get_products_aoi(file_path, accounts_file,start_date=start_date,end_date=end_date)
+
+    api.download_all(product)
+
+    os.chdir(owd)
+
+if __name__ == '__main__':
+    download_amz('../Source_Data/Phillipines/RGBtile.tif','Data/accounts_hub.txt')
 
 
 

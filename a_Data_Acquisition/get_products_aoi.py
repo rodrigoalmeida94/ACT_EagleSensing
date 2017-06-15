@@ -49,7 +49,8 @@ def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
     return products
 
 if __name__ == '__main__':
-    print(get_products_aoi())
+    print(get_products_aoi(start_date='NOW-3MONTHS'))
+    print(len(get_products_aoi(start_date='NOW-3MONTHS')))
 
 ''' def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
               order_by=None, limit=None, offset=0,

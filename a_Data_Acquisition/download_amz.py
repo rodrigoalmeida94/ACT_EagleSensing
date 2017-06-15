@@ -11,9 +11,10 @@ sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
 def download_amz(file_path,
+                 accounts_file,
                  start_date = 'NOW-30DAYS',
                  end_date = 'NOW'):
-    product = get_products_aoi(file_path,start_date=start_date,end_date=end_date)
+    product = get_products_aoi(file_path,accounts_file,start_date=start_date,end_date=end_date)
     owd = os.getcwd() #original working directory (owd)
     new_dir = 'Data/amz%s'%time.strftime('%a%d%b%Y%H%M')
     os.mkdir(new_dir)
@@ -23,5 +24,5 @@ def download_amz(file_path,
     os.chdir(owd)
 
 if __name__ == '__main__':
-    download_amz('../Source_Data/Phillipines/RGBtile.tif')
+    download_amz('../Source_Data/Phillipines/RGBtile.tif','Data/accounts_hub.txt')
 

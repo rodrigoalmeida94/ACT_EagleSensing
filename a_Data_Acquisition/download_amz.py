@@ -24,3 +24,4 @@ def download_amz(file_path,
 
 if __name__ == '__main__':
     download_amz('../Source_Data/Phillipines/RGBtile.tif')
+

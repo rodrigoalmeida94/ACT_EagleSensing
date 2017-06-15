@@ -9,7 +9,7 @@ sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account
 
-AOI = get_extent('./Source_Data/Phillipines/RGBtile.tif')
+AOI = get_extent('Source_Data/Phillipines/RGBtile.tif')
 credentials = account()
 api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1])
 

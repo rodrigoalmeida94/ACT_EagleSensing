@@ -16,4 +16,30 @@ Installing sen2cor in terminal:
  http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370 
  
  Installation issues:
-    L2A_Process should be added to your path variable to be able to run the program from any location.
+    -L2A_Process should be added to your path variable to be able to run the program from any location.
+    -L2a_GIPP.xml should be edited with the following change:
+          Aerosol type to MARITIME or RURAL, Mid_Latitude not AUTO
+    
+    
+ Running sen2cor:
+    -install Glymur 
+ 
+ 
+ 
+ 
+ 
+
+ 
+Source codes:
+ https://github.com/senbox-org 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Raw commands: 
+ L2A_Process --resolution=10 --GIP_L2A /home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/L2A_GIPP.xml /home/user/SEN2COR/S2A_MSIL1C_20170513T104031_N0205_R008_T32ULC_20170513T104249.SAFE
+
+

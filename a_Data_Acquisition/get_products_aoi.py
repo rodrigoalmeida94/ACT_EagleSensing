@@ -9,8 +9,8 @@ sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account
 
-AOI = get_extent('Source_Data/Phillipines/RGBtile.tif')
-credentials = account()
+AOI = get_extent('../Source_Data/Phillipines/RGBtile.tif')
+credentials = account('Data/accounts_hub.txt')
 api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1])
 
 points = []
@@ -21,6 +21,8 @@ for elem in AOI['coordinates']:
 AOI_wkt = 'POLYGON((%s,%s,%s,%s,%s)))"' % (points[0],points[1],points[2],points[3],points[0])
 
 products = api.query(AOI_wkt,limit=1)
+
+print(products)
 
 ''' def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
               order_by=None, limit=None, offset=0,

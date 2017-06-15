@@ -16,6 +16,7 @@ Installing sen2cor in terminal:
  http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370 
  
  Installation issues:
+    -Check python directory. After installing anaconda, restart terminal!!!!! Check python (which python in terminal) should be inside anaconda2.
     -L2A_Process should be added to your path variable to be able to run the program from any location.
     -L2a_GIPP.xml should be edited with the following change:
           Aerosol type to MARITIME or RURAL, Mid_Latitude not AUTO
@@ -26,7 +27,8 @@ Installing sen2cor in terminal:
  
  
  
- 
+ Running SNAP:
+    -remember put sudo when running SNAP
  
 
  
@@ -34,6 +36,14 @@ Source codes:
  https://github.com/senbox-org 
  
  
+Calling sen2cor from python script:
+
+ 
+ 
+ 
+ 
+ Process chain sample presentation:
+    http://seom.esa.int/S2forScience2014/files/01_S2forScience-MethodsII_MULLER-WILM.pdf
  
  
  

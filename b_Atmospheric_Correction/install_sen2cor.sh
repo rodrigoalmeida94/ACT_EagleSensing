@@ -2,7 +2,6 @@
 # Go to home directory
 cd ~
 
-
 # PRELIMINARIES
 # Setup download folder, assuming data folder is inside user
 mkdir /home/user/DL_temp
@@ -36,6 +35,7 @@ which python # directory checker
 
 ## 3. INSTALL SEN2COR
 
+
 # Download latest version from source
 SEN2REPO=http://step.esa.int/thirdparties/sen2cor/
 SEN2VERSION=$(wget -q -O - $SEN2REPO | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
@@ -46,8 +46,8 @@ bash mkdir /home/user/SEN2COR
 bash tar -xzvf ~/Downloads/sen2cor.tar.gz -C $HOME
 
 # Install
-cd "$($HOME "$0")"
-python setup.py install -C $HOME
+bash cd $HOME/sen2cor-2.3.1
+python setup.py install
 
 # Set environment variables
 

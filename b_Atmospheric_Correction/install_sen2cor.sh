@@ -67,7 +67,12 @@ export SEN2COR_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.
 export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/gdal_data
 
 
-
+## Install latest version of SNAP
+SNAPREPO=http://step.esa.int/downloads/
+SNAPVERSION=$(wget -q -O - $SNAPREPO| grep "$(date +%Y)" | grep -v ".txt" | tail -n 1 | cut -d \" -f 8)
+SNAPINSTALLDIR=$(wget -q -O - $SNAPREPO$SNAPVERSION | grep "installers" | tail -n 1 | cut -d \" -f 8)
+SNAPFILE=$(wget -q -O - $SNAPREPO$SNAPVERSION$SNAPINSTALLDIR | grep "all" | grep "unix" |  tail -n 1 | cut -d \" -f 8)
+wget -O ~/Downloads/snap.sh $SNAPREPO$SNAPVERSION$SNAPINSTALLDIR$SNAPFILE
 
 
 ## Change Underlying lines to install in correct directories (also fix most current versions)

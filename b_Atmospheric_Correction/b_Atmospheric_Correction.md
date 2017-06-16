@@ -20,15 +20,19 @@ Installing sen2cor in terminal:
     -L2A_Process should be added to your path variable to be able to run the program from any location.
     -L2a_GIPP.xml should be edited with the following change:
           Aerosol type to MARITIME or RURAL, Mid_Latitude not AUTO
-    
+    -A sen2cor folder inside .egg in user directory should exist before running
+    -Setting up environment variables is crucial
     
  Running sen2cor:
-    -install Glymur 
+    -install/update Glymur
+    -use GPF
+     
  
  
  
  Running SNAP:
     -remember put sudo when running SNAP
+    -make sure sen2cor directory is set, you should see these paths with "echo %SEN2COR_HOME%" and echo "%SEN2COR_BIN%"
  
 
  

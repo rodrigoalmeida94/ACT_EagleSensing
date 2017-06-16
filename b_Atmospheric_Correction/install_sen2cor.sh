@@ -25,7 +25,8 @@ SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ~/Downloads/sen2cor.tar.gz $SEN2SITE$SEN2URL
 bash mkdir /home/user/SEN2COR
 bash tar -xzvf ~/Downloads/sen2cor.tar.gz -C $HOME
-python setup.py install -C /home/user/sen2cor-2.3.1
+bash cd $HOME/sen2cor-2.3.1/
+python setup.py install
 
 # Set environment variables
 bash sudo nano /etc/bash.bashrc_profile

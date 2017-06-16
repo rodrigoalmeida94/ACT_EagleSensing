@@ -87,5 +87,5 @@ def dict_divider(raw_dict, num):
     return list_result
 
 if __name__ == '__main__':
-    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt',start_date='NOW-3MONTHS')
+    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt',start_date='NOW-3MONTHS',downloads_per_account=2)
 

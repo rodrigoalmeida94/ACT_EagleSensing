@@ -41,9 +41,11 @@ version = '2.3.1'
 
 
 # Download from source
-SEN2SITE=http://step.esa.int/thirdparties/sen2cor/2.3.1/
+SEN2REPO=http://step.esa.int/thirdparties/sen2cor/
+SEN2VERSION=$(wget -q -O - $SEN2REPO | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+SEN2SITE=$SEN2REPO$SEN2VERSION
 SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar" | head -n 1 | cut -d \" -f 8)
-wget -O ~/DL_temp/sen2cor.tar.gz $SEN2SITE$SEN2URL
+wget -O ~/Downloads/sen2cor.tar.gz $SEN2SITE$SEN2URL
 bash ~/DL_temp/sen2cor.tar.gz
 
 

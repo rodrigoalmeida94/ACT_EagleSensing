@@ -9,14 +9,14 @@ from geojson import Polygon
 import json
 
 def get_extent(file_path):
-    ''' Creates a GeoJSON file with the search area (AOI)
+    ''' Creates a GeoJSON object with the search area (AOI) given a raster file
 
             @type file_path: chr
             @param file_path: file path of the airborne data
             @rtype:    GeoJSON
             @return:   export_file
-            @creates: JSON file with bounding box in WGS84 coordinates
-        '''
+
+    '''
     ds = gdal.Open(file_path)
 
     gt = ds.GetGeoTransform()
@@ -33,10 +33,6 @@ def get_extent(file_path):
     geo_ext = ReprojectCoords(ext, src_srs, tgt_srs)
 
     export_file = Polygon(geo_ext)
-
-    f = open('a_Data_Acquisition/Data/SearchExtent.json','w')
-    json.dump(export_file,f)
-    f.close()
 
     return export_file
 

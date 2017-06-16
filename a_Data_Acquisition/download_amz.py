@@ -15,7 +15,7 @@ def download_amz(file_path,
                  start_date = 'NOW-30DAYS',
                  end_date = 'NOW'):
 
-    product = get_products_aoi(file_path,accounts_file,start_date=start_date,end_date=end_date)
+    product, credentials = get_products_aoi(file_path,accounts_file,start_date=start_date,end_date=end_date)
 
     owd = os.getcwd() #original working directory (owd)
     new_dir = 'Data/amz%s'%time.strftime('%a%d%b%Y%H%M')

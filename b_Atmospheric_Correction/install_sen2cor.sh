@@ -14,7 +14,7 @@ mkdir /home/user/DL_temp
 wget https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh
 bash Anaconda2-4.2.0-Linux-x86_64.sh -b -p ~/anaconda
 rm Anaconda2-4.2.0-Linux-x86_64.sh
-echo 'export PATH="~/anaconda/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="~/anaconda2/bin:$PATH"' >> ~/.bashrc
 
 # Updating to latest
 conda update conda
@@ -30,22 +30,36 @@ bash ~/DL_temp/anaconda.sh
 
 
 ## 2. CHECK PYTHON DIRECTORY
-
 conda search "^python$" #version checker
 conda info --envs #environment checker
 which python # directory checker
 
 ## 3. INSTALL SEN2COR
 
-SEN2SITE=http://step.esa.int/thirdparties/sen2cor/2.3.1/sen2cor-2.3.1.tar.gz
-wget
-bash ~/DL_temp/sen2cor.sh
-
 # Download from source
 
 
+SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar.gz" | head -n 1 | cut -d \" -f 8)
+wget -O ~/DL_temp/sen2cor.tar.gz $SEN2SITE$SEN2URL
+bash ~/DL_temp/sen2cor.tar.gz
 
 
+SEN2SITE=http://step.esa.int/thirdparties/sen2cor/2.3.1/
+wget -O ~/DL_temp/sen2cor.tar.gz $SEN2SITE
+bash ~/DL_temp/sen2cor.sh
+
+# Install
+python setup.py install
+
+# Set environment variables
+
+bash sudo nano /etc/bash.bashrc_profile
+
+add the following lines at the end of the doc , save and quit
+
+export SEN2COR_HOME=/home/user/sen2cor
+export SEN2COR_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor
+export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/gdal_data
 
 
 
@@ -73,12 +87,4 @@ python setup.py install
 
 ----------------------------------------
 
-Set variables:
 
-sudo nano /etc/bash.bashrc
-
-add the following lines at the end of the doc , save and quit
-
-export SEN2COR_HOME=/home/user/sen2cor
-export SEN2COR_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor
-export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/gdal_data

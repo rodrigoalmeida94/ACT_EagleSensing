@@ -10,7 +10,6 @@ import time
 import os
 import parmap
 from itertools import izip
-import zipfile
 
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
@@ -48,9 +47,9 @@ def download_hub(file_path,
 
     parmap.starmap(download,izip(div_products,div_credentials))
 
-    for elem in product:
-       os.system('unzip ' + product[elem]['title']+'.zip')
-       os.remove(product[elem]['title']+'.zip')
+    for elem in products:
+       os.system('unzip ' + products[elem]['title']+'.zip')
+       os.remove(products[elem]['title']+'.zip')
 
     os.chdir(owd)
 

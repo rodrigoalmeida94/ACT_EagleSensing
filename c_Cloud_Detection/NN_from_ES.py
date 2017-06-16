@@ -91,12 +91,13 @@ classifier.fit(input_fn=lambda: input_fn(test_set), steps=2000)
 # part 1: test the prediction data
 
 # load prediction data
-# take a subset of a scene, otherwise a ton of pixels
+# take a subset of different scenes than used for training, otherwise a ton of pixels
 # should be resampled as before
 
-cols = [f+':float' for f in FEATURES]
-predict_data = pd.read_csv('predict_data/subset_0_of_labeled_resampled_reprojected.csv',
-                           sep='\t', skiprows=1, header=0, usecols=cols)
+#cols = [f+':float' for f in FEATURES]
+cols = FEATURES
+predict_data = pd.read_csv('./S2A_exported_pixels/subset_0_of_S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_subset_1_resampled_prediction_mask.txt',
+                           sep='\t', skiprows=2, header=0, usecols=cols)
 
 predict_data = predict_data.rename(index=str, columns={b:a for b,a in zip(cols,FEATURES)})
 
@@ -117,7 +118,7 @@ y = classifier.predict_proba(input_fn=lambda: input_predict_data(predict_data))
 
 y = np.array(list(y))
 print(y.shape)
-print(classifications.shape)
+#classifications.shape
 
 classification = np.argmax(y, axis=1)
 confidence = np.max(y, axis=1)
@@ -135,13 +136,15 @@ plt.show()
 
 # classification plot
 plt.figure(figsize=(16,9))
-plt.imshow(classification.reshape((1481,2628)), cmap='inferno')
+#plt.imshow(classification.reshape((1481,2628)), cmap='inferno')
+plt.imshow(classification.reshape((271,478)), cmap='inferno')
 plt.colorbar()
 plt.show()
 
 # classification confidence
 plt.figure(figsize=(16,9))
-plt.imshow(confidence.reshape((1481,2628)), cmap='inferno')
+plt.imshow(classification.reshape((271,478)), cmap='inferno')
+#plt.imshow(confidence.reshape((1481,2628)), cmap='inferno')
 plt.colorbar()
 plt.show()
 
@@ -154,7 +157,7 @@ y = classifier.predict(input_fn=lambda: input_predict_data(predict_data))
 
 # attempt with EQUAL sample sizes per class
 # new model with less conservative cloud training data
-y = np.array(list(y)).reshape((1481,2628))
+y = np.array(list(y)).reshape((271,478))
 plt.figure(figsize=(16,9))
 plt.imshow(y, cmap='inferno')
 plt.colorbar()

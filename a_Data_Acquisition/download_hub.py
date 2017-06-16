@@ -8,17 +8,21 @@ from sentinelsat.sentinel import SentinelAPI
 import sys
 import time
 import os
+import parmap
+from itertools import izip
 import zipfile
 
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
-def download_amz(file_path,
+def download_hub(file_path,
                  accounts_file,
                  start_date = 'NOW-30DAYS',
-                 end_date = 'NOW'):
+                 end_date = 'NOW',
+                 downloads_per_account = 1, # maximum allowed is 2
+                 max_downloads = 10):
 
-    product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
+    products, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # Creates directory for download files
     owd = os.getcwd()  # original working directory (owd)
@@ -26,9 +30,23 @@ def download_amz(file_path,
     os.mkdir(new_dir)
     os.chdir(new_dir)
 
-    api = SentinelAPI(credentials.values()[0][0], credentials.values()[0][1],'https://scihub.copernicus.eu/dhus')
+    n_accounts = len(credentials)
+    n_products = len(products)
 
-    api.download_all(product)
+    n_threads = n_products//n_accounts*downloads_per_account
+    if n_threads < 1:
+        n_threads = 1
+    if n_threads >= max_downloads:
+        n_threads = max_downloads
+
+    div_products = dict_divider(products,n_threads)
+
+    if n_products > 1:
+        div_credentials = credentials.values()*(n_threads//n_accounts)
+    else:
+        div_credentials = [credentials.values()[0]]
+
+    parmap.starmap(download,izip(div_products,div_credentials))
 
     for elem in product:
        os.system('unzip ' + product[elem]['title']+'.zip')
@@ -38,7 +56,37 @@ def download_amz(file_path,
 
     return new_dir
 
+def download(product,credentials):
+    api = SentinelAPI(credentials[0], credentials[1], 'https://scihub.copernicus.eu/dhus')
+    api.download_all(product)
+
+def dict_divider(raw_dict, num):
+    list_result = []
+    len_raw_dict = len(raw_dict)
+    if len_raw_dict > num:
+        base_num = len_raw_dict / num
+        addr_num = len_raw_dict % num
+        for i in range(num):
+            this_dict = dict()
+            keys = list()
+            if addr_num > 0:
+                keys = raw_dict.keys()[:base_num + 1]
+                addr_num -= 1
+            else:
+                keys = raw_dict.keys()[:base_num]
+            for key in keys:
+                this_dict[key] = raw_dict[key]
+                del raw_dict[key]
+            list_result.append(this_dict)
+
+    else:
+        for d in raw_dict:
+            this_dict = dict()
+            this_dict[d] = raw_dict[d]
+            list_result.append(this_dict)
+
+    return list_result
+
 if __name__ == '__main__':
-    print(os.getcwd())
-    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', '20170101', '20170108')
+    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt',start_date='NOW-3MONTHS')
 

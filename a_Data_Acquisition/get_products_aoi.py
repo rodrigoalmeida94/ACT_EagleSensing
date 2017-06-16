@@ -4,6 +4,7 @@
 
 # Imports
 import sys
+
 from sentinelsat import SentinelAPI
 
 # Import project modules
@@ -11,11 +12,11 @@ sys.path.insert(0, 'a_Data_Acquisition')
 from get_extent import get_extent
 from accounts_hub import account
 
-def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
-                     accounts_file = 'Data/accounts_hub.txt',
-                     start_date = 'NOW-30DAYS',
-                     end_date = 'NOW'):
 
+def get_products_aoi(extent_file='../Source_Data/Phillipines/RGBtile.tif',
+                     accounts_file='Data/accounts_hub.txt',
+                     start_date='NOW-30DAYS',
+                     end_date='NOW'):
     ''' Creates a ordered dictionary of products that intersect with the extent of a raster file in a provided date interval
 
                 @type extent_file: str
@@ -33,20 +34,21 @@ def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
 
     # Sets up credential stuff and API
     credentials = account(accounts_file)
-    api = SentinelAPI(credentials.values()[0][0], credentials.values()[0][1],'https://scihub.copernicus.eu/dhus')
+    api = SentinelAPI(credentials.values()[0][0], credentials.values()[0][1], 'https://scihub.copernicus.eu/dhus')
 
     # Gets the extent and puts it in WKT format
     AOI = get_extent(extent_file)
     points = []
     for elem in AOI['coordinates']:
-        x,y = elem
-        points += [str(round(x,7))+' '+str(round(y,7))]
-    AOI_wkt = 'POLYGON ((%s, %s, %s, %s, %s))' % (points[0],points[1],points[2],points[3],points[0])
+        x, y = elem
+        points += [str(round(x, 7)) + ' ' + str(round(y, 7))]
+    AOI_wkt = 'POLYGON ((%s, %s, %s, %s, %s))' % (points[0], points[1], points[2], points[3], points[0])
 
     # Calls the query to get the result of the query
     products = api.query(AOI_wkt, initial_date=start_date, end_date=end_date, platformname='Sentinel-2')
 
     return products, credentials
+
 
 if __name__ == '__main__':
     print(get_products_aoi(start_date='NOW-3MONTHS'))

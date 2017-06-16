@@ -3,13 +3,13 @@
 # Gets Sentinel Hub user credentials out of a text file into a dictionary for use in the download process.
 
 def account(filepath):
-    file = open(filepath,'r')
+    file = open(filepath, 'r')
     d = {}
     for line in file:
-        a,b = line.split(' ')
+        a, b = line.split(' ')
         if a.endswith('\n'):
-            a=a[:-1]
+            a = a[:-1]
         if b.endswith('\n'):
-            b=b[:-1]
-        d[a] = [a,b]
+            b = b[:-1]
+        d[a] = [a, b]
     return d

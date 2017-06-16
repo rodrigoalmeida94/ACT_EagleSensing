@@ -3,24 +3,25 @@
 # Downloads tiles captured in a given time interval that intersect with a provided raster, from Sentinel Data Hub.
 # Sources: https://github.com/olivierhagolle/Sentinel-download
 
-# connect to the API:  pip install sentinelsat
-from sentinelsat.sentinel import SentinelAPI
+import os
 import sys
 import time
-import os
-import parmap
 from itertools import izip
+
+import parmap
+# connect to the API:  pip install sentinelsat
+from sentinelsat.sentinel import SentinelAPI
 
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
+
 def download_hub(file_path,
                  accounts_file,
-                 start_date = 'NOW-30DAYS',
-                 end_date = 'NOW',
-                 downloads_per_account = 1, # maximum allowed is 2
-                 max_downloads = 10):
-
+                 start_date='NOW-30DAYS',
+                 end_date='NOW',
+                 downloads_per_account=1,  # maximum allowed is 2
+                 max_downloads=10):
     products, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # Creates directory for download files
@@ -32,32 +33,34 @@ def download_hub(file_path,
     n_accounts = len(credentials)
     n_products = len(products)
 
-    n_threads = n_products//n_accounts*downloads_per_account
+    n_threads = n_products // n_accounts * downloads_per_account
     if n_threads < 1:
         n_threads = 1
     if n_threads >= max_downloads:
         n_threads = max_downloads
 
-    div_products = dict_divider(products,n_threads)
+    div_products = dict_divider(products, n_threads)
 
     if n_products > 1:
-        div_credentials = credentials.values()*(n_threads//n_accounts)
+        div_credentials = credentials.values() * (n_threads // n_accounts)
     else:
         div_credentials = [credentials.values()[0]]
 
-    parmap.starmap(download,izip(div_products,div_credentials))
+    parmap.starmap(download, izip(div_products, div_credentials))
 
     for elem in products:
-       os.system('unzip ' + products[elem]['title']+'.zip')
-       os.remove(products[elem]['title']+'.zip')
+        os.system('unzip ' + products[elem]['title'] + '.zip')
+        os.remove(products[elem]['title'] + '.zip')
 
     os.chdir(owd)
 
     return new_dir
 
-def download(product,credentials):
+
+def download(product, credentials):
     api = SentinelAPI(credentials[0], credentials[1], 'https://scihub.copernicus.eu/dhus')
     api.download_all(product)
+
 
 def dict_divider(raw_dict, num):
     list_result = []
@@ -86,6 +89,7 @@ def dict_divider(raw_dict, num):
 
     return list_result
 
-if __name__ == '__main__':
-    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt',start_date='NOW-3MONTHS',downloads_per_account=2)
 
+if __name__ == '__main__':
+    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTHS',
+                 downloads_per_account=2)

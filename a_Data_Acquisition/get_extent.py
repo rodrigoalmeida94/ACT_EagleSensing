@@ -6,7 +6,6 @@
 import gdal
 import osr
 from geojson import Polygon
-import json
 
 def get_extent(file_path):
     ''' Creates a GeoJSON object with the search area (AOI) given a raster file

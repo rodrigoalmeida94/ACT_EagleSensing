@@ -10,7 +10,7 @@ mkdir $HOME/DL_temp
 CONTREPO=https://repo.continuum.io/archive/
 ANACONDAURL=$(wget -q -O - $CONTREPO index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
 wget -O $HOME/DL_temp/anaconda.sh $CONTREPO$ANACONDAURL
-bash $HOME/DL_temp/anaconda.sh
+bash $HOME/DL_temp/anaconda.sh -b
 
 ## 2. CHECK PYTHON DIRECTORY
 conda search "^python$" #version checker

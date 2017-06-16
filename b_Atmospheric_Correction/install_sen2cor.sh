@@ -2,6 +2,11 @@
 # Go to home directory
 cd ~
 
+
+# PRELIMINARIES
+# Setup download folder, assuming data folder is inside user
+mkdir /home/user/DL_temp
+
 ## 1. INSTALL ANACONDA
 
 # You can change what anaconda version you want at
@@ -14,15 +19,14 @@ echo 'export PATH="~/anaconda/bin:$PATH"' >> ~/.bashrc
 # Updating to latest
 conda update conda
 
-$ source ~/.profile
 
 # Alternate script
 CONTREPO=https://repo.continuum.io/archive/
 # Stepwise filtering of the html at $CONTREPO
 # Get the topmost line that matches our requirements, extract the file name.
 ANACONDAURL=$(wget -q -O - $CONTREPO index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
-wget -O ~/Downloads/anaconda.sh $CONTREPO$ANACONDAURL
-bash ~/Downloads/anaconda.sh
+wget -O ~/DL_temp/anaconda.sh $CONTREPO$ANACONDAURL
+bash ~/DL_temp/anaconda.sh
 
 
 ## 2. CHECK PYTHON DIRECTORY
@@ -32,6 +36,10 @@ conda info --envs #environment checker
 which python # directory checker
 
 ## 3. INSTALL SEN2COR
+
+SEN2SITE=http://step.esa.int/thirdparties/sen2cor/2.3.1/sen2cor-2.3.1.tar.gz
+wget
+bash ~/DL_temp/sen2cor.sh
 
 # Download from source
 

@@ -36,25 +36,16 @@ which python # directory checker
 
 ## 3. INSTALL SEN2COR
 
-# Check latest
-version = '2.3.1'
-
-
-# Download from source
+# Download latest version from source
 SEN2REPO=http://step.esa.int/thirdparties/sen2cor/
 SEN2VERSION=$(wget -q -O - $SEN2REPO | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
 SEN2SITE=$SEN2REPO$SEN2VERSION
 SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ~/Downloads/sen2cor.tar.gz $SEN2SITE$SEN2URL
-bash ~/DL_temp/sen2cor.tar.gz
-
-
-SEN2SITE=http://step.esa.int/thirdparties/sen2cor/2.3.1/
-wget -O ~/DL_temp/sen2cor.tar.gz $SEN2SITE
-bash ~/DL_temp/sen2cor.sh
-
+bash mkdir /home/user/SEN2COR
+bash tar -xzvf ~/Downloads/sen2cor.tar.gz -C $HOME
 # Install
-python setup.py install
+python setup.py install -C /home/user/sen2cor-2.3.1
 
 # Set environment variables
 
@@ -76,7 +67,6 @@ wget -O ~/Downloads/snap.sh $SNAPREPO$SNAPVERSION$SNAPINSTALLDIR$SNAPFILE
 
 
 ## Change Underlying lines to install in correct directories (also fix most current versions)
-mkdir /home/user/SNAP
 cd /home/user/SNAP
 wget http://step.esa.int/downloads/5.0/installers/esa-snap_all_unix_5_0.sh
 sudo sh esa-snap_all_unix_5_0.sh -c

@@ -178,7 +178,6 @@ plt.show()
 # plt.show()
 
 
-
 ## classify entire image
 
 def input_predict_data(data_set):

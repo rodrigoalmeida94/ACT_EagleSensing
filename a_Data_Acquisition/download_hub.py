@@ -8,6 +8,7 @@ from sentinelsat.sentinel import SentinelAPI
 import sys
 import time
 import os
+import zipfile
 
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
@@ -29,13 +30,15 @@ def download_amz(file_path,
 
     api.download_all(product)
 
+    for elem in product:
+       os.system('unzip ' + product[elem]['title']+'.zip')
+       os.remove(product[elem]['title']+'.zip')
+
     os.chdir(owd)
 
     return new_dir
 
 if __name__ == '__main__':
     print(os.getcwd())
-    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt')
+    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', '20170101', '20170108')
 
-# ISSUE
-# Downloads zip file, we need to handle that.

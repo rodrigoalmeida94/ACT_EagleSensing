@@ -33,7 +33,7 @@ def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
 
     # Sets up credential stuff and API
     credentials = account(accounts_file)
-    api = SentinelAPI(credentials['rodr_almatos'][0], credentials['rodr_almatos'][1],'https://scihub.copernicus.eu/dhus')
+    api = SentinelAPI(credentials.values()[0][0], credentials.values()[0][1],'https://scihub.copernicus.eu/dhus')
 
     # Gets the extent and puts it in WKT format
     AOI = get_extent(extent_file)
@@ -46,7 +46,7 @@ def get_products_aoi(extent_file = '../Source_Data/Phillipines/RGBtile.tif',
     # Calls the query to get the result of the query
     products = api.query(AOI_wkt, initial_date=start_date, end_date=end_date, platformname='Sentinel-2')
 
-    return products
+    return products, credentials
 
 if __name__ == '__main__':
     print(get_products_aoi(start_date='NOW-3MONTHS'))

@@ -1,14 +1,23 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import rasterio
 import time
-from skimage import io
-import scipy.misc
-from PIL import image
 
+## check modules
+## from skimage import io
+## import scipy.misc
+## from PIL import image
+
+tar = os.chdir('/home/user')
+print os.getcwd()
+
+# output additional info during the training process
 tf.logging.set_verbosity(tf.logging.INFO)
+
+###
 
 # define names of columns. To distinguish features from the label, separately define features and the label name.
 
@@ -23,7 +32,7 @@ feature_cols = [tf.contrib.layers.real_valued_column(k) for k in FEATURES]
 classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_cols,
                                           hidden_units=[7],
                                           n_classes=4,
-                                          model_dir="./model_data")
+                                          model_dir='./NN_model_data')
 
 
 ## training part
@@ -43,7 +52,7 @@ def input_fn(data_set):
 # part 2: training with 80% of the data
 
 # load training pixels
-training_set = pd.read_csv('training_data/training_data.csv', header=0)
+training_set = pd.read_csv('./S2A_exported_pixels/NN_training_data.csv', header=0)
 
 # check data
 training_set.head()
@@ -54,7 +63,7 @@ training_set.head()
 classifier.fit(input_fn=lambda: input_fn(training_set), steps=2000)
 
 accuracies = []
-test_set = pd.read_csv('training_data/test_data.csv', header=0, iterator=True)
+test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0, iterator=True)
 for i in range(10):
     try:
         c = test_set.get_chunk(250000)
@@ -65,10 +74,10 @@ for i in range(10):
 print()
 print("Accuracy: {}".format(np.mean(accuracies)))
 
-# part 4: training with 20% of the remaining data
+# part 4: training with 20% of the data
 
 #load the test data
-test_set = pd.read_csv('training_data/test_data.csv', header=0)
+test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0)
 
 # check data
 test_set.head()
@@ -82,6 +91,9 @@ classifier.fit(input_fn=lambda: input_fn(test_set), steps=2000)
 # part 1: test the prediction data
 
 # load prediction data
+# take a subset of a scene, otherwise a ton of pixels
+# should be resampled as before
+
 cols = [f+':float' for f in FEATURES]
 predict_data = pd.read_csv('predict_data/subset_0_of_labeled_resampled_reprojected.csv',
                            sep='\t', skiprows=1, header=0, usecols=cols)

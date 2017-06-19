@@ -74,4 +74,6 @@ SNAPVERSION=$(wget -q -O - ${SNAPREPO} | egrep '[[:alnum:]]\.[[:alnum:]]' | grep
 SNAPINSTALLDIR=$(wget -q -O - ${SNAPREPO}${SNAPVERSION} | grep "installers" | tail -n 1 | cut -d \" -f 8)
 SNAPFILE=$(wget -q -O - ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR} | grep "all" | grep "unix" |  tail -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/snap.sh ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR}${SNAPFILE}
-sudo sh esa-snap_all_unix_5_0.sh -c
+mkdir ${defdir}/SNAP -p
+cd ${defdir}/SNAP/
+bash sh esa-snap_all_unix_5_0.sh

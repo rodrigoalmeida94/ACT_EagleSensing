@@ -31,17 +31,12 @@ wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
 bash ${dldir}/anaconda.sh -b #uses the default settings
 
 ## 2. CHECK PYTHON DIRECTORY
-conda search "^python$" #version checker
-conda info --envs #environment checker
-which python # directory checker
+conda update conda
+conda updata anaconda
 
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/
-<<<<<<< Updated upstream:z_install_reqsentinelsoftware/z_install_reqsentinelsoftware.sh
 SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
-=======
-SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | grep -v -i "SEN" | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
->>>>>>> Stashed changes:b_Atmospheric_Correction/install_sen2cor.sh
 SEN2SITE=${SEN2CREPO}${SEN2VERSION}
 SEN2URL=$(wget -q -O - ${SEN2SITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/sen2cor.tar.gz ${SEN2SITE}${SEN2URL}
@@ -52,11 +47,27 @@ yes yes | python setup.py install
 cp -rf ${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/ ${dldir}
 
 # Set environment variables
-sudo nano /etc/bash.bashrc_profile
-## add the following lines at the end of the doc , save and quit
-export SEN2COR_HOME=/home/user/sen2cor
-export SEN2COR_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor
-export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/gdal_data
+profilefile=/etc/bash.bashrc_profile
+echo 'export SEN2COR_HOME=${defdir}/sen2cor' > ${defdir}/SEN2COR/check.txt
+
+
+cat <<EOF >> ${profilefile}
+export SEN2COR_HOME=${defdir}/sen2cor
+export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
+export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
+EOF
+
+TEST_FILE=${profilefile}
+CHECK_FILE=${defdir}/SEN2COR/check.txt
+while read line ; do
+    X=$(grep "^${line}$" ${CHECK_FILE})
+    if [[ -z $X ]] ; then
+        echo "false"
+        exit
+    fi
+done < ${TEST_FILE}
+echo "true"
+
 
 ## 4. DOWNLOAD AND INSTALL SEN2THREE
 SEN2TREPO=http://step.esa.int/thirdparties/sen2three/
@@ -69,7 +80,10 @@ tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
 apt-get install -y python-setuptools
 yes yes | python setup.py install
-
+#cat <<EOF >> /etc/bash.bashrc_profile
+#export SEN2THREE_HOME=${defdir}/sen2three
+#export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
+#EOF
 
 
 ## 5. DOWNLOAD AND INSTALL LATEST SNAP

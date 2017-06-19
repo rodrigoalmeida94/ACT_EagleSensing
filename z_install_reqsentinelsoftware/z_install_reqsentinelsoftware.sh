@@ -29,6 +29,8 @@ CONTREPO=https://repo.continuum.io/archive/
 ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
 wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
 bash ${dldir}/anaconda.sh -b #uses the default settings
+echo export PATH=${defdir}/anaconda2/bin/:$PATH >> $HOME/.bashrc
+source $HOME/.bashrc
 
 ## 2. CHECK PYTHON DIRECTORY
 conda update conda
@@ -61,7 +63,7 @@ TEST_FILE=${profilefile}
 CHECK_FILE=${defdir}/SEN2COR/check.txt
 while read line ; do
     X=$(grep "^${line}$" ${CHECK_FILE})
-    if [[ -z $X ]] ; then
+    if [[ -z ${X} ]] ; then
         echo "false"
         exit
     fi

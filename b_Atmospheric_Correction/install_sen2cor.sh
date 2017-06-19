@@ -45,10 +45,12 @@ SEN2VERSION=$(wget -q -O - $SEN2REPO | grep "$(date +%Y)" | tail -n 1 | cut -d \
 SEN2SITE=$SEN2REPO$SEN2VERSION
 SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O $HOME/DL_temp/sen2cor.tar.gz $SEN2SITE$SEN2URL
-bash mkdir $HOME/SEN2COR
+bash mkdir $HOME/SEN2COR -p
 bash tar -xzvf ~/DL_temp/sen2cor.tar.gz -C $HOME/SEN2COR/
 bash cd $HOME/SEN2COR/sen2cor-2.3.1/
 python setup.py install
+cp -rf /home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/ /$HOME/
+
 
 
 # Set environment variables

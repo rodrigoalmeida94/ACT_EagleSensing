@@ -67,7 +67,10 @@ wget -O ${dldir}/sen2three.tar.gz ${SEN2TSITE}${SEN2TURL}
 mkdir ${defdir}/SEN2THREE -p
 tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
+apt-get install -y python-setuptools
 yes yes | python setup.py install
+
+
 
 ## 5. DOWNLOAD AND INSTALL LATEST SNAP
 SNAPREPO=http://step.esa.int/downloads/
@@ -75,4 +78,6 @@ SNAPVERSION=$(wget -q -O - ${SNAPREPO} | egrep '[[:alnum:]]\.[[:alnum:]]' | grep
 SNAPINSTALLDIR=$(wget -q -O - ${SNAPREPO}${SNAPVERSION} | grep "installers" | tail -n 1 | cut -d \" -f 8)
 SNAPFILE=$(wget -q -O - ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR} | grep "all" | grep "unix" |  tail -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/snap.sh ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR}${SNAPFILE}
-
+mkdir ${defdir}/SNAP -p
+cd ${defdir}/SNAP/
+bash ${SNAPFILE} -c

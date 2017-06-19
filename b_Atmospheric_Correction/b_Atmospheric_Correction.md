@@ -15,13 +15,15 @@ ACTION POINTS:
 Installing sen2cor in terminal:
  http://forum.step.esa.int/t/proposition-of-a-step-by-step-tuto-to-install-sen2cor-on-ubuntu-vm-16-10/4370 
  
- Installation issues:
+ Installation notes:
     -Check python directory. After installing anaconda, restart terminal!!!!! Check python (which python in terminal) should be inside anaconda2.
+    -Anaconda default settings using -b parameter
     -L2A_Process should be added to your path variable to be able to run the program from any location.
     -L2a_GIPP.xml should be edited with the following change:
           Aerosol type to MARITIME or RURAL, Mid_Latitude not AUTO
     -A sen2cor folder inside .egg in user directory should exist before running
     -Setting up environment variables is crucial
+    
     
  Running sen2cor:
     -install/update Glymur

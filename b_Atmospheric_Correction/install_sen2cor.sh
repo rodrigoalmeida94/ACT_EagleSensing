@@ -10,23 +10,26 @@ mkdir $HOME/DL_temp
 CONTREPO=https://repo.continuum.io/archive/
 ANACONDAURL=$(wget -q -O - $CONTREPO index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
 wget -O $HOME/DL_temp/anaconda.sh $CONTREPO$ANACONDAURL
-bash $HOME/DL_temp/anaconda.sh -b
+bash $HOME/DL_temp/anaconda.sh -b #uses the default settings
+
 
 ## 2. CHECK PYTHON DIRECTORY
-conda search "^python$" #version checker
-conda info --envs #environment checker
-which python # directory checker
+bash conda search "^python$" #version checker
+bash conda info --envs #environment checker
+bash which python # directory checker
 
 ## 3. DOWNLOAD AND INSTALL SEN2COR
+# Get latest version
 SEN2REPO=http://step.esa.int/thirdparties/sen2cor/
 SEN2VERSION=$(wget -q -O - $SEN2REPO | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
 SEN2SITE=$SEN2REPO$SEN2VERSION
 SEN2URL=$(wget -q -O - $SEN2SITE | grep "tar" | head -n 1 | cut -d \" -f 8)
-wget -O ~/Downloads/sen2cor.tar.gz $SEN2SITE$SEN2URL
-bash mkdir /home/user/SEN2COR
-bash tar -xzvf ~/Downloads/sen2cor.tar.gz -C $HOME
-bash cd $HOME/sen2cor-2.3.1/
+wget -O $HOME/DL_temp/sen2cor.tar.gz $SEN2SITE$SEN2URL
+bash mkdir $HOME/SEN2COR
+bash tar -xzvf ~/DL_temp/sen2cor.tar.gz -C $HOME/SEN2COR/
+bash cd $HOME/SEN2COR/sen2cor-2.3.1/
 python setup.py install
+
 
 # Set environment variables
 bash sudo nano /etc/bash.bashrc_profile

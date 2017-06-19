@@ -37,7 +37,7 @@ which python # directory checker
 
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/
-SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | grep -v -i ¨SEN¨ | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
 SEN2SITE=${SEN2CREPO}${SEN2VERSION}
 SEN2URL=$(wget -q -O - ${SEN2SITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/sen2cor.tar.gz ${SEN2SITE}${SEN2URL}
@@ -56,7 +56,13 @@ export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-
 
 ## 4. DOWNLOAD AND INSTALL SEN2THREE
 SEN2TREPO=http://step.esa.int/thirdparties/sen2three/
-SEN2TVERSION=$(wget -q -O - ${SEN2tREPO} | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+SEN2TVERSION=$(wget -q -O - ${SEN2TREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+SEN2TSITE=${SEN2TREPO}${SEN2TVERSION}
+SEN2TURL=$(wget -q -O - ${SEN2TSITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
+wget -O ${dldir}/sen2cor.tar.gz ${SEN2TSITE}${SEN2TURL}
+mkdir ${defdir}/SEN2THREE -p
+tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
+yes yes | python setup.py install
 
 ## 5. DOWNLOAD AND INSTALL LATEST SNAP
 SNAPREPO=http://step.esa.int/downloads/

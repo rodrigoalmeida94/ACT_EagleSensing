@@ -75,7 +75,7 @@ plt.hist(predictions)
 plt.show()
 
 plt.figure(figsize=(16,9))
-plt.imshow(predictions.reshape((381,-60)), cmap='inferno')
+plt.imshow(predictions.reshape((381,340)), cmap='inferno')
 plt.show()
 
 clf.score(training_pixels, classes)

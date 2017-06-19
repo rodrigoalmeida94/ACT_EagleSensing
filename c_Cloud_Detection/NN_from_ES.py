@@ -7,9 +7,9 @@ import rasterio
 import time
 
 ## check modules
-## from skimage import io
-## import scipy.misc
-## from PIL import image
+from skimage import io
+import scipy.misc
+from PIL import Image
 
 tar = os.chdir('/home/user')
 print os.getcwd()
@@ -227,7 +227,7 @@ def classify(filename):
 print(time.time())
 
 t0 = time.time()
-out, confidence = classify('predict_data/20170314_resampled_20m.tif')
+out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
 print('Time taken: {} seconds'.format(time.time() - t0))
 
 # 0 = shadow
@@ -294,7 +294,7 @@ plt.show()
 ## Combine two images based on highest confidence for land/water per pixel
 
 
-images_fn = ['predict_data/20170103_resampled_20m.tif', 'predict_data/20170314_resampled_20m.tif']
+images_fn = ['/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif', '/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif']
 
 
 def combine(image_filenames):
@@ -368,10 +368,10 @@ combined = combine(images_fn)
 print('Time taken: {} seconds'.format(time.time()-t0))
 
 
-io.imsave('combined.tif', combined)
-io.imsave('combined_rgb.tif', combined[(1,2,3),:,:])
-scipy.misc.imsave('combined_rgb.jpg', np.rollaxis(combined[(1,2,3),:,:], 0, 3))
-scipy.misc.imsave('combined_bw.tif', blackwhite)
+io.imsave('/media/sf_M_DRIVE/s2a_tif/combined.tif', combined)
+io.imsave('/media/sf_M_DRIVE/s2a_tif/combined_rgb.tif', combined[(1,2,3),:,:])
+scipy.misc.imsave('/media/sf_M_DRIVE/s2a_tif/combined_rgb.jpg', np.rollaxis(combined[(1,2,3),:,:], 0, 3))
+scipy.misc.imsave('/media/sf_M_DRIVE/s2a_tif/combined_bw.tif', blackwhite)
 
 # bw image plotting
 
@@ -389,11 +389,13 @@ plt.imshow(blackwhite, cmap='gray', vmax=3000)
 plt.colorbar()
 plt.show()
 
+## No idea where the classification below now comes from, therefore its not found.
+## The original code also seems to use a resampled 200meter version of the two scenes instead of 20m. which is fine, but doesn't answer the question.
 
 ## Classification to detect only land and water
 
-img1_class, img1_conf = classify_landwater('predict_data/20170103_resampled_200m.tif')
-img2_class, img2_conf = classify_landwater('predict_data/20170314_resampled_200m.tif')
+img1_class, img1_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif')
+img2_class, img2_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
 
 # plots of the images
 

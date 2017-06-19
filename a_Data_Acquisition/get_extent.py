@@ -1,6 +1,6 @@
 # a_Data_Acquisition
 # get_extent.py
-# Gets the extent of a raster file and saves it into GeoJSON.
+# Gets the extent of a raster file and returns it into a GeoJSON object.
 # Sources: https://gis.stackexchange.com/a/57837 @lpinner
 
 import gdal

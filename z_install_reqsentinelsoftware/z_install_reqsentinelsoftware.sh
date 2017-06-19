@@ -37,7 +37,11 @@ which python # directory checker
 
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/
+<<<<<<< Updated upstream:z_install_reqsentinelsoftware/z_install_reqsentinelsoftware.sh
 SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+=======
+SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | grep -v -i "SEN" | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
+>>>>>>> Stashed changes:b_Atmospheric_Correction/install_sen2cor.sh
 SEN2SITE=${SEN2CREPO}${SEN2VERSION}
 SEN2URL=$(wget -q -O - ${SEN2SITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/sen2cor.tar.gz ${SEN2SITE}${SEN2URL}

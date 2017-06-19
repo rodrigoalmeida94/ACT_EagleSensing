@@ -397,6 +397,7 @@ plt.show()
 img1_class, img1_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif')
 img2_class, img2_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
 
+
 # plots of the images
 
 plt.imshow(img1_conf, cmap='inferno', vmin=0, vmax=1)

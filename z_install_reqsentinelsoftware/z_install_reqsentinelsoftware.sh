@@ -59,7 +59,7 @@ SEN2TREPO=http://step.esa.int/thirdparties/sen2three/
 SEN2TVERSION=$(wget -q -O - ${SEN2TREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | grep "$(date +%Y)" | tail -n 1 | cut -d \" -f 8)
 SEN2TSITE=${SEN2TREPO}${SEN2TVERSION}
 SEN2TURL=$(wget -q -O - ${SEN2TSITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
-wget -O ${dldir}/sen2cor.tar.gz ${SEN2TSITE}${SEN2TURL}
+wget -O ${dldir}/sen2three.tar.gz ${SEN2TSITE}${SEN2TURL}
 mkdir ${defdir}/SEN2THREE -p
 tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}

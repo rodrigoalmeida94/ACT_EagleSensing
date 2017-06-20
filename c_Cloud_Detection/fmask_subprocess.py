@@ -10,6 +10,23 @@ import rasterio
 import subprocess
 import os
 
+# install dependencies ... either with a new script or just a plain text file... e.g.
+
+## Install dependencies for project
+
+sudo pip install pylatex
+sudo pip install numpy
+
+sudo pip install matplotlib
+sudo pip install cartopy
+sudo pip install scipy
+
+sudo apt-get install texlive-pictures texlive-science texlive-latex-extra imagemagick
+sudo apt-get install idle
+sudo apt-get install libgeos-dev
+sudo apt-get install python-imaging
+
+
 ## Step 1: Download the Landsat imagery
 
 def download_landsat():

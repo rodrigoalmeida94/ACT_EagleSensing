@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+defdir=$HOME
+sudo mkdir ${defdir}/DL_temp -p
+dldir=${defdir}/DL_temp
 pardir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $HOME
 

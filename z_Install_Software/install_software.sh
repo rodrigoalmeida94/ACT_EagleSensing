@@ -27,12 +27,12 @@ profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
 
 #1. Call anaconda installer
-cd $pardir
-sudo ./anaconda_install.sh
+#cd $pardir
+#source ./anaconda_install.sh
 
 #2. Call sen2cor install
-#cd $pardir
-#source ./sen2cor_install.sh
+cd $pardir
+source ./sen2cor_install.sh
 
 #3. Call sen2three install
 #cd $pardir

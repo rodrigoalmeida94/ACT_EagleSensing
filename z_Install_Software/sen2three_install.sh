@@ -12,18 +12,12 @@ sudo tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
 yes yes | python setup.py install
 
- if grep -q export SEN2THREE_HOME=${defdir}/.config/sen2three "${profilefile}"; then
-   exit
-   else sudo cat <<EOF >> ${profilefile}
+else sudo cat <<EOF >> ${profilefile}
 export SEN2THREE_HOME=${defdir}/.config/sen2three
 export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
 EOF
- fi
 
- if grep -q export SEN2THREE_HOME=${defdir}/.config/sen2three "${profilenondebian}"; then
-   exit
-   else sudo cat <<EOF >> ${profilenondebian}
+sudo cat <<EOF >> ${profilenondebian}
 export SEN2THREE_HOME=${defdir}/.config/sen2three
 export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
-EOFsen2three to default .config folder + changed anaconda version (CANNOT BE LATEST)
- fi
+EOF

@@ -20,7 +20,7 @@ from PIL import Image
 
 # 1. Download and install Anaconda
 
-subprocess.call(["./anaconda_install.sh"])
+# subprocess.call(["./anaconda_install.sh"])
 
 # 2. download the latest fmask package from the bitbucket repo, unpack and install it
 

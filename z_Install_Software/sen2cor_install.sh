@@ -13,7 +13,7 @@ cd ${defdir}/SEN2COR/sen2cor-${SEN2VERSION}
 yes yes | python setup.py install
 #cp -rf ${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/ ${dldir}
 
-echo '' >> ${profilenondebian}
-echo 'export SEN2COR_HOME="${defdir}/.config/sen2cor"' >> ${profilenondebian}
-echo 'export SEN2COR_BIN="${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor"' >> ${profilenondebian}
-echo 'export GDAL_DATA="${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data"' >> ${profilenondebian}
+echo "" >> ${profilenondebian}
+echo "export SEN2COR_HOME=\"${defdir}/.config/sen2cor\"" >> ${profilenondebian}
+echo "export SEN2COR_BIN=\"${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor\"" >> ${profilenondebian}
+echo "export GDAL_DATA=\"${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data\"" >> ${profilenondebian}

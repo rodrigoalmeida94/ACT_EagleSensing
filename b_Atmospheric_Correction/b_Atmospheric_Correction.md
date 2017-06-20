@@ -52,6 +52,14 @@ Calling sen2cor from python script:
     http://seom.esa.int/S2forScience2014/files/01_S2forScience-MethodsII_MULLER-WILM.pdf
  
  
+sudo nano /etc/bash.bashrc
+
+add the following lines at the end of the doc , save and quit
+
+export SEN2COR_HOME=/home/user/sen2cor
+export SEN2COR_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor
+export GDAL_DATA=/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/gdal_data
+ 
  
  
  

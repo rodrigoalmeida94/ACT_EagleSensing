@@ -18,24 +18,26 @@ echo "The install agreement wasn't approved, aborting installation."
 exit 2
 fi
 
-# 0. DEFINE DIRECTORY VARIABLES
+# 0. SET VARIABLES
 defdir=$HOME
 pardir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 sudo mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
+profilefile=/etc/bash.bashrc
+profilenondebian=$HOME/.bashrc
 
 #1. Call anaconda installer
 cd $pardir
 source ./anaconda_install.sh
 
 #2. Call sen2cor install
-cd $pardir
-source ./sen2cor_install.sh
+#cd $pardir
+#source ./sen2cor_install.sh
 
 #3. Call sen2three install
-cd $pardir
-source ./sen2three_install.sh
+#cd $pardir
+#source ./sen2three_install.sh
 
 #4. Call snap install
-cd $pardir
-source ./sen2three_install.sh
+#cd $pardir
+#source ./sen2three_install.sh

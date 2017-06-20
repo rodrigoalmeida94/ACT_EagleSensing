@@ -3,7 +3,7 @@
 echo -n "
 This bash script will install Anaconda, SEN2COR and SNAP.
 Existing user settings will be overwritten.
-Are you sure you want to install  this script? [yes|no]
+Are you sure you want to install  these programs? [yes|no]
 >>> "
 read ans
 while [[ (${ans} != "yes") && (${ans} != "Yes") && (${ans} != "YES") && (${ans} != "no") && (${ans} != "No") && (${ans} != "NO") ]]
@@ -32,9 +32,11 @@ bash ${dldir}/anaconda.sh -b #uses the default settings
 echo export PATH=${defdir}/anaconda2/bin/:$PATH >> $HOME/.bashrc
 source $HOME/.bashrc
 
-## 2. CHECK PYTHON DIRECTORY
+## 2. CONDA UPDATE + INSTALL SOME DEPENDENCIES
 conda update conda
 conda updata anaconda
+apt-get install -y python-setuptools
+apt-get install expect
 
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/
@@ -79,10 +81,10 @@ wget -O ${dldir}/sen2three.tar.gz ${SEN2TSITE}${SEN2TURL}
 mkdir ${defdir}/SEN2THREE -p
 tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
-apt-get install -y python-setuptools
-apt-get install expect
-
-yes yes | python setup.py install
+python setup.py install
+expect "continue?" send y
+expect "OK?" send n
+expect "New path:" send ${defdir}/sen2three
 
  if grep -q export SEN2THREE_HOME=${defdir}/sen2three "${profilefile}"; then
    exit

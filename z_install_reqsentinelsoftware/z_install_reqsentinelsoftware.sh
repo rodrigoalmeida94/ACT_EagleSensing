@@ -109,4 +109,4 @@ SNAPFILE=$(wget -q -O - ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR} | grep "all" 
 wget -O ${dldir}/snap.sh ${SNAPREPO}${SNAPVERSION}${SNAPINSTALLDIR}${SNAPFILE}
 mkdir ${defdir}/SNAP -p
 cd ${defdir}/SNAP/
-bash ${SNAPFILE} -c
+yes yes | bash ${SNAPFILE} -c

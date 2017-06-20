@@ -49,27 +49,17 @@ yes yes | python setup.py install
 cp -rf ${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/ ${dldir}
 
 # Set environment variables
-profilefile=/etc/bash.bashrc_profile
-echo 'export SEN2COR_HOME=${defdir}/sen2cor' > ${defdir}/SEN2COR/check.txt
+profilefile=/etc/bash.bashrc
+echo export SEN2COR_HOME=${defdir}/sen2cor > ${defdir}/SEN2COR/check.txt
 
-
-cat <<EOF >> ${profilefile}
+ if grep -q export SEN2COR_HOME=${defdir}/sen2cor "${profilefile}"; then
+   exit
+   else cat <<EOF >> ${profilefile}
 export SEN2COR_HOME=${defdir}/sen2cor
 export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
 export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
 EOF
-
-TEST_FILE=${profilefile}
-CHECK_FILE=${defdir}/SEN2COR/check.txt
-while read line ; do
-    X=$(grep "^${line}$" ${CHECK_FILE})
-    if [[ -z ${X} ]] ; then
-        echo "false"
-        exit
-    fi
-done < ${TEST_FILE}
-echo "true"
-
+ fi
 
 ## 4. DOWNLOAD AND INSTALL SEN2THREE
 SEN2TREPO=http://step.esa.int/thirdparties/sen2three/

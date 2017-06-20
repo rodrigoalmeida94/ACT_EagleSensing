@@ -24,9 +24,11 @@ cd ${defdir}
 mkdir ${defdir}/DL_temp
 dldir=${defdir}/DL_temp
 
-## 1. DOWNLOAD AND INSTALL LATEST ANACONDA (FOR PYTHON 2.7)
+## 1. DOWNLOAD AND INSTALL ANACONDA (FOR PYTHON 2.7)
 CONTREPO=https://repo.continuum.io/archive/
-ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
+ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | grep "2.4.2" | head -n 1 | cut -d \" -f 2)
+#ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
+#LATEST ANACONDA VERSION DOES NOT WORK WITH LATEST SEN2COR (YET)
 wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
 bash ${dldir}/anaconda.sh -b #uses the default settings
 echo export PATH=${defdir}/anaconda2/bin/:$PATH >> $HOME/.bashrc
@@ -81,23 +83,20 @@ wget -O ${dldir}/sen2three.tar.gz ${SEN2TSITE}${SEN2TURL}
 mkdir ${defdir}/SEN2THREE -p
 tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
-python setup.py install
-expect "continue?" send y
-expect "OK?" send n
-expect "New path:" send ${defdir}/sen2three
+yes yes | python setup.py install
 
- if grep -q export SEN2THREE_HOME=${defdir}/sen2three "${profilefile}"; then
+ if grep -q export SEN2THREE_HOME=${defdir}/.config/sen2three "${profilefile}"; then
    exit
    else cat <<EOF >> ${profilefile}
-export SEN2THREE_HOME=${defdir}/sen2three
+export SEN2THREE_HOME=${defdir}/.config/sen2three
 export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
 EOF
  fi
 
- if grep -q export SEN2THREE_HOME=${defdir}/sen2three "${profilenondebian}"; then
+ if grep -q export SEN2THREE_HOME=${defdir}/.config/sen2three "${profilenondebian}"; then
    exit
    else cat <<EOF >> ${profilenondebian}
-export SEN2THREE_HOME=${defdir}/sen2three
+export SEN2THREE_HOME=${defdir}/.config/sen2three
 export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
 EOF
  fi

@@ -26,16 +26,16 @@ dldir=${defdir}/DL_temp
 
 #1. Call anaconda installer
 cd $pardir
-. ./anaconda_install.sh
+source ./anaconda_install.sh
 
 #2. Call sen2cor install
 cd $pardir
-. ./sen2cor_install.sh
+source ./sen2cor_install.sh
 
 #3. Call sen2three install
 cd $pardir
-. ./sen2three_install.sh
+source ./sen2three_install.sh
 
 #4. Call snap install
 cd $pardir
-. ./sen2three_install.sh
+source ./sen2three_install.sh

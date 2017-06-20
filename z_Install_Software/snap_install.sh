@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+cd ${defdir}
+
 
 ## 5. DOWNLOAD AND INSTALL LATEST SNAP
 SNAPREPO=http://step.esa.int/downloads/

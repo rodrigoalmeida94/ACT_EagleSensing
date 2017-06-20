@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd ${defdir}
 
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/

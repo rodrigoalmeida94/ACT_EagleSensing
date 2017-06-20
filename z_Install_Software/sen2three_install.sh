@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd ${defdir}
 
 ## 4. DOWNLOAD AND INSTALL SEN2THREE
 SEN2TREPO=http://step.esa.int/thirdparties/sen2three/

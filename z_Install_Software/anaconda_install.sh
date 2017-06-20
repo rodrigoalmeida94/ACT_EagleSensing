@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+cd ${defdir}
 
 ## 1. DOWNLOAD AND INSTALL ANACONDA (FOR PYTHON 2.7)
 CONTREPO=https://repo.continuum.io/archive/

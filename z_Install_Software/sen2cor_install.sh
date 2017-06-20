@@ -7,7 +7,7 @@ SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:al
 SEN2SITE=${SEN2CREPO}${SEN2VERSION}
 SEN2URL=$(wget -q -O - ${SEN2SITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 sudo wget -O ${dldir}/sen2cor.tar.gz ${SEN2SITE}${SEN2URL}
-sudo mkdir ${defdir}/SEN2COR -p
+mkdir ${defdir}/SEN2COR -p
 sudo tar -xzvf ${dldir}/sen2cor.tar.gz -C ${defdir}/SEN2COR/
 cd ${defdir}/SEN2COR/sen2cor-${SEN2VERSION}
 yes yes | python setup.py install

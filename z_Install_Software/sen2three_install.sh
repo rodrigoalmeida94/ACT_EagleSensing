@@ -7,7 +7,7 @@ SEN2TVERSION=$(wget -q -O - ${SEN2TREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:a
 SEN2TSITE=${SEN2TREPO}${SEN2TVERSION}
 SEN2TURL=$(wget -q -O - ${SEN2TSITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 sudo wget -O ${dldir}/sen2three.tar.gz ${SEN2TSITE}${SEN2TURL}
-sudo mkdir ${defdir}/SEN2THREE -p
+mkdir ${defdir}/SEN2THREE -p
 sudo tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
 yes yes | python setup.py install

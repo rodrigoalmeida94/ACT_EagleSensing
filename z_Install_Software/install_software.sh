@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo -n "
-This bash script will install Anaconda, SEN2COR and SNAP.
+This bash script will install SEN2COR and SEN2THREE.
 Existing user settings will be overwritten.
 Are you sure you want to install  these programs? [yes|no]
 >>> "
@@ -21,7 +21,7 @@ fi
 # 0. SET VARIABLES
 defdir=$HOME
 pardir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-sudo mkdir ${defdir}/DL_temp -p
+mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc

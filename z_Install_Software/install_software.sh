@@ -28,7 +28,7 @@ profilenondebian=$HOME/.bashrc
 
 #1. Call anaconda installer
 cd $pardir
-source ./anaconda_install.sh
+sudo ./anaconda_install.sh
 
 #2. Call sen2cor install
 #cd $pardir

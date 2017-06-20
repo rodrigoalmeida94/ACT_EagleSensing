@@ -15,11 +15,7 @@ ${dldir}/anaconda.sh -b #uses the default settings
 echo export PATH=${defdir}/anaconda2/bin/:$PATH >> $HOME/.bashrc
 EOF
  fi
-
 source $HOME/.bashrc
-
-
-
 
 
 ## 2. CONDA UPDATE + INSTALL SOME DEPENDENCIES

@@ -21,7 +21,7 @@ fi
 # 0. DEFINE DIRECTORY VARIABLES
 defdir=$HOME
 pardir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-mkdir ${defdir}/DL_temp -p
+sudo mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 
 #1. Call anaconda installer

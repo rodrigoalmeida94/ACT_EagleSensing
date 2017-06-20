@@ -12,12 +12,6 @@ sudo tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
 yes yes | python setup.py install
 
-sudo -s "cat <<EOF >> ${profilefile}
-export SEN2THREE_HOME=${defdir}/.config/sen2three
-export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
-EOF"
-
-sudo -s "cat <<EOF >> ${profilenondebian}
-export SEN2THREE_HOME=${defdir}/.config/sen2three
-export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
-EOF"
+echo '\r' >> ${profilenondebian}
+echo export SEN2THREE_HOME=${defdir}/.config/sen2three >> ${profilenondebian}
+echo export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three

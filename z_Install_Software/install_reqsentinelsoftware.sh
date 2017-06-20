@@ -24,4 +24,18 @@ cd ${defdir}
 mkdir ${defdir}/DL_temp
 dldir=${defdir}/DL_temp
 
-. z_anaconda_install.sh
+#1. Call anaconda installer
+
+. anaconda_install.sh
+
+#2. Call sen2cor install
+
+. sen2cor_install.sh
+
+#3. Call sen2three install
+
+. sen2three_install.sh
+
+#4. Call snap install
+
+. sen2three_install.sh

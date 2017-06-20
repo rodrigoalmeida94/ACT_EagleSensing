@@ -50,11 +50,20 @@ cp -rf ${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py
 
 # Set environment variables
 profilefile=/etc/bash.bashrc
-echo export SEN2COR_HOME=${defdir}/sen2cor > ${defdir}/SEN2COR/check.txt
+profilenondebian=$HOME/.bashrc
 
  if grep -q export SEN2COR_HOME=${defdir}/sen2cor "${profilefile}"; then
    exit
    else cat <<EOF >> ${profilefile}
+export SEN2COR_HOME=${defdir}/sen2cor
+export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
+export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
+EOF
+ fi
+
+ if grep -q export SEN2COR_HOME=${defdir}/sen2cor "${profilenondebian}"; then
+   exit
+   else cat <<EOF >> ${profilenondebian}
 export SEN2COR_HOME=${defdir}/sen2cor
 export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
 export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
@@ -71,12 +80,25 @@ mkdir ${defdir}/SEN2THREE -p
 tar -xzvf ${dldir}/sen2three.tar.gz -C ${defdir}/SEN2THREE/
 cd ${defdir}/SEN2THREE/sen2three-${SEN2TVERSION}
 apt-get install -y python-setuptools
-yes yes | python setup.py install
-#cat <<EOF >> /etc/bash.bashrc_profile
-#export SEN2THREE_HOME=${defdir}/sen2three
-#export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
-#EOF
+apt-get install expect
 
+yes yes | python setup.py install
+
+ if grep -q export SEN2THREE_HOME=${defdir}/sen2three "${profilefile}"; then
+   exit
+   else cat <<EOF >> ${profilefile}
+export SEN2THREE_HOME=${defdir}/sen2three
+export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
+EOF
+ fi
+
+ if grep -q export SEN2THREE_HOME=${defdir}/sen2three "${profilenondebian}"; then
+   exit
+   else cat <<EOF >> ${profilenondebian}
+export SEN2THREE_HOME=${defdir}/sen2three
+export SEN2THREE_BIN=/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three
+EOF
+ fi
 
 ## 5. DOWNLOAD AND INSTALL LATEST SNAP
 SNAPREPO=http://step.esa.int/downloads/

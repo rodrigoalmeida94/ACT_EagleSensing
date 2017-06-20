@@ -1,6 +1,10 @@
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+tar = os.chdir('/media/sf_M_DRIVE/S2A_exported_pixels')
+print os.getcwd()
 
 #shadow_pixels = pd.read_csv('subset_0_of_labeled_resampled_reprojected_shadow_Mask.txt', sep='\t', header=0)
 #land_pixels = pd.read_csv('subset_0_of_labeled_resampled_reprojected_land_Mask.txt', sep='\t', header=0)

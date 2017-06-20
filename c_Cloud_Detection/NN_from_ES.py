@@ -62,6 +62,8 @@ training_set.head()
 # the input function is specified as a lambda so that any Pandas dataframe can be entered as an argument
 classifier.fit(input_fn=lambda: input_fn(training_set), steps=2000)
 
+# part 4: test the classifier
+
 accuracies = []
 test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0, iterator=True)
 for i in range(10):
@@ -74,25 +76,26 @@ for i in range(10):
 print()
 print("Accuracy: {}".format(np.mean(accuracies)))
 
-# part 4: training with 20% of the data
+# part 5: training with 20% of the data
+# not really convinced why to use it, because this is purely for validation purposes of the already trained classifier and should not be used further
 
 #load the test data
-test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0)
+#test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0)
 
 # check data
-test_set.head()
+#test_set.head()
 
-# again, the input function is specified as lambda so that any Pandas dataframe can be entered as an argument
-classifier.fit(input_fn=lambda: input_fn(test_set), steps=2000)
+#classifier fit with 20% of the data
+#classifier.fit(input_fn=lambda: input_fn(test_set), steps=2000)
 
 
-## prediction part
+## -- relevant prediction part -- ##
 
 # part 1: test the prediction data
 
 # load prediction data
-# take a subset of different scenes than used for training, otherwise a ton of pixels
-# should be resampled as before
+# For this, take a subset of different scenes than those used for gaining training pixels and also extract the whole subset.
+# should be resampled as before, either 10x10 or 20x20, but stick to the same resolution
 
 #cols = [f+':float' for f in FEATURES]
 cols = FEATURES
@@ -110,15 +113,14 @@ def input_predict_data(data_set):
                     for k in FEATURES}
     return feature_cols
 
+# returns predicted probabilities for given features (predict_proba), herein using the whole S2 image of May 2017
 y = classifier.predict_proba(input_fn=lambda: input_predict_data(predict_data))
-
 
 ## result checking
 ## check if print statements are required
 
 y = np.array(list(y))
 print(y.shape)
-#classifications.shape
 
 classification = np.argmax(y, axis=1)
 confidence = np.max(y, axis=1)
@@ -135,6 +137,9 @@ plt.bar(range(4),y[0])
 plt.show()
 
 # classification plot
+# the reshape int provided (x,y) depend on how to resolve the shapes given in either classificatio.shape or
+# confidence.shape (have to be similiar). In this case 129538 is the product of x * y, i.e. 271 * 478 (amongst other solutions)
+
 plt.figure(figsize=(16,9))
 #plt.imshow(classification.reshape((1481,2628)), cmap='inferno')
 plt.imshow(classification.reshape((271,478)), cmap='inferno')
@@ -148,6 +153,8 @@ plt.imshow(classification.reshape((271,478)), cmap='inferno')
 plt.colorbar()
 plt.show()
 
+#returns predictions for a given number of features
+# should be at some point be updated to predict_classes
 y = classifier.predict(input_fn=lambda: input_predict_data(predict_data))
 
 # 0 = shadow
@@ -163,7 +170,7 @@ plt.imshow(y, cmap='inferno')
 plt.colorbar()
 plt.show()
 
-# # attempt with EQUAL sample sizes per class
+# attempt with EQUAL sample sizes per class
 # y = np.array(list(y)).reshape((1481,2628))
 # plt.figure(figsize=(16,9))
 # plt.imshow(y, cmap='inferno')
@@ -211,7 +218,7 @@ def classify(filename):
                     np.rollaxis(data, 0, 3).reshape((current_block_size[0] * current_block_size[1], -1))).rename(
                     index=str, columns={i: f for i, f in zip(range(0, 13), FEATURES)})
                 data = data / 10000  # reflectance scale factor
-                # can be found in ESA SNAP -> select band -> Analysis -> Information
+                # can be found in the ESA SNAP toolbox -> select band -> Analysis -> Information
 
                 y = classifier.predict_proba(input_fn=lambda: input_predict_data(data))
 
@@ -265,12 +272,6 @@ plt.imshow(out, cmap='inferno', vmin=0, vmax=3)
 plt.colorbar()
 plt.show()
 
-plt.figure(figsize=(16, 16))
-plt.title('Confidence (%)')
-plt.imshow(confidence, cmap='inferno', vmin=0, vmax=1)
-plt.colorbar()
-plt.show()
-
 
 ## Describe results
 
@@ -290,9 +291,7 @@ plt.hist(confidence.flatten()[::10])
 plt.xlim((0, 1))
 plt.show()
 
-
 ## Combine two images based on highest confidence for land/water per pixel
-
 
 images_fn = ['/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif', '/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif']
 
@@ -325,7 +324,6 @@ def combine(image_filenames):
                         np.rollaxis(data, 0, 3).reshape((current_block_size[0] * current_block_size[1], -1))).rename(
                         index=str, columns={i: f for i, f in zip(range(0, 13), FEATURES)})
                     data = data / 10000  # reflectance scale factor
-                    # can be found in ESA SNAP -> select band -> Analysis -> Information
 
                     y = classifier.predict_proba(input_fn=lambda: input_predict_data(data))
 
@@ -367,6 +365,7 @@ t0 = time.time()
 combined = combine(images_fn)
 print('Time taken: {} seconds'.format(time.time()-t0))
 
+blackwhite = np.mean(combined[(1,2,3),:,:],axis=0)
 
 io.imsave('/media/sf_M_DRIVE/s2a_tif/combined.tif', combined)
 io.imsave('/media/sf_M_DRIVE/s2a_tif/combined_rgb.tif', combined[(1,2,3),:,:])
@@ -382,18 +381,12 @@ plt.imshow(blackwhite, cmap='gray', vmax=3000)
 plt.colorbar()
 plt.show()
 
-blackwhite = np.mean(combined[(1,2,3),:,:],axis=0)
-
-plt.figure(figsize=(16,16))
-plt.imshow(blackwhite, cmap='gray', vmax=3000)
-plt.colorbar()
-plt.show()
-
-## No idea where the classification below now comes from, therefore its not found.
-## The original code also seems to use a resampled 200meter version of the two scenes instead of 20m. which is fine, but doesn't answer the question.
+## No idea where the classification below comes from, therefore its not found.
+## The original code also seems to use a resampled 200meter version of the two scenes instead of 20m, but that doesn't answer the question.
 
 ## Classification to detect only land and water
 
+'''
 img1_class, img1_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif')
 img2_class, img2_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
 
@@ -415,7 +408,6 @@ highest_conf = np.argmax(stack, axis=0)
 print(highest_conf.shape)
 
 combined = np.zeros(img1_class.flatten().shape)
-
 
 ## Mask clouds and shadows
 
@@ -450,4 +442,4 @@ img = Image.fromarray(rgbArray)
 plt.imshow(img)
 plt.show()
 
-img.save('clouds_removed2.jpg')
+img.save('clouds_removed2.jpg')'''

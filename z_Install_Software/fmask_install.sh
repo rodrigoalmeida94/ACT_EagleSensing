@@ -7,3 +7,4 @@ FMASKVERSION=$(wget -q -O - ${FMASKREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:a
 SEN2URL=$(wget -q -O - ${SEN2SITE} | grep "tar" | head -n 1 | cut -d \" -f 8)
 wget -O ${dldir}/sen2cor.tar.gz ${SEN2SITE}${SEN2URL}
 
+

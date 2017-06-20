@@ -20,20 +20,22 @@ fi
 
 # 0. DEFINE DIRECTORY VARIABLES
 defdir=$HOME
-mkdir ${defdir}/DL_temp
+pardir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 
 #1. Call anaconda installer
+cd $pardir
 . ./anaconda_install.sh
 
 #2. Call sen2cor install
-
+cd $pardir
 . ./sen2cor_install.sh
 
 #3. Call sen2three install
-
+cd $pardir
 . ./sen2three_install.sh
 
 #4. Call snap install
-
+cd $pardir
 . ./sen2three_install.sh

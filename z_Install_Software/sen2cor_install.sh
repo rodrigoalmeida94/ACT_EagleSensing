@@ -17,10 +17,10 @@ yes yes | python setup.py install
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
 
- if grep -q export SEN2COR_HOME=${defdir}/sen2cor "${profilefile}"; then
+ if grep -q export SEN2COR_HOME=${defdir}/.config/sen2cor "${profilefile}"; then
    exit
    else sudo cat <<EOF >> ${profilefile}
-export SEN2COR_HOME=${defdir}/sen2cor
+export SEN2COR_HOME=${defdir}/.config/sen2cor
 export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
 export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
 EOF
@@ -29,7 +29,7 @@ EOF
  if grep -q export SEN2COR_HOME=${defdir}/sen2cor "${profilenondebian}"; then
    exit
    else sudo cat <<EOF >> ${profilenondebian}
-export SEN2COR_HOME=${defdir}/sen2cor
+export SEN2COR_HOME=${defdir}/.config/sen2cor
 export SEN2COR_BIN=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor
 export GDAL_DATA=${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data
 EOF

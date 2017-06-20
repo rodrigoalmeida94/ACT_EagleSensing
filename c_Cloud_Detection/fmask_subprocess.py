@@ -1,18 +1,89 @@
 ## Import packages
-from osgeo import gdal
+
+'''from osgeo import gdal
 from osgeo.gdalconst import GA_ReadOnly, GDT_Float32
 import numpy
 import numpy as np
 import matplotlib.pyplot as plt
 import urllib2
 import tarfile, sys
-import rasterio
+import rasterio'''
+
 import subprocess
 import os
+import pprint
+from PIL import Image
 
-# install dependencies ... either with a new script or just a plain text file... e.g.
+# 0. Set working directory as the Sentinel2 L1C granule from the image directory
+# for example:
+# os.chdir('./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA')
+
+# 1. Download and install Anaconda
+
+subprocess.call(["./anaconda_install.sh"])
+
+# 2. download the latest fmask package from the bitbucket repo, unpack and install it
+
+subprocess.call(["./fmask_install.sh"])
+
+command_args = ['conda config --add channels conda-forge',
+                'conda create -n myenv python-fmask',
+                'source activate myenv']
+
+process = subprocess.Popen(command_args,stdout=subprocess.PIPE, shell=True)
+proc_stdout = process.communicate()[0].strip()
+print proc_stdout
+
+# 4. Apply fmask via terminal
+
+# Command 1 creates a VRT (Virtual Dataset) that is a mosaic of the list of
+# input GDAL datasets, in this case the bands provided by S2
+# Command 2 makes a separate image of the per-pixel sun and satellite angles
+# Command 3 creates the cloud mask output image. Note that this assumes
+# the bands are in a particular order (as created in the vrt, above):
+
+command_args2 = ['gdalbuildvrt -resolution user -tr 20 20 -separate allbands.vrt *_B0[1-8].jp2 *_B8A.jp2 *_B09.jp2 *_B1[0-2].jp2',
+                'fmask_sentinel2makeAnglesImage.py -i ../*.xml -o angles.img',
+                'fmask_sentinel2Stacked.py -a allbands.vrt -z angles.img -o cloud.img']
+
+process = subprocess.Popen(command_args2,stdout=subprocess.PIPE, shell=True)
+proc_stdout = process.communicate()[0].strip()
+print proc_stdout
+'''
+command =
+
+proc = subprocess.Popen(command, stdout = subprocess.PIPE)
+
+for line in proc.stdout:
+  (key, _, value) = line.partition("=")
+  os.environ[key] = value
+
+proc.communicate()
+
+pprint.pprint(dict(os.environ))
+
+'''
+# 5. Convert it to a .tif file with gdal
+
+im = Image.open('cloud.img')
+im.save('cloud.tiff')  # or 'test.tif
+
+'''
+
+
+# install and check dependencies required to run fmask
+
+install_cmd = []
+
 
 ## Install dependencies for project
+
+cmd = [
+'gdalwarp -t_srs "EPSG:4326" /home/ubuntu/Python/Lesson12/data/ndwi.tif /home/ubuntu/Python/Lesson12/data/ndwi_ll.tif']
+pipe = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+out, err = pipe.communicate()
+result = out.decode()
+
 
 sudo pip install pylatex
 sudo pip install numpy

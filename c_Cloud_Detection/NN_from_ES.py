@@ -381,7 +381,7 @@ plt.imshow(blackwhite, cmap='gray', vmax=3000)
 plt.colorbar()
 plt.show()
 
-## No idea where the classification below comes from, therefore its not found.
+## No idea where classify_landwater below comes from, therefore its not found.
 ## The original code also seems to use a resampled 200meter version of the two scenes instead of 20m, but that doesn't answer the question.
 
 ## Classification to detect only land and water

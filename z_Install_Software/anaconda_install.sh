@@ -7,12 +7,18 @@ ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Li
 #ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
 #LATEST ANACONDA VERSION DOES NOT WORK WITH LATEST SEN2COR (YET)
 wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
-bash ${dldir}/anaconda.sh -b #uses the default settings
+${dldir}/anaconda.sh -b #uses the default settings
+
+ if grep -q export PATH=${defdir}/anaconda2/bin/:$PATH "${profilefile}"; then
+   exit
+   else sudo cat <<EOF >> ${profilefile}
 echo export PATH=${defdir}/anaconda2/bin/:$PATH >> $HOME/.bashrc
+EOF
+ fi
 source $HOME/.bashrc
+
 
 ## 2. CONDA UPDATE + INSTALL SOME DEPENDENCIES
 conda update conda
 conda updata anaconda
-apt-get install -y python-setuptools
-apt-get install expect
+sudo apt-get install -y python-setuptools

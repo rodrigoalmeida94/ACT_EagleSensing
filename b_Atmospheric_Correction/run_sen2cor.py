@@ -19,7 +19,7 @@ def run_sen2cor (res, dir):
     run = []
     for i in datafiles:
         if i[7:10] == str(checker) and i.endswith(".SAFE"):
-            run = os.system ("L2A_Process --resolution="+ str(res) + " " + "--GIP_L2A /home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/L2A_GIPP.xml" + " " + str(dir) + str(datafiles[0]))
+            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(datafiles[0]))
         else:
             os.rename(i, (i + ".SAFE"))
     return run

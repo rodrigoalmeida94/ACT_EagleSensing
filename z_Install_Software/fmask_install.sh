@@ -9,17 +9,11 @@ dldir=${defdir}/DL_temp
 #wget -O ${dldir}/fmask.tar.gz https://bitbucket.org$FMASKLINE
 #mkdir ${defdir}/FMASK
 #tar -xzvf ${dldir}/fmask.tar.gz -C ${defdir}/FMASK/
+#cd ${defdir}/FMASK/python-fmask-$FMASKVERSION
+#python setup.py build
 
 FMASKCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
 FMASKCONDADL=$(wget -q -O - ${FMASKCONDAREPO} | grep 'conda-forge python-fmask')
 FMASKCONDAVERSION=$(echo ${FMASKCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 
 conda install -c conda-forge python-fmask=${FMASKCONDAVERSION}
-
-
-
-
-
-
-cd ${defdir}/FMASK/python-fmask-$FMASKVERSION
-python setup.py build

@@ -1,4 +1,6 @@
 # z_Install_Software
+Sen2cor and Sen2three are both officially ESA endorsed third party applications for the processing of Sentinel-2 raster datasets. It must be noted that these applications are therefore still under development and require very specific installation requirements. Therefore, an installation bundle is included.
+
 
 Instructions:
 

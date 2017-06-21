@@ -16,3 +16,4 @@ SEN2TVERSION=${SEN2TVERSION%?}
 echo "" >> ${profilenondebian}
 echo "export SEN2THREE_HOME=\"${defdir}/.config/sen2three\"" >> ${profilenondebian}
 echo "export SEN2THREE_BIN=\"/home/user/anaconda2/lib/python2.7/site-packages/sen2three-${SEN2TVERSION}-py2.7.egg/sen2three\"" >> ${profilenondebian}
+source $HOME/.bashrc

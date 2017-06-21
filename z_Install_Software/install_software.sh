@@ -37,3 +37,9 @@ source ./sen2three_install.sh
 #4. Call snap install
 #cd $pardir
 #source ./sen2three_install.sh
+
+#5. Install packages needed for the download script.
+pip install --upgrade pip
+pip install sentinelhub
+pip install sentinelsat
+pip install parmap

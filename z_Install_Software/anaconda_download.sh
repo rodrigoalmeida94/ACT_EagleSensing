@@ -10,6 +10,6 @@ CONTREPO=https://repo.continuum.io/archive/
 ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | grep "2.4.2" | head -n 1 | cut -d \" -f 2)
 #ANACONDAURL=$(wget -q -O - ${CONTREPO} index.html | grep "Anaconda2-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
 #LATEST ANACONDA VERSION DOES NOT WORK WITH LATEST SEN2COR (YET)
-sudo wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
+wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
 
 cd $pardir

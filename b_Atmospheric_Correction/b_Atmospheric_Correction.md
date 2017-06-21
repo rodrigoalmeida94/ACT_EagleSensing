@@ -18,11 +18,17 @@ After Installation notes:
  Running sen2cor:
     -install/update Glymur
     -use GPF
+    Breakdown of processes:
+    Atmospheric Correction @ 18%
+    
+    
+    
+    
+    
      
-  
+
  
  Running SNAP:
-    -remember put sudo when running SNAP
     -make sure sen2cor directory is set, you should see these paths with "echo %SEN2COR_HOME%" and echo "%SEN2COR_BIN%"
  
 

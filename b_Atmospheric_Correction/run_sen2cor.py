@@ -11,7 +11,7 @@ import sys
 #from download_hub get data_dir
 
 ## Directory and L1C folder check
-datadir = r'/media/sf_M_DRIVE/ACT_EagleSensing/a_Data_Acquisition/Data/hubTue20Jun20171214/'
+datadir = r'/home/user/sen2data/'
 os.chdir(datadir)
 print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())
 
@@ -27,11 +27,12 @@ def run_sen2cor (res, dir):
             run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(datafiles[0]))
         else:
             os.rename(i, (i + ".SAFE"))
+            print "folder renamed, re-run the script/function again."
     return run
 
-run_sen2cor (20, datadir)
+run_sen2cor (60, datadir)
 
-
+## For unfinished sen2cor run, delete unfinished L2A folder always
 
 
 

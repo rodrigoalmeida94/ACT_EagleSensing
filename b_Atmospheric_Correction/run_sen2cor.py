@@ -2,10 +2,15 @@
 
 import os
 import os.path
+import sys
 
+#connect data to sen2cor (needs adjustment)
+#data_dir= '/media/sf_M_DRIVE/ACT_EagleSensing/a_Data_Acquisition/Data'
+#sys.path.insert(0, 'data_dir')
+#import download_hub
+#from download_hub get data_dir
 
 ## Directory and L1C folder check
-
 datadir = r'/media/sf_M_DRIVE/ACT_EagleSensing/a_Data_Acquisition/Data/hubTue20Jun20171214/'
 os.chdir(datadir)
 print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())

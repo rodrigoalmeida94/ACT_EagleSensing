@@ -25,6 +25,7 @@ mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
+yes yes | sudo apt-get install python-setuptools
 
 #2. Call sen2cor install
 cd $pardir

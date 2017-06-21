@@ -45,3 +45,7 @@ Calling sen2cor from python script:
 
 
 
+-description of most important parameters 
+-changeable parameters in script
+-recommended parameter values / profile
+

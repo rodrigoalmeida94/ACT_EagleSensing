@@ -25,6 +25,7 @@ mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
+sudo apt-get install -y poppler-utils
 
 #2. Call sen2cor install
 cd $pardir
@@ -45,6 +46,8 @@ pip install --upgrade pip
 pip install sentinelhub
 pip install sentinelsat
 pip install parmap
+pip install requests
+pip install fire
 source deactivate
 
 #6. Install packages needed for the mosaicing script.

@@ -21,10 +21,14 @@ def download_amz(file_path,
                  exclude_date=datetime.datetime(2016,12,6)):
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
+    delete = []
     for tile in product:
         if product[tile]['beginposition'] <= exclude_date:
            print(product[tile]['title']+' was excluded since '+product[tile]['beginposition']+' is previous to exclude date.')
-           del product[tile]
+           delete += [tile]
+
+    for x in delete:
+        product.pop(x)
 
     owd = os.getcwd()  # original working directory (owd)
     new_dir = 'Data/amz%s' % time.strftime('%a%d%b%Y%H%M%S')

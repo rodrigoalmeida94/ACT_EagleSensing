@@ -2,9 +2,7 @@
 # get_products_aoi.py
 # Gets a list of product names matching a given time interval that intersect with a provided raster.
 
-# Imports
 import sys
-
 from sentinelsat import SentinelAPI
 
 # Import project modules
@@ -13,10 +11,10 @@ from get_extent import get_extent
 from accounts_hub import account
 
 
-def get_products_aoi(extent_file='../Source_Data/Phillipines/RGBtile.tif',
-                     accounts_file='Data/accounts_hub.txt',
-                     start_date='NOW-30DAYS',
-                     end_date='NOW'):
+def get_products_aoi(extent_file,
+                     accounts_file,
+                     start_date,
+                     end_date):
     ''' Creates a ordered dictionary of products that intersect with the extent of a raster file in a provided date interval
 
                 @type extent_file: str
@@ -47,12 +45,14 @@ def get_products_aoi(extent_file='../Source_Data/Phillipines/RGBtile.tif',
     # Calls the query to get the result of the query
     products = api.query(AOI_wkt, initial_date=start_date, end_date=end_date, platformname='Sentinel-2')
 
-    return products, credentials
-
+    if len(products) == 0:
+        raise ValueError('No products match the entered search criteria.')
+    else:
+        print str(len(products)) + ' match the search criteria.'
+        return products, credentials
 
 if __name__ == '__main__':
-    print(get_products_aoi(start_date='NOW-3MONTHS'))
-    print(len(get_products_aoi(start_date='NOW-3MONTHS')))
+    print(get_products_aoi('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt',start_date='NOW-3MONTHS',end_date='NOW'))
 
 ''' def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
               order_by=None, limit=None, offset=0,

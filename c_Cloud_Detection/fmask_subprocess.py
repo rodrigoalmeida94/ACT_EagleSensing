@@ -27,8 +27,8 @@ from PIL import Image
 subprocess.call(["./fmask_install.sh"])
 
 command_args = ['conda config --add channels conda-forge',
-                'conda create -n myenv python-fmask',
-                'source activate myenv']
+                'conda create -n fmaskenv python-fmask',
+                'source activate fmaskenv']
 
 process = subprocess.Popen(command_args,stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()
@@ -66,7 +66,7 @@ pprint.pprint(dict(os.environ))
 # 5. Convert it to a .tif file with gdal
 
 im = Image.open('cloud.img')
-im.save('cloud.tiff')  # or 'test.tif
+im.save('cloud.tif')  # or 'test.tif
 
 '''
 

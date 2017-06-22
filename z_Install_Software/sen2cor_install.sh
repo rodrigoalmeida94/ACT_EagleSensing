@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 cd ${defdir}
 
+## Create the necessary environment
+yes yes | conda create --name atmosphere
+source activate atmosphere
+
 ## 3. DOWNLOAD AND INSTALL LATEST SEN2COR
 SEN2CREPO=http://step.esa.int/thirdparties/sen2cor/
 SEN2VERSION=$(wget -q -O - ${SEN2CREPO} | egrep '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]' | tail -n 1 | cut -d \" -f 8)
@@ -20,3 +24,4 @@ echo "export SEN2COR_BIN=\"${defdir}/anaconda2/lib/python2.7/site-packages/sen2c
 echo "export GDAL_DATA=\"${defdir}/anaconda2/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data\"" >> ${profilenondebian}
 
 source $HOME/.bashrc
+source deactivate

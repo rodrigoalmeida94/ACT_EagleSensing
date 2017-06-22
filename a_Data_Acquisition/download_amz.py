@@ -5,6 +5,8 @@
 import os
 import sys
 import time
+import fire
+import datetime
 
 import sentinelhub
 
@@ -15,8 +17,14 @@ from get_products_aoi import get_products_aoi
 def download_amz(file_path,
                  accounts_file,
                  start_date='NOW-30DAYS',
-                 end_date='NOW'):
+                 end_date='NOW',
+                 exclude_date=datetime.datetime(2016,12,6)):
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
+
+    for tile in product:
+        if product[tile]['beginposition'] <= exclude_date:
+           print(product[tile]['title']+' was excluded since '+product[tile]['beginposition']+' is previous to exclude date.')
+           del product[tile]
 
     owd = os.getcwd()  # original working directory (owd)
     new_dir = 'Data/amz%s' % time.strftime('%a%d%b%Y%H%M%S')
@@ -30,5 +38,5 @@ def download_amz(file_path,
 
 
 if __name__ == '__main__':
-    print(os.getcwd())
-    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTHS')
+    fire.Fire(download_amz)
+    #download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTHS')

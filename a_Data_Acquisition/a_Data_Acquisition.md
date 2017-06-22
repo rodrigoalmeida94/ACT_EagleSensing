@@ -4,6 +4,7 @@ Necessary packages:
 * sentinelhub
 * sentinelsat
 * parmap
+* requests
 
 Modules:
 * get_extent.py

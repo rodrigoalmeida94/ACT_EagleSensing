@@ -25,22 +25,21 @@ mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
-yes yes | sudo apt-get install python-setuptools
 
 #2. Call sen2cor install
 cd $pardir
 source ./sen2cor_install.sh
 
-#3. Call sen2three install
-cd $pardir
-source ./sen2three_install.sh
+#3. (UNUSED) Call sen2three install
+#cd $pardir
+#source ./sen2three_install.sh
 
-#4. Call snap install
+#4. (UNUSED) Call snap install
 #cd $pardir
 #source ./sen2three_install.sh
 
 #5. Install packages needed for the download script.
-conda create --name data_acquisition pip
+yes yes | conda create --name data_acquisition pip
 source activate data_acquisition
 pip install --upgrade pip
 pip install sentinelhub
@@ -49,10 +48,12 @@ pip install parmap
 source deactivate
 
 #6. Install packages needed for the mosaicing script.
-conda create --name mosaicing pip
+yes yes | conda create --name mosaicing pip
 source activate mosaicing
 GDALCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge python-fmask')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 conda install -c conda-forge gdal=${GDALCONDAVERSION}
+
+## Close the conda environment.
 source deactivate

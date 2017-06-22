@@ -2,7 +2,8 @@
 defdir=$HOME
 dldir=${defdir}/DL_temp
 
-conda create --name clouddetect
+## Create the necessary environment
+yes yes | conda create --name clouddetect
 source activate clouddetect
 
 # ATTENTION: UNCOMMENT THE LINES BELOW IF YOU WANT THE NORMAL PYTHON FMASK VERSION!
@@ -15,9 +16,11 @@ source activate clouddetect
 #cd ${defdir}/FMASK/python-fmask-$FMASKVERSION
 #python setup.py build
 
+## Install fmask
 FMASKCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
 FMASKCONDADL=$(wget -q -O - ${FMASKCONDAREPO} | grep 'conda-forge python-fmask')
 FMASKCONDAVERSION=$(echo ${FMASKCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
-
 conda install -c conda-forge python-fmask=${FMASKCONDAVERSION}
+
+## Close the conda environment.
 source deactivate

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+## Set directories
 defdir=$HOME
 mkdir ${defdir}/DL_temp -p
 dldir=${defdir}/DL_temp
@@ -14,6 +16,8 @@ wget -O ${dldir}/anaconda.sh ${CONTREPO}${ANACONDAURL}
 cd ${dldir}
 bash anaconda.sh -b
 
+
+## Add PATH variables to bashrc for use of anaconda in terminal.
 echo "" >> ${profilenondebian}
 profilenondebian=$HOME/.bashrc
 defdir=$HOME

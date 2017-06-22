@@ -11,19 +11,20 @@ import os
 
 # subprocess.call(["./anaconda_install.sh"])
 
-# 2. download the latest fmask package from the bitbucket repo or the conda-forge
+# 2. Download the latest fmask package from the bitbucket repo or the conda-forge
 # channel (make this choice in ./fmask_install.sh), unpack and install it
 # (Uncomment the line below if fmask is not already installed)
 
 # subprocess.call(["./fmask_install.sh"])
 
+# 3. Activate the conda environment from which fmask runs
 command_args = ['source activate clouddetect']
 
 process = subprocess.Popen(command_args,stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()
 print proc_stdout
 
-# 3. Apply fmask via terminal
+# 4. Apply fmask via terminal
 
 # Command 1 creates a VRT (Virtual Dataset) that is a mosaic of the list of
 # input GDAL datasets, in this case the bands provided by S2
@@ -39,6 +40,7 @@ process = subprocess.Popen(command_args2,stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()
 print proc_stdout
 
+# 5. Close the fmask conda environment
 command_args3 = ['source deactivate clouddetect']
 
 process = subprocess.Popen(command_args3,stdout=subprocess.PIPE, shell=True)

@@ -16,7 +16,7 @@ def get_products_aoi(extent_file,
                      start_date,
                      end_date):
     ''' Creates a ordered dictionary of products that intersect with the extent of a raster file in a provided date interval
-
+\
                 @type extent_file: str
                 @param extent_file: file path of the airborne data
                 @type accounts_file: str

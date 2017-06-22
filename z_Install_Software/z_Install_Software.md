@@ -13,7 +13,7 @@ Step 1: Run the supplied anaconda download script (Anaconda.sh)
 
 Step 2: Navigate in the terminal to the DL_temp folder (in home directory).
 
-Step 3: Install the Anaconda script with: "bash anaconda.sh".
+Step 3: Install the Anaconda script with: "bash anaconda.sh". Make sure you use bash, otherwise it will not work!
 
 Step 4: Use defaults by pressing enter throughout the installation instructions.
 

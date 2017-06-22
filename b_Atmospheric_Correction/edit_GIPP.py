@@ -5,7 +5,7 @@ import lxml.etree as ET
 import os
 
 #Set directory
-datadir = r'/home/user/'
+datadir = r'/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/'
 os.chdir(datadir)
 
 #Parse the xml

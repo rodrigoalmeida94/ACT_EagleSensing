@@ -51,7 +51,7 @@ source deactivate
 yes yes | conda create --name mosaicing pip
 source activate mosaicing
 GDALCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
-GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge python-fmask')
+GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 conda install -c conda-forge gdal=${GDALCONDAVERSION}
 

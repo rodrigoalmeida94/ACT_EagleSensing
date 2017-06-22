@@ -3,6 +3,9 @@
 import os
 import os.path
 from multiprocessing import Pool
+from itertools import starmap
+import parmap
+
 
 #connect data to sen2cor (needs adjustment)
 #data_dir= '/media/sf_M_DRIVE/ACT_EagleSensing/a_Data_Acquisition/Data'
@@ -11,7 +14,7 @@ from multiprocessing import Pool
 #from download_hub get data_dir
 
 ## Directory and L1C folder check
-datadir = r'/media/sf_M_DRIVE/L1C/'
+datadir = r'/media/sf_M_DRIVE/L1C'
 os.chdir(datadir)
 print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())
 
@@ -24,22 +27,21 @@ def run_sen2cor (res, dir):
     run = []
     for i in datafiles:
         if i[7:10] == str(checker) and i.endswith(".SAFE"):
-            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(datafiles[1]))
+            tfile = datafiles[0]
+            str(tfile)
+            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + "/" + tfile)
         else:
             os.rename(i, (i + ".SAFE"))
             print "folder renamed, re-run the script/function again."
     return run
 
-run_sen2cor (10, datadir)
+#run_sen2cor (60, datadir)
 
 ## For unfinished sen2cor run, delete unfinished L2A folder always
 
+test = [(60, datadir),(10, datadir)]
 
-
-
-
-
-
+parmap.starmap_async(run_sen2cor, test, parallel=True)
 
 
 
@@ -58,18 +60,17 @@ run_sen2cor (10, datadir)
 ####
 
 # 2. PARALLEL PROCESSING
-file1= datafiles[0]
-file2= datafiles[1]
-file3= datafiles[2]
 
-def run_sen2cor (res, dir, file):
+def run_sen2cor1 (res, dir, slist):
     run = []
     for i in datafiles:
         if i[7:10] == str(checker) and i.endswith(".SAFE"):
-            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(file))
+            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(mylist[i]))
         else:
             os.rename(i, (i + ".SAFE"))
             print "folder renamed, re-run the script/function again."
     return run
 
+
+test = parmap.starmap(run_sen2cor, datafiles, 60, datadir)
 pool = Pool(4)

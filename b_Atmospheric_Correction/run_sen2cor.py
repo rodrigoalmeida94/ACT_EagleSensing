@@ -35,6 +35,28 @@ run_sen2cor (10, datadir)
 ## For unfinished sen2cor run, delete unfinished L2A folder always
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####
+
 # 2. PARALLEL PROCESSING
 file1= datafiles[0]
 file2= datafiles[1]
@@ -51,6 +73,3 @@ def run_sen2cor (res, dir, file):
     return run
 
 pool = Pool(4)
-result1 = pool.run_sen2cor (10, datadir, file1)
-result2 = pool.run_sen2cor (10, datadir, file2)
-result3 = pool.run_sen2cor (10, datadir, file3)

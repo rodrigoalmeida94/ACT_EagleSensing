@@ -38,8 +38,11 @@ print proc_stdout
 
 # two issues: multiple commands in one popen, after gdalbuildvrt the fmask execution of the .py scripts is not done,
 # therefore we split them into several bash pipelines...............................................
+# is the environment necessary for executing the python files
 
-command_args2 = ['gdalbuildvrt -resolution user -tr 20 20 -separate allbands.vrt *_B0[1-8].jp2 *_B8A.jp2 *_B09.jp2 *_B1[0-2].jp2']
+command_args2 = ['gdalbuildvrt -resolution user -tr 20 20 -separate allbands.vrt *_B0[1-8].jp2 *_B8A.jp2 *_B09.jp2 *_B1[0-2].jp2',
+                 'fmask_sentinel2makeAnglesImage.py -i ../*.xml -o angles.tif',
+                 'fmask_sentinel2Stacked.py -a allbands.vrt -z angles.tif -o cloud.tif']
 
 process = subprocess.Popen(command_args2, executable='/bin/bash',stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()

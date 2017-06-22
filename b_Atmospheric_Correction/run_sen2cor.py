@@ -18,16 +18,19 @@ datadir = r'/media/sf_M_DRIVE/L1C'
 os.chdir(datadir)
 print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())
 
-## Run sen2cor
 
-# 1. SINGLE PROCESSING - Get only L1C folders with .SAFE and process it
+
+## RUN SEN2COR-----------------------
+
+# 1. ONE BY ONE PROCESSING - Get only L1C folders with .SAFE and process it
+
 datafiles = os.listdir(os.getcwd())
 checker = "L1C"
 def run_sen2cor (res, dir):
     run = []
     for i in datafiles:
-        if i[7:10] == str(checker) and i.endswith(".SAFE"):
-            tfile = datafiles[0]
+        if i[7:10] == checker and i.endswith(".SAFE"):
+            tfile = i
             str(tfile)
             run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + "/" + tfile)
         else:
@@ -37,40 +40,16 @@ def run_sen2cor (res, dir):
 
 #run_sen2cor (60, datadir)
 
+
+# 2. BATCH PROCESSING
+
+# Create a list of arguments based on number of files to run
+for files in datafiles:
+    slist = []
+    multiplier = len(datafiles)
+    slist = [(60, datadir)]*multiplier
+
+pool = Pool(processes=4)
+parmap.starmap(run_sen2cor, slist, parallel=True, processes=multiplier, pool=pool)
+
 ## For unfinished sen2cor run, delete unfinished L2A folder always
-
-test = [(60, datadir),(10, datadir)]
-
-parmap.starmap_async(run_sen2cor, test, parallel=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-####
-
-# 2. PARALLEL PROCESSING
-
-def run_sen2cor1 (res, dir, slist):
-    run = []
-    for i in datafiles:
-        if i[7:10] == str(checker) and i.endswith(".SAFE"):
-            run = os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + str(mylist[i]))
-        else:
-            os.rename(i, (i + ".SAFE"))
-            print "folder renamed, re-run the script/function again."
-    return run
-
-
-test = parmap.starmap(run_sen2cor, datafiles, 60, datadir)
-pool = Pool(4)

@@ -13,8 +13,6 @@ from sentinelsat.sentinel import SentinelAPI
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
-print os.system('which python')
-
 def download_hub(file_path,
                  accounts_file,
                  start_date='NOW-30DAYS',

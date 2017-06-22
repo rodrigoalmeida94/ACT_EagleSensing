@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo -n "
-This bash script will install SEN2COR and SEN2THREE.
+This bash script will install all required programs and packages for the processing of S2AL1A into L3 products.
 Existing user settings will be overwritten.
 Are you sure you want to install  these programs? [yes|no]
 >>> "
@@ -54,6 +54,5 @@ GDALCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 conda install -c conda-forge gdal=${GDALCONDAVERSION}
-
 ## Close the conda environment.
 source deactivate

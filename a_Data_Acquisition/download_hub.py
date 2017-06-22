@@ -6,15 +6,14 @@
 import os
 import sys
 import time
+import fire
 from itertools import izip
-
 import parmap
-# connect to the API:  pip install sentinelsat
 from sentinelsat.sentinel import SentinelAPI
-
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
+print os.system('which python')
 
 def download_hub(file_path,
                  accounts_file,
@@ -91,5 +90,5 @@ def dict_divider(raw_dict, num):
 
 
 if __name__ == '__main__':
-    download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTHS',
-                 downloads_per_account=2)
+    fire.Fire(download_hub)
+    #download_hub('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTH', downloads_per_account=2)

@@ -7,17 +7,17 @@ import os
 # for example:
 # os.chdir('./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA')
 
-# 1. Download and install Anaconda
+# 1. Download and install Anaconda (Uncomment the line below if Anaconda is not already installed)
 
 # subprocess.call(["./anaconda_install.sh"])
 
-# 2. download the latest fmask package from the bitbucket repo, unpack and install it
+# 2. download the latest fmask package from the bitbucket repo or the conda-forge
+# channel (make this choice in ./fmask_install.sh), unpack and install it
+# (Uncomment the line below if fmask is not already installed)
 
-subprocess.call(["./fmask_install.sh"])
+# subprocess.call(["./fmask_install.sh"])
 
-command_args = ['conda config --add channels conda-forge',
-                'conda create -n clouddetect python-fmask',
-                'source activate clouddetect']
+command_args = ['source activate clouddetect']
 
 process = subprocess.Popen(command_args,stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()
@@ -39,3 +39,8 @@ process = subprocess.Popen(command_args2,stdout=subprocess.PIPE, shell=True)
 proc_stdout = process.communicate()[0].strip()
 print proc_stdout
 
+command_args3 = ['source deactivate clouddetect']
+
+process = subprocess.Popen(command_args3,stdout=subprocess.PIPE, shell=True)
+proc_stdout = process.communicate()[0].strip()
+print proc_stdout

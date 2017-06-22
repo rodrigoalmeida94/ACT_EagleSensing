@@ -50,7 +50,7 @@ source deactivate
 #6. Install packages needed for the mosaicing script.
 yes yes | conda create --name mosaicing pip
 source activate mosaicing
-GDALCONDAREPO=https://anaconda.org/conda-forge/python-fmask/
+GDALCONDAREPO=https://anaconda.org/conda-forge/gdal/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 conda install -c conda-forge gdal=${GDALCONDAVERSION}

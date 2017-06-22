@@ -26,7 +26,7 @@ def download_hub(file_path,
 
     # Creates directory for download files
     owd = os.getcwd()  # original working directory (owd)
-    new_dir = 'Data/hub%s' % time.strftime('%a%d%b%Y%H%M')
+    new_dir = 'Data/hub%s' % time.strftime('%a%d%b%Y%H%M%S')
     os.mkdir(new_dir)
     os.chdir(new_dir)
 

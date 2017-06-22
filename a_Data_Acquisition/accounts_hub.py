@@ -12,4 +12,6 @@ def account(filepath):
         if b.endswith('\n'):
             b = b[:-1]
         d[a] = [a, b]
+
+
     return d

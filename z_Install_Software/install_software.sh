@@ -40,7 +40,10 @@ source ./sen2three_install.sh
 #source ./sen2three_install.sh
 
 #5. Install packages needed for the download script.
+conda create --name data_acquisition pip
+source activate data_acquisition
 pip install --upgrade pip
 pip install sentinelhub
 pip install sentinelsat
 pip install parmap
+source deactivate

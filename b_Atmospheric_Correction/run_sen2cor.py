@@ -23,7 +23,6 @@ print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())
 ## RUN SEN2COR-----------------------
 
 # 1. ONE BY ONE PROCESSING - Get only L1C folders with .SAFE and process it
-
 datafiles = os.listdir(os.getcwd())
 checker = "L1C"
 def run_sen2cor (res, dir):
@@ -42,14 +41,16 @@ def run_sen2cor (res, dir):
 
 
 # 2. BATCH PROCESSING
-
-# Create a list of arguments based on number of files to run
-for files in datafiles:
-    slist = []
+def sen2_batch (res, dir): # Creates a list of arguments based on number of files to run
     multiplier = len(datafiles)
-    slist = [(60, datadir)]*multiplier
+    slist = [(res, dir)]*multiplier
+    pool = Pool(processes=4)
+    parmap.starmap(run_sen2cor, slist, parallel=True, processes=multiplier, pool=pool)
 
-pool = Pool(processes=4)
-parmap.starmap(run_sen2cor, slist, parallel=True, processes=multiplier, pool=pool)
+sen2_batch (10, datadir)
+
 
 ## For unfinished sen2cor run, delete unfinished L2A folder always
+
+
+----------------------------------------------------

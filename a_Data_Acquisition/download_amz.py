@@ -19,7 +19,7 @@ def download_amz(file_path,
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     owd = os.getcwd()  # original working directory (owd)
-    new_dir = 'Data/amz%s' % time.strftime('%a%d%b%Y%H%M')
+    new_dir = 'Data/amz%s' % time.strftime('%a%d%b%Y%H%M%S')
     os.mkdir(new_dir)
     os.chdir(new_dir)
     for elem in product:
@@ -31,4 +31,4 @@ def download_amz(file_path,
 
 if __name__ == '__main__':
     print(os.getcwd())
-    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt')
+    download_amz('../Source_Data/Phillipines/RGBtile.tif', 'Data/accounts_hub.txt', start_date='NOW-3MONTHS')

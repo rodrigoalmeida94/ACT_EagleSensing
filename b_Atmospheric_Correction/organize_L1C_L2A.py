@@ -8,9 +8,10 @@ datadir_L1C = r'/media/sf_M_DRIVE/L1C' #modify own directory
 print "The files in the data folder is/are: %s"%os.listdir(os.getcwd())
 
 ## Make/set directory of L2A files and move files
-checker1 = "L2A"
-datadir_L2A = r'/media/sf_M_DRIVE/L2A' #modify own directory
+
 def folder_arrange (dir_L1C, dir_L2A):
+
+    checker1 = "L2A"
     dfiles = os.listdir(dir_L1C)
     if not os.path.exists(dir_L2A):
         os.makedirs(dir_L2A)
@@ -21,5 +22,7 @@ def folder_arrange (dir_L1C, dir_L2A):
         else:
             print "no L2A folders yet"
 
-folder_arrange(datadir_L1C, datadir_L2A)
+datadir_L1C = r'/media/sf_M_DRIVE/L1C'
+datadir_L2A = r'/media/sf_M_DRIVE/L2A'  # modify own directory
 
+folder_arrange(datadir_L1C, datadir_L2A)

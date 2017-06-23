@@ -31,5 +31,10 @@ echo "export SEN2COR_BIN=\"${defdir}/anaconda2/envs/atmosphere/lib/python2.7/sit
 echo "export GDAL_DATA=\"${defdir}/anaconda2/envs/atmosphere/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/gdal_data\"" >> ${profilenondebian}
 source $HOME/.bashrc
 
+## Install additional packages
+pip install parmap
+pip install lxml
+pip install shutil
+
 ## Close the conda environment.
 source deactivate

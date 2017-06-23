@@ -3,9 +3,10 @@
 
 import lxml.etree as ET
 import os
+import sys
 
 #Set directory
-datadir = r'/home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/'
+datadir = '/home/user/anaconda2/envs/atmosphere/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg'
 os.chdir(datadir)
 
 #Parse the xml

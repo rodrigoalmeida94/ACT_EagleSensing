@@ -8,65 +8,51 @@ PROCESS:
 After running installation scripts, it is now assumed that this component has its own environmnet called 'atmosphere' and should be activated before running all 'b' scripts.
 
 I - Preliminary
--GIPP.xml file is Extensible Markup Language (XML) is a markup language that defines a set of rules for encoding documents that contains sen2cor parameters.
+-GIPP.xml file of sen2cor is Extensible Markup Language (XML) is a markup language that defines a set of rules for encoding documents that contains sen2cor parameters.
 -Key parameters were identified including: Number of Processes (for parallel runs), Aerosol Thickness, Climate, Cirrus Correction, and BRDF Correction.
 -All parameters of these were set into AUTO.
 
 
-Module      :         edit_GIPP.py
+Script      :         edit_GIPP.py
 
-Parameters:
+Variables:
 tree                  -makes the xml parsed
 root                  -accesses the child and elements
 
-
+Packages needed: os, lxml
 
 II - Running sen2cor
--
- 
-After Installation notes:
-    -L2A_Process should be added to your path variable to be able to run the program from any location.
-    -L2a_GIPP.xml should be edited with the following
-    -A sen2cor folder inside .egg in user directory should exist before running
-    -Setting up environment variables is crucial
-    
-    
- Running sen2cor:
-    -install/update Glymur
-    -use GPF
-    Breakdown of processes:
-    Atmospheric Correction @ 18%
-    
-    
-    
-    
-    
-     
+-The script calls the 'L2A_Process' its command line interpreter which uses argparse to guide users on arguments needed.
+-Arguments of this L2A_Process.py include: resolution, GIPP inputs, scene or tree options.
+-Our script provides flexibility for single or batch/parallel runs.
 
- 
- Running SNAP:
-    -make sure sen2cor directory is set, you should see these paths with "echo %SEN2COR_HOME%" and echo "%SEN2COR_BIN%"
- 
+Script      :         run_sen2cor.py
 
-Source codes:
- https://github.com/senbox-org 
- 
- 
-Calling sen2cor from python script:
+Variables:
+datafiles             -gets all files from source folder
+checker               -checks for L1C folders
 
- 
- 
- 
- 
- Process chain sample presentation:
-    http://seom.esa.int/S2forScience2014/files/01_S2forScience-MethodsII_MULLER-WILM.pdf
- 
- 
- Raw commands: 
-  L2A_Process --resolution=10 --GIP_L2A /home/user/anaconda2/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg/L2A_GIPP.xml /home/user/sen2data/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326.SAFE
+Functions:
+run_sen2cor           -runs all L1C folders taking resolution and directory as argumnets
+sen2_batch            -runs all L1c folders in parallel using parmap.starmap function taking resolution and directory as arguments
 
+Packages needed: os, multiprocessing, itertools, parmap
 
+-The resolution argument for parallel processing accepts fixed resolution (either 10, 20, or 60) only for each function call.
+-It might be possible that sen2cor run will be interrupted. Possible causes are low memory of Virtual Machines or full storage. As such, 'unfinished' L2A folders are to be created still. As a rule of thumb, delete this folders always before starting a new function call.
+-For more comprehensive information, go to: http://step.esa.int/thirdparties/sen2cor/2.3.1/[L2A-SUM]%20S2-PDGS-MPC-L2A-SUM%20[2.3.0].pdf
 
--description of most important parameters 
--changeable parameters in script
--recommended parameter values / profile
+III - Organizing files
+-sen2cor by default puts L2A folders into the same directory as the L1C folders. From its arguments, no destination folder is included.
+-This script shall check all L2A folders and move these files into another folder named "L2A" at the same directory where L1C main folder is.
+
+Script      :         organize_L1C_L2A.py
+
+Variables:
+datadir               -gets all files from source folder
+checker               -checks for L2A folders
+
+Functions:
+folder_arrange        -takes two directories as arguments: dir_L1C(origin) and dir_L2A(destination).
+
+Packages needed: os, shutil

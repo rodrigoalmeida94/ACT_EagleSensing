@@ -48,6 +48,8 @@ pip install sentinelsat
 pip install parmap
 pip install requests
 pip install fire
+pip install lxml
+pip install shutil
 source deactivate
 
 #6. Install packages needed for the mosaicing script.

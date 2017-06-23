@@ -1,2 +1,19 @@
-# ACT_EagleSensing
-Academic Consultancy Project for EagleSensing. Remote Sensing and GIS Integration course, Period 6, 2016-2017.
+# d_Mosaicing
+
+## Necessary libraries
+* rgdal
+* raster
+* XML
+
+## Command Line Interface for mosaicing
+
+    Rscript mosaicing.R INPUT_DIR [OUTPUT_DIR] RESOLUTION?
+
+## Modules
+
+* **mosaicing.R**
+    * Gets a directory of L2A products and mosaics the non-cloud covered areas into one file.
+    * Contains the following parameters:
+        * input_dir
+        * output_dir (default is input_dir)
+        * resolution?

@@ -15,14 +15,14 @@ args = commandArgs(trailingOnly=TRUE)
 #Rscript --vanilla mosaicing.R input_dir output_dir resolution?, works perfectly
 
 # If no arguments are supplied
-if (length(args)!=2) {
-  stop("Two arguments must be supplied (input directory and output directory).", call.=FALSE)
+if (length(args)<1) {
+  stop("One argument must be supplied (input directory and output directory).", call.=FALSE)
 }
 
 owd <- getwd()
 
-# Directory inputed by the user, where L2A products are
-setwd(args[0])
+# Directory inputed by the user, where L2A products are, if no output, use the same as input
+setwd(args[1])
 
 # Get list of products in the directory
 products <- dir(pattern='*.SAFE')
@@ -99,7 +99,7 @@ level3 <- do.call(mosaic, rasters.mosaicargs)
 rm(rasters.mosaicargs)
 
 # Set the directory to output directory, input by user, create dir if not exists?
-setwd(args[1])
+if(args[2]!=NA){setwd(args[2])}
 
 # Naming contruct for Level 3
 # Example: S2_MSIL3_FROMDATE_TODATE_R060.tif

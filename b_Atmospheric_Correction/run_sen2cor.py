@@ -40,6 +40,12 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
 
 sen2_batch (10, datadir)
 
+# 3. ORGANIZE L1C and L2A folders
+checker1 = "L2A"
+def folder_arrange (dir):
+    for folders in dir:
+        if folders
+
 
 ## For unfinished sen2cor run, delete unfinished L2A folder always
 

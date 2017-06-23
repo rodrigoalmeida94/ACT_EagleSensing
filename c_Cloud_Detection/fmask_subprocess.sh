@@ -7,6 +7,7 @@ cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
 source activate clouddetect
 
 # Creates a VRT that is a mosaic of the list of input GDAL datasets, in this case the bands provided by S2
+# A resolution of 20 x 20m is used here but 10 x 10m can also be used (note: a trade-off between computational time and resolution!)
 gdalbuildvrt -resolution user -tr 20 20 -separate allbands.vrt *_B0[1-8].jp2 *_B8A.jp2 *_B09.jp2 *_B1[0-2].jp2
 
 # Makes a separate image of the per-pixel sun and satellite angles

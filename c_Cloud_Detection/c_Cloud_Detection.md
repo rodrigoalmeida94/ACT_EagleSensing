@@ -1,14 +1,16 @@
-# ACT_EagleSensing
+# c_Cloud_Detection
 Academic Consultancy Project for EagleSensing. Remote Sensing and GIS Integration course, Period 6, 2016-2017.
 
-The specific packages required are listed in fmaskenv_requirements.txt
-To create an environment in terminal:
- 'conda create -n fmaskenv',
- 'source activate fmaskenv'
- Then activate environment and install the required packages in it using this command:
- $ pip install -r fmaskenv_requirements.txt
+## Fmask
+Fmask is installed by executing the bash script fmask_install.sh (under ./z_Install_Software/). This 
+automatically creates the conda environment "clouddetect", in which all the packages specific for fmask are 
+  contained. These packages are listed in fmaskenv_requirements.txt. 
+  
+Fmask is run by executing the bash script fmask_subprocess.sh (under ./c_Cloud_Detection/). Here, the 
+ user must specify the directory in which the Sentinel2 L1C imagery is contained.
+ In this bash script, the default output is a single thematic raster in .tif format, but this 
+  can be altered by simply changing the extension in the bash file. 
 
-However, now in the fmask_install.sh bash script, the user will be prompted to activate the environment
-"clouddetect" before commencing with the conda-forge python-fmask package installation. In this way,
- the correct packages should be found in the environment 'clouddetect' but if there is an issue they can
- always be imported from the fmaskenv_requirements.txt file
+## Deep Neural Network
+
+## Gaussian Naive Bayes' Classification 

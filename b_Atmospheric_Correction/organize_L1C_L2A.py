@@ -1,5 +1,6 @@
 # Function to move L2A files from L1C since there's no argument to specify output files destination during sen2cor run.
 
+import os
 import shutil
 
 ## Directory and L1C folder check
@@ -21,3 +22,4 @@ def folder_arrange (dir_L1C, dir_L2A):
             print "no L2A folders yet"
 
 folder_arrange(datadir_L1C, datadir_L2A)
+

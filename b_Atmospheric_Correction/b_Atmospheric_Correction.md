@@ -2,15 +2,31 @@
 Academic Consultancy Project for EagleSensing. Remote Sensing and GIS Integration course, Period 6, 2016-2017.
 
 BACKGROUND:
-
 Sen2Cor is a processor for Sentinel-2 Level 2A product generation and formatting; it performs the atmospheric-, terrain and cirrus correction of Top-Of- Atmosphere Level 1C input data. Sen2Cor creates Bottom-Of-Atmosphere, optionally terrain- and cirrus corrected reflectance images; additional, Aerosol Optical Thickness-, Water Vapor-, Scene Classification Maps and Quality Indicators for cloud and snow probabilities. Its output product format is equivalent to the Level 1C User Product: JPEG 2000 images, three different resolutions, 60, 20 and 10 m.
 
-ACTION POINTS:
+PROCESS:
+After running installation scripts, it is now assumed that this component has its own environmnet called 'atmosphere' and should be activated before running all 'b' scripts.
+
+I - Preliminary
+-GIPP.xml file is Extensible Markup Language (XML) is a markup language that defines a set of rules for encoding documents that contains sen2cor parameters.
+-Key parameters were identified including: Number of Processes (for parallel runs), Aerosol Thickness, Climate, Cirrus Correction, and BRDF Correction.
+-All parameters of these were set into AUTO.
+
+
+Module      :         edit_GIPP.py
+
+Parameters:
+tree                  -makes the xml parsed
+root                  -accesses the child and elements
+
+
+
+II - Running sen2cor
+-
  
 After Installation notes:
     -L2A_Process should be added to your path variable to be able to run the program from any location.
-    -L2a_GIPP.xml should be edited with the following change:
-          Aerosol type to MARITIME or RURAL, Mid_Latitude not AUTO
+    -L2a_GIPP.xml should be edited with the following
     -A sen2cor folder inside .egg in user directory should exist before running
     -Setting up environment variables is crucial
     
@@ -54,4 +70,3 @@ Calling sen2cor from python script:
 -description of most important parameters 
 -changeable parameters in script
 -recommended parameter values / profile
-

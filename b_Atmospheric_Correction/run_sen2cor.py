@@ -33,8 +33,8 @@ def run_sen2cor (res, dir): #Gets only L1C folders with .SAFE and process it
 def sen2_batch (res, dir): # Creates a list of arguments based on number of files to run
     multiplier = len(datafiles)
     slist = [(res, dir)]*multiplier
-    pool = Pool(4)
-    parmap.starmap(run_sen2cor, slist, parallel=True, pool=pool)
+    pool = Pool(6) #adjust accordingly depending on computer processor capacity and files to be run
+    parmap.starmap(run_sen2cor, slist, parallel=True, pool=pool, processes=multiplier)
 
 sen2_batch (10, datadir_L1C)
 

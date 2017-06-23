@@ -12,7 +12,7 @@ library(XML)
 
 # Handles arguments passed by CLI
 args = commandArgs(trailingOnly=TRUE)
-#Rscript --vanilla mosaicing.R input_dir output_dir resolution?
+#Rscript --vanilla mosaicing.R input_dir output_dir resolution?, works perfectly
 
 # If no arguments are supplied
 if (length(args)!=2) {
@@ -21,7 +21,9 @@ if (length(args)!=2) {
 
 owd <- getwd()
 
-setwd(args[0]) # Directory inputed by the user
+# Directory inputed by the user, where L2A products are
+setwd(args[0])
+
 # Get list of products in the directory
 products <- dir(pattern='*.SAFE')
 
@@ -96,7 +98,7 @@ rasters.mosaicargs$fun <- mean
 level3 <- do.call(mosaic, rasters.mosaicargs)   
 rm(rasters.mosaicargs)
 
-# Set the directory to output directory
+# Set the directory to output directory, input by user, create dir if not exists?
 setwd(args[1])
 
 # Naming contruct for Level 3

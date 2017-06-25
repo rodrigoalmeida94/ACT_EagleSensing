@@ -30,20 +30,40 @@ products <- dir(pattern='*.SAFE')
 # Error if no products are present/directory doesn't exist
 
 # Load products into VRT, save dates from metadata
-products_vrt <- c()
+products_vrt60 <- c()
+products_vrt20 <- c()
+products_vrt10 <- c()
 dates_products <- c()
 for(elem in products) {
   # DANGER RESOLUTION
   granule = dir(paste0(elem,'/GRANULE/'))
-  granule_dir = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/*.jp2')
-  output_file = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/bands.vrt')
-  system(paste('gdalbuildvrt -separate',output_file, granule_dir))
-  products_vrt <- c(products_vrt,stack(output_file))
+  granule_dir60 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/*.jp2')
+  output_file60 = paste0(elem,'/bands60.vrt')
+  granule_dir20 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R20m/*.jp2')
+  output_file20 = paste0(elem,'/bands20.vrt')
+  granule_dir10 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R10m/*.jp2')
+  output_file10 = paste0(elem,'/bands10.vrt')
+  
+  if(dir.exists(granule_dir60)){
+    system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
+    products_vrt60 <- c(products_vrt60,stack(output_file60))
+  }
+  
+  if(dir.exists(granule_dir20)){
+    system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
+    products_vrt20 <- c(products_vrt20,stack(output_file20))
+  }
+  
+  if(dir.exists(granule_dir10)){
+    system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
+    products_vrt10 <- c(products_vrt10,stack(output_file10))
+  }
+  
   xml_meta <- xmlRoot(xmlParse(paste0(elem,'/MTD_MSIL2A.xml')))
   date <- xmlValue(xml_meta[[1]][[1]][[1]])
   dates_products <- c(dates_products,date)
 }
-rm(elem, granule, granule_dir,output_file,date,xml_meta)
+rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10,date,xml_meta)
 
 # Band 13 is SCL, let's hope the order is always the same.
 
@@ -72,8 +92,27 @@ rm(vrt, mask_scl)
 
 # File organization, rename bands if possible
 # At 10 m, this files can be found:
+# band 1 - AOT
+# band 2 - B3
+# band 3 - B4
+# band 4 - B8
+# band 5 - WVP
 
 # At 20 m, this files can be found:
+# band 1 - AOT
+# band 2 - B2
+# band 3 - B3
+# band 4 - B4
+# band 5 - B5
+# band 6 - B6
+# band 7 - B7
+# band 8 - B11
+# band 9 - B12
+# band 10 - B8A
+# band 11 - SCL
+# band 12 - TCI
+# band 13 - VIS
+# band 14 - WVP
 
 # At 60 m, this files can be found:
 # band 1 - AOT
@@ -99,7 +138,7 @@ level3 <- do.call(mosaic, rasters.mosaicargs)
 rm(rasters.mosaicargs)
 
 # Set the directory to output directory, input by user, create dir if not exists?
-if(args[2]!=NA){setwd(args[2])}
+if(!is.na(args[2])){setwd(args[2])}
 
 # Naming contruct for Level 3
 # Example: S2_MSIL3_FROMDATE_TODATE_R060.tif

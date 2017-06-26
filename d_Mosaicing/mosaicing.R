@@ -13,9 +13,9 @@ library(raster)
 library(XML)
 
 mask_dir <- function(mask_file,input_file_list) {
-  for(input_file in input_file_list) {
-    masked_file <- paste0('MSK_',input_file)
-    system(paste('gdal_calc.py -A ', mask_file,'-B',input_file,'--outfile=',masked_file,' --calc="A*B" --overwrite'))
+  for(a_file in input_file_list) {
+    masked_file <- paste0(dirname(a_file),'/MSK_',basename(a_file))
+    system(paste('gdal_calc.py -A', mask_file,'-B',a_file,'--outfile=test.tif --calc="A*B" --overwrite'))
   }
 }
 
@@ -54,7 +54,6 @@ products_vrt20 <- c()
 products_vrt10 <- c()
 dates_products <- c()
 for(elem in products) {
-  # DANGER RESOLUTION
   granule = dir(paste0(elem,'/GRANULE/'))
   granule_dir60 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/')
   output_file60 = paste0(elem,'/bands60.vrt')
@@ -145,34 +144,80 @@ reclass_matrix <- matrix(data=c(0,0,
                                 10,0,
                                 11,1),nrow=12,ncol=2,byrow=TRUE)
 
-# Creates mask files 
+# Creates mask files - WARNING - LONG RUN TIMES
 for(i in seq(length(products))){
   if(length(products_vrt60)!=0){
-    mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix, filename=paste0(products[i],'/mask60.grd'))
+    mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix, filename=paste0(products[i],'/mask60.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
   if(length(products_vrt10)!=0){
-    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.grd'))
-    mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb',filename=paste0(products[i],'/mask10.grd'))
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
+    mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb',filename=paste0(products[i],'/mask10.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
   if(length(products_vrt10)==0){
-    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.grd'))
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
 }
 rm(i,mask_scl,mask_scl10)
 
+# Masks every file with the computed cloud mask
 for(prod in products) {
+  print(paste('Starting masking of',prod,'...'))
   granule = dir(paste0(prod,'/GRANULE/'))
   if(length(products_vrt60)!=0) {
-    mask_dir(paste0(prod,'/mask60.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R60m'),pattern=glob2rx('*.jp2'), full.names=T))
+    files_60 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R60m'),pattern=glob2rx('*.jp2'), full.names=T)
+    mask_60 <- paste0(prod,'/mask60.tif')
+    mask_dir(mask_60,files_60)
   }
   if(length(products_vrt10)!=0) {
-    mask_dir(paste0(prod,'/mask20.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T))
-    mask_dir(paste0(prod,'/mask10.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R10m'),pattern=glob2rx('*.jp2'), full.names=T))
+    files_10 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R10m'),pattern=glob2rx('*.jp2'), full.names=T)
+    mask_10 <- paste0(prod,'/mask10.tif')
+    mask_dir(mask_10,files_10)
+    files_20 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
+    mask_20 <- paste0(prod,'/mask20.tif')
+    mask_dir(mask_20,files_20)
   }
   if(length(products_vrt10)==0) {
-    mask_dir(paste0(prod,'/mask20.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T))
+    files_20 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
+    mask_20 <- paste0(prod,'/mask20.tif')
+    mask_dir(mask_20,files_20)
+  }
+  print(paste('Finished masking of',prod,'.'))
+}
+
+rm(products_vrt10,products_vrt20,products_vrt60, files_10, mask_10,files_20,mask_20,files_60,mask_60)
+
+# Load masked products into VRT
+masked_products_vrt60 <- c()
+masked_products_vrt20 <- c()
+masked_products_vrt10 <- c()
+for(elem in products) {
+  granule = dir(paste0(elem,'/GRANULE/'))
+  granule_dir60 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/')
+  output_file60 = paste0(elem,'/masked_bands60.vrt')
+  granule_dir20 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R20m/')
+  output_file20 = paste0(elem,'/masked_bands20.vrt')
+  granule_dir10 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R10m/')
+  output_file10 = paste0(elem,'/masked_bands10.vrt')
+  
+  if(dir.exists(granule_dir60)){
+    granule_dir60 = paste0(granule_dir60,'MSK_*')
+    system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
+    masked_products_vrt60 <- c(products_vrt60,stack(output_file60))
+  }
+  
+  if(dir.exists(granule_dir20)){
+    granule_dir20 = paste0(granule_dir20,'MSK_*')
+    system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
+    masked_products_vrt20 <- c(products_vrt20,stack(output_file20))
+  }
+  
+  if(dir.exists(granule_dir10)){
+    granule_dir10 = paste0(granule_dir10,'MSK_*')
+    system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
+    masked_products_vrt10 <- c(products_vrt10,stack(output_file10))
   }
 }
+rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10)
 
 # # Masking each product with reclassification, doesn't work due to memory limits
 # masked_products_vrt10 <- c()
@@ -197,9 +242,21 @@ for(prod in products) {
 # rm(mask_scl,mask_scl10, i)
 
 # Run the mosaicing using do.call
-rasters.mosaicargs <- masked_products_vrt
-rasters.mosaicargs$fun <- mean
-level3 <- do.call(mosaic, rasters.mosaicargs)   
+if(length(masked_products_vrt60)!=0) {
+  rasters.mosaicargs <- masked_products_vrt60
+  rasters.mosaicargs$fun <- mean
+  level3_60 <- do.call(mosaic, rasters.mosaicargs)   
+  }
+if(length(masked_products_vrt10)!=0) {
+  rasters.mosaicargs <- masked_products_vrt10
+  rasters.mosaicargs$fun <- mean
+  level3_10 <- do.call(mosaic, rasters.mosaicargs)   
+  }
+if(length(masked_products_vrt20)!=0) {
+  rasters.mosaicargs <- masked_products_vrt20
+  rasters.mosaicargs$fun <- mean
+  level3_20 <- do.call(mosaic, rasters.mosaicargs)  
+  }
 rm(rasters.mosaicargs)
 
 # Set the directory to output directory, input by user, create dir if not exists?
@@ -210,11 +267,19 @@ if(!is.na(args[2])){setwd(args[2])}
 dates_products <- as.Date(dates_products)
 max_date <- as.character(format.Date(max(dates_products),'%Y%m%d'))
 min_date <- as.character(format.Date(min(dates_products),'%Y%m%d'))
-res <- xres(level3)
-export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R0',res,'.tif')
 
-# Gives error, says brick is not recognized
-writeRaster(level3,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+if(length(masked_products_vrt60)!=0) {
+  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R060.tif')
+  writeRaster(level3_60,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+}
+if(length(masked_products_vrt10)!=0) {
+  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R010.tif')
+  writeRaster(level3_10,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+}
+if(length(masked_products_vrt20)!=0) {
+  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R020.tif')
+  writeRaster(level3_20,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+}
 
 removeTmpFiles(h=0)
 

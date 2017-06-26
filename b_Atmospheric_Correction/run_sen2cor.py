@@ -5,6 +5,7 @@ from multiprocessing import Pool
 from itertools import starmap
 import parmap
 import fire
+import shutil
 
 
 ## RUN SEN2COR---------------------------------------------------------
@@ -17,7 +18,7 @@ def run_sen2cor (res, dir): #Gets only L1C folders with .SAFE and process it
     checker = "L1C"
     L2A_only = ()
     for folders in datafiles:
-        if folders[7:10] == checker and folders.endswith(".SAFE"):
+        if folders[7:10] == checker:
             tfile = folders
             str(tfile)
             os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + "/" + tfile)
@@ -26,16 +27,28 @@ def run_sen2cor (res, dir): #Gets only L1C folders with .SAFE and process it
 
 
 
+
 # 2. BATCH PROCESSING
 
 def sen2_batch (res, dir): # Creates a list of arguments based on number of files to run
     os.chdir(dir)
     datafiles = os.listdir(os.getcwd())
+    checker = "L2A"
+    for folders in datafiles:
+        if folders[7:10] == checker:
+            datafiles1 = os.listdir(str(dir) + '/' + str(folders))
+            if len(datafiles1) >= 9:
+            #for files in datafiles1:
+                #checker1 = files.endswith ('_report.xml')
+                #if checker1 == 0:
+                shutil.rmtree(folders)
+            else:
+               print "unprocessed folder not existing/deleted"
     multiplier = len(datafiles)
     slist = [(res, dir)]*multiplier
-    #pool = Pool(2) #adjust accordingly depending on computer processor capacity and files to be run
-    parmap.starmap(run_sen2cor, slist, parallel=True, processes=multiplier)
-
+    pool = Pool(multiplier) #adjust accordingly depending on computer processor capacity and files to be run
+    runs = parmap.starmap(run_sen2cor, slist, pool=pool)
+    return runs
 
 datadir_L1C = r'/media/sf_M_DRIVE/L1C' #sample directory
 sen2_batch (10, datadir_L1C)

@@ -17,6 +17,8 @@ read -p "$(
 selected_dir="${dirs[$((selection-1))]}"
 
 echo "You selected '$selected_dir'"
+
+cd $selected_dir
 #cd "$d" && pwdcd "${0%/*}"
 #cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
 

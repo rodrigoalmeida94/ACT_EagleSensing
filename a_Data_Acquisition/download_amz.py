@@ -21,6 +21,7 @@ def download_amz(file_path,
                  exclude_date=datetime.datetime(2016,12,6)):
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
+    # This error occurs due to the max directory size in Windows! Still, I think it's good to have the option
     delete = []
     for tile in product:
         if product[tile]['beginposition'] <= exclude_date:

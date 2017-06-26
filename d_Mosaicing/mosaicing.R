@@ -21,13 +21,23 @@ if (length(args)<1) {
 
 owd <- getwd()
 
+# Error if no products are present/directory doesn't exist
+if(!dir.exists(args[1])){
+  stop('Input L2A product directory does not exist.')
+}
+
 # Directory inputed by the user, where L2A products are, if no output, use the same as input
 setwd(args[1])
 
 # Get list of products in the directory
 products <- dir(pattern='*.SAFE')
 
-# Error if no products are present/directory doesn't exist
+if(len(products)==0){
+  stop('Input L2A product directory is empty or does not contain files in the .SAFE format.')
+}
+if(len(products)==1){
+  warning('Input L2A product directory contains only 1 file. Procedding with the masking procedure.')
+}
 
 # Load products into VRT, save dates from metadata
 products_vrt60 <- c()
@@ -37,24 +47,27 @@ dates_products <- c()
 for(elem in products) {
   # DANGER RESOLUTION
   granule = dir(paste0(elem,'/GRANULE/'))
-  granule_dir60 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/*.jp2')
+  granule_dir60 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R60m/')
   output_file60 = paste0(elem,'/bands60.vrt')
-  granule_dir20 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R20m/*.jp2')
+  granule_dir20 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R20m/')
   output_file20 = paste0(elem,'/bands20.vrt')
-  granule_dir10 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R10m/*.jp2')
+  granule_dir10 = paste0(elem,'/GRANULE/',granule,'/IMG_DATA/R10m/')
   output_file10 = paste0(elem,'/bands10.vrt')
   
   if(dir.exists(granule_dir60)){
+    granule_dir60 = paste0(granule_dir60,'*.jp2')
     system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
     products_vrt60 <- c(products_vrt60,stack(output_file60))
   }
   
   if(dir.exists(granule_dir20)){
+    granule_dir20 = paste0(granule_dir20,'*.jp2')
     system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
     products_vrt20 <- c(products_vrt20,stack(output_file20))
   }
   
   if(dir.exists(granule_dir10)){
+    granule_dir10 = paste0(granule_dir10,'*.jp2')
     system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
     products_vrt10 <- c(products_vrt10,stack(output_file10))
   }
@@ -65,30 +78,8 @@ for(elem in products) {
 }
 rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10,date,xml_meta)
 
-# Band 13 is SCL, let's hope the order is always the same.
-
-# Reclassification matrix, classes 0,1,8,9,10 are no good
-reclass_matrix <- matrix(data=c(0,0,
-                                1,0,
-                                2,1,
-                                3,1,
-                                4,1,
-                                5,1,
-                                6,1,
-                                7,1,
-                                8,0,
-                                9,0,
-                                10,0,
-                                11,1),nrow=12,ncol=2,byrow=TRUE)
-
-# Masking each product with reclassification
-masked_products_vrt <- c()
-for(vrt in products_vrt){
-  mask_scl <- reclassify(vrt$bands.13,reclass_matrix)
-  vrt[mask_scl == 0] <- NA
-  masked_products_vrt <- c(masked_products_vrt,vrt)
-}
-rm(vrt, mask_scl)
+# Band 11 is SCL at R20m, let's hope the order is always the same.
+# Band 13 is SCL at R60m, let's hope the order is always the same.
 
 # File organization, rename bands if possible
 # At 10 m, this files can be found:
@@ -130,6 +121,45 @@ rm(vrt, mask_scl)
 # band 13 - SCL
 # band 14 - TCI
 # band 16 - WVP
+
+# Reclassification matrix, classes 0,1,8,9,10 are no good
+reclass_matrix <- matrix(data=c(0,0,
+                                1,0,
+                                2,1,
+                                3,1,
+                                4,1,
+                                5,1,
+                                6,1,
+                                7,1,
+                                8,0,
+                                9,0,
+                                10,0,
+                                11,1),nrow=12,ncol=2,byrow=TRUE)
+
+# Masking each product with reclassification
+masked_products_vrt10 <- c()
+masked_products_vrt20 <- c()
+masked_products_vrt60 <- c()
+for(i in range(length(products))){
+  if(length(products_vrt60)!=0){
+    mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix)
+    products_vrt60[[i]][mask_scl == 0] <- NA
+    masked_products_vrt60 <- c(masked_products_vrt60,vrt)
+  }
+  if(length(products_vrt10)!=0){
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
+    products_vrt10[[i]][mask_scl == 0] <- NA
+    masked_products_vrt10 <- c(masked_products_vrt10,vrt)
+    products_vrt20[[i]][mask_scl == 0] <- NA
+    masked_products_vrt20 <- c(masked_products_vrt20,vrt)
+  }
+  if(length(products_vrt10)==0){
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
+    products_vrt20[[i]][mask_scl == 0] <- NA
+    masked_products_vrt20 <- c(masked_products_vrt20,vrt)
+  }
+}
+rm(mask_scl, i)
 
 # Run the mosaicing using do.call
 rasters.mosaicargs <- masked_products_vrt

@@ -26,6 +26,7 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
         checker1 = "L1C"
         if files[7:10] == checker1:
             slist.append((res, files))
+            print slist[-1]
         checker2 = "L2A"
         if files[7:10] == checker2:
             each_folder_dir = str(os.listdir(dir)) + '/' + str(files)
@@ -37,7 +38,7 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
     return all_L2A
 
 dir_L1C = '/media/sf_M_DRIVE/L1C'
-sen2_batch(60, dir_L1C)
+sen2_batch(10, dir_L1C)
 
 
 if __name__ == '__main__':

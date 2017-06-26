@@ -4,18 +4,17 @@
 
 ## DANGER
 setwd("/media/sf_D_DRIVE/hubTue20Jun20171214/L2A/")
-rasterOptions(tmpdir="temp/")
-rasterOptions(maxmemory=1e+12)
 
 # Conda environment as well? Or just install packages?
 library(rgdal)
 library(raster)
 library(XML)
+library(tools)
 
 mask_dir <- function(mask_file,input_file_list) {
   for(a_file in input_file_list) {
-    masked_file <- paste0(dirname(a_file),'/MSK_',basename(a_file))
-    system(paste('gdal_calc.py -A', mask_file,'-B',a_file,'--outfile=test.tif --calc="A*B" --overwrite'))
+    masked_file <- paste0(dirname(a_file),'/MSK_',basename(file_path_sans_ext(a_file)),'.tif')
+    system(paste0('gdal_calc.py -A "', mask_file,'" -B "',a_file,'" --outfile="',masked_file,'" --calc="A*B" --overwrite'))
   }
 }
 
@@ -202,44 +201,30 @@ for(elem in products) {
   if(dir.exists(granule_dir60)){
     granule_dir60 = paste0(granule_dir60,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
-    masked_products_vrt60 <- c(products_vrt60,stack(output_file60))
+    temp <- stack(output_file60)
+    temp[temp==0] <- NA
+    masked_products_vrt60 <- c(masked_products_vrt60,temp)
   }
   
   if(dir.exists(granule_dir20)){
     granule_dir20 = paste0(granule_dir20,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
-    masked_products_vrt20 <- c(products_vrt20,stack(output_file20))
+    temp <- stack(output_file20)
+    temp[temp==0] <- NA
+    masked_products_vrt20 <- c(masked_products_vrt20,temp)
   }
   
   if(dir.exists(granule_dir10)){
     granule_dir10 = paste0(granule_dir10,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
-    masked_products_vrt10 <- c(products_vrt10,stack(output_file10))
+    temp <- stack(output_file10)
+    temp[temp==0] <- NA
+    masked_products_vrt10 <- c(masked_products_vrt10,temp)
   }
 }
-rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10)
+rm(temp,elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10)masked_products_vrt10
 
-# # Masking each product with reclassification, doesn't work due to memory limits
-# masked_products_vrt10 <- c()
-# masked_products_vrt20 <- c()
-# masked_products_vrt60 <- c()
-# for(i in seq(length(products))){
-#   if(length(products_vrt60)!=0){
-#     mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix)
-#     masked_products_vrt60 <- c(masked_products_vrt60,mask(products_vrt60[[i]], mask_scl60, maskvalue=0))
-#   }
-#   if(length(products_vrt10)!=0){
-#     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
-#     mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb')
-#     masked_products_vrt10 <- c(masked_products_vrt10,mask(products_vrt10[[i]], mask_scl10, maskvalue=0))
-#     masked_products_vrt20 <- c(masked_products_vrt20,mask(products_vrt20[[i]], mask_scl, maskvalue=0))
-#   }
-#   if(length(products_vrt10)==0){
-#     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
-#     masked_products_vrt20 <- c(masked_products_vrt20,mask(products_vrt20[[i]], mask_scl, maskvalue=0))
-#   }
-# }
-# rm(mask_scl,mask_scl10, i)
+# Handle different CRS or use merge
 
 # Run the mosaicing using do.call
 if(length(masked_products_vrt60)!=0) {

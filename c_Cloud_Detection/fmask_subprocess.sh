@@ -19,7 +19,7 @@ selected_dir="${dirs[$((selection-1))]}"
 echo "You selected '$selected_dir'"
 
 cd $selected_dir
-echo PS1='\w\$ '
+PS1='\w\$ '
 #cd "$d" && pwdcd "${0%/*}"
 #cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
 

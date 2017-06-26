@@ -4,11 +4,20 @@
 
 ## DANGER
 setwd("/media/sf_D_DRIVE/hubTue20Jun20171214/L2A/")
+rasterOptions(tmpdir="temp/")
+rasterOptions(maxmemory=1e+12)
 
 # Conda environment as well? Or just install packages?
 library(rgdal)
 library(raster)
 library(XML)
+
+mask_dir <- function(mask_file,input_file_list) {
+  for(input_file in input_file_list) {
+    masked_file <- paste0('MSK_',input_file)
+    system(paste('gdal_calc.py -A ', mask_file,'-B',input_file,'--outfile=',masked_file,' --calc="A*B" --overwrite'))
+  }
+}
 
 # Handles arguments passed by CLI
 args = commandArgs(trailingOnly=TRUE)
@@ -32,10 +41,10 @@ setwd(args[1])
 # Get list of products in the directory
 products <- dir(pattern='*.SAFE')
 
-if(len(products)==0){
+if(length(products)==0){
   stop('Input L2A product directory is empty or does not contain files in the .SAFE format.')
 }
-if(len(products)==1){
+if(length(products)==1){
   warning('Input L2A product directory contains only 1 file. Procedding with the masking procedure.')
 }
 
@@ -136,30 +145,56 @@ reclass_matrix <- matrix(data=c(0,0,
                                 10,0,
                                 11,1),nrow=12,ncol=2,byrow=TRUE)
 
-# Masking each product with reclassification
-masked_products_vrt10 <- c()
-masked_products_vrt20 <- c()
-masked_products_vrt60 <- c()
-for(i in range(length(products))){
+# Creates mask files 
+for(i in seq(length(products))){
   if(length(products_vrt60)!=0){
-    mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix)
-    products_vrt60[[i]][mask_scl == 0] <- NA
-    masked_products_vrt60 <- c(masked_products_vrt60,vrt)
+    mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix, filename=paste0(products[i],'/mask60.grd'))
   }
   if(length(products_vrt10)!=0){
-    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
-    products_vrt10[[i]][mask_scl == 0] <- NA
-    masked_products_vrt10 <- c(masked_products_vrt10,vrt)
-    products_vrt20[[i]][mask_scl == 0] <- NA
-    masked_products_vrt20 <- c(masked_products_vrt20,vrt)
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.grd'))
+    mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb',filename=paste0(products[i],'/mask10.grd'))
   }
   if(length(products_vrt10)==0){
-    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
-    products_vrt20[[i]][mask_scl == 0] <- NA
-    masked_products_vrt20 <- c(masked_products_vrt20,vrt)
+    mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.grd'))
   }
 }
-rm(mask_scl, i)
+rm(i,mask_scl,mask_scl10)
+
+for(prod in products) {
+  granule = dir(paste0(prod,'/GRANULE/'))
+  if(length(products_vrt60)!=0) {
+    mask_dir(paste0(prod,'/mask60.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R60m'),pattern=glob2rx('*.jp2'), full.names=T))
+  }
+  if(length(products_vrt10)!=0) {
+    mask_dir(paste0(prod,'/mask20.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T))
+    mask_dir(paste0(prod,'/mask10.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R10m'),pattern=glob2rx('*.jp2'), full.names=T))
+  }
+  if(length(products_vrt10)==0) {
+    mask_dir(paste0(prod,'/mask20.gri'),list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T))
+  }
+}
+
+# # Masking each product with reclassification, doesn't work due to memory limits
+# masked_products_vrt10 <- c()
+# masked_products_vrt20 <- c()
+# masked_products_vrt60 <- c()
+# for(i in seq(length(products))){
+#   if(length(products_vrt60)!=0){
+#     mask_scl <- reclassify(products_vrt60[[i]]$bands60.13,reclass_matrix)
+#     masked_products_vrt60 <- c(masked_products_vrt60,mask(products_vrt60[[i]], mask_scl60, maskvalue=0))
+#   }
+#   if(length(products_vrt10)!=0){
+#     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
+#     mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb')
+#     masked_products_vrt10 <- c(masked_products_vrt10,mask(products_vrt10[[i]], mask_scl10, maskvalue=0))
+#     masked_products_vrt20 <- c(masked_products_vrt20,mask(products_vrt20[[i]], mask_scl, maskvalue=0))
+#   }
+#   if(length(products_vrt10)==0){
+#     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix)
+#     masked_products_vrt20 <- c(masked_products_vrt20,mask(products_vrt20[[i]], mask_scl, maskvalue=0))
+#   }
+# }
+# rm(mask_scl,mask_scl10, i)
 
 # Run the mosaicing using do.call
 rasters.mosaicargs <- masked_products_vrt

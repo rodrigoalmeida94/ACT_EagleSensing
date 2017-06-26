@@ -39,6 +39,11 @@ shadow_pixels4 = pd.read_csv('S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170
                    skiprows=3,
                    usecols=FEATURES,
                    header=0).dropna()
+shadow_pixels5 = pd.read_csv('S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_resampled_cloud_shadow_3.txt',
+                   sep='\t',
+                   skiprows=3,
+                   usecols=FEATURES,
+                   header=0).dropna()
 land_pixels1 = pd.read_csv('S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled_land_Mask.txt',
                    sep='\t',
                    skiprows=3,
@@ -69,17 +74,35 @@ water_pixels2 = pd.read_csv('S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_201704
                    skiprows=3,
                    usecols=FEATURES,
                    header=0).dropna()
+water_pixels3 = pd.read_csv('S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_resampled_water_1.txt',
+                   sep='\t',
+                   skiprows=3,
+                   usecols=FEATURES,
+                   header=0).dropna()
+water_pixels4 = pd.read_csv('S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_resampled_water_2.txt',
+                   sep='\t',
+                   skiprows=3,
+                   usecols=FEATURES,
+                   header=0).dropna()
+water_pixels5 = pd.read_csv('S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_resampled_water_3.txt',
+                   sep='\t',
+                   skiprows=3,
+                   usecols=FEATURES,
+                   header=0).dropna()
 
-shadow_pixels = pd.concat([shadow_pixels1, shadow_pixels2, shadow_pixels3, shadow_pixels4])
+shadow_pixels = pd.concat([shadow_pixels1, shadow_pixels2, shadow_pixels3, shadow_pixels4, shadow_pixels5])
 land_pixels = pd.concat([land_pixels1, land_pixels2])
 cloud_pixels = pd.concat([cloud_pixels1, cloud_pixels2])
-water_pixels = pd.concat([water_pixels1, water_pixels2])
+water_pixels = pd.concat([water_pixels1, water_pixels2, water_pixels3,water_pixels4, water_pixels5])
 
 # Equal number of pixels per class
 
 # equal size per label
 #n = min(len(shadow_pixels1)+len(shadow_pixels2), len(land_pixels1)+len(land_pixels2), len(cloud_pixels1)+len(cloud_pixels2), len(water_pixels1)+len(water_pixels2))
-n = min(len(shadow_pixels1)+len(shadow_pixels2)+len(shadow_pixels3)+len(shadow_pixels4), len(land_pixels1)+len(land_pixels2), len(cloud_pixels1)+len(cloud_pixels2), len(water_pixels1)+len(water_pixels2))
+n = min(len(shadow_pixels1)+len(shadow_pixels2)+len(shadow_pixels3)+len(shadow_pixels4)+len(shadow_pixels5),\
+        len(land_pixels1)+len(land_pixels2),\
+        len(cloud_pixels1)+len(cloud_pixels2),\
+        len(water_pixels1)+len(water_pixels2)+len(water_pixels3)+len(water_pixels4)+len(water_pixels5))
 print(n)
 
 # random selection
@@ -114,8 +137,8 @@ random_index = np.random.permutation(len(training_set))
 
 i = int(len(training_set)*0.8)
 
-training_set.iloc[random_index[:i]].to_csv('NN_training_data.csv', index=False, index_label=False)
-training_set.iloc[random_index[i:]].to_csv('NN_test_data.csv', index=False, index_label=False)
+training_set.iloc[random_index[:i]].to_csv('NN_training_data_2.csv', index=False, index_label=False)
+training_set.iloc[random_index[i:]].to_csv('NN_test_data_2.csv', index=False, index_label=False)
 
 
 

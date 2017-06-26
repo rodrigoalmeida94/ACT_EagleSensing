@@ -30,7 +30,7 @@ plt.show()
 
 print(len(training_pixels))
 print(len(classes))
-
+bands = ['B1','B2','B3','B4','B5','B6','B7','B8','B8A','B9','B10','B11','B12'
 #fit the model with the training pixels
 
 clf.fit(training_pixels, classes)
@@ -41,8 +41,8 @@ test_data = pd.read_csv('subset_0_of_S2A_MSIL1C_20170513T023331_N0205_R003_T51PT
                            sep='\t', skiprows=2, header=0, usecols=cols)
 
 #clf.predict( np.array( test_data[list(range(1,14))] )[0] )
-
-## returns predicted probabilities for given features (predict), herein using a subset of the S2 image of May 2017
+clf.predict( np.array( test_data[list(range(1,14))] )[0] )
+# returns predicted probabilities for given features (predict), herein using a subset of the S2 image of May 2017
 clf.predict(np.array(test_data[list(range(0,13))])[0])
 
 fn = 'subset_0_of_S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_subset_1_resampled_prediction_mask.txt'
@@ -54,7 +54,7 @@ for j,x in enumerate(test_data.itertuples()):
     print(j,x)
     break
 
-#[t]
+[t]
 
 predictions = np.zeros(row_count-2)
 stride = int(1e5)

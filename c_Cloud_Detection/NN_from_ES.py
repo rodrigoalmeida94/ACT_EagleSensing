@@ -11,7 +11,7 @@ from skimage import io
 import scipy.misc
 from PIL import Image
 
-tar = os.chdir('/home/user')
+tar = os.chdir('/media/sf_M_DRIVE')
 print os.getcwd()
 
 # output additional info during the training process
@@ -52,8 +52,8 @@ def input_fn(data_set):
 # part 2: training with 80% of the data
 
 # load training pixels
-training_set = pd.read_csv('./S2A_exported_pixels/NN_training_data.csv', header=0)
-
+training_set = pd.read_csv('./s2a_training_test_datasets_oldest/NN_training_data.csv', header=0)
+#training_set = pd.read_csv('./s2a_exported_pixels/NN_training_data_2.csv', header=0)
 # check data
 training_set.head()
 
@@ -65,7 +65,8 @@ classifier.fit(input_fn=lambda: input_fn(training_set), steps=2000)
 # part 4: test the classifier
 
 accuracies = []
-test_set = pd.read_csv('./S2A_exported_pixels/NN_test_data.csv', header=0, iterator=True)
+test_set = pd.read_csv('./s2a_training_test_datasets_oldest/NN_test_data.csv', header=0, iterator=True)
+#test_set = pd.read_csv('./s2a_exported_pixels/NN_test_data_2.csv', header=0, iterator=True)
 for i in range(10):
     try:
         c = test_set.get_chunk(250000)
@@ -85,6 +86,7 @@ print("Accuracy: {}".format(np.mean(accuracies)))
 # check data
 #test_set.head()
 
+# why would i fit a model with 20% of the data... doesn't make sense, just for exploratory purposes
 #classifier fit with 20% of the data
 #classifier.fit(input_fn=lambda: input_fn(test_set), steps=2000)
 
@@ -99,7 +101,10 @@ print("Accuracy: {}".format(np.mean(accuracies)))
 
 #cols = [f+':float' for f in FEATURES]
 cols = FEATURES
+
 predict_data = pd.read_csv('./S2A_exported_pixels/subset_0_of_S2A_MSIL1C_20170513T023331_N0205_R003_T51PTR_20170513T023328_subset_1_resampled_prediction_mask.txt',
+#predict_data = pd.read_csv('./comparison_tiles/subset_0_of_S2A_MSIL1C_20170324T021601_N0204_R003_T50PQS_20170324T023304_resampled_geometry_Mask.txt',
+#predict_data = pd.read_csv('./comparison_tiles/S2A_prediction_20170314/subset_0_of_S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled_geometry_Mask.txt',
                            sep='\t', skiprows=2, header=0, usecols=cols)
 
 predict_data = predict_data.rename(index=str, columns={b:a for b,a in zip(cols,FEATURES)})
@@ -143,12 +148,15 @@ plt.show()
 plt.figure(figsize=(16,9))
 #plt.imshow(classification.reshape((1481,2628)), cmap='inferno')
 plt.imshow(classification.reshape((271,478)), cmap='inferno')
+#plt.imshow(classification.reshape((655,1102)), cmap='inferno')
+#plt.imshow(classification.reshape((1056,718)), cmap='inferno')
 plt.colorbar()
 plt.show()
+plt.savefig('tile_subset_1_20170513T023331.png')
 
 # classification confidence
 plt.figure(figsize=(16,9))
-plt.imshow(classification.reshape((271,478)), cmap='inferno')
+#plt.imshow(classification.reshape((271,478)), cmap='inferno')
 #plt.imshow(confidence.reshape((1481,2628)), cmap='inferno')
 plt.colorbar()
 plt.show()
@@ -234,7 +242,9 @@ def classify(filename):
 print(time.time())
 
 t0 = time.time()
-out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
+#out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
+#out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_MSIL1C_20170324T021601_N0204_R003_T50PQS_20170324T023304_resampled.tif')
+out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif')
 print('Time taken: {} seconds'.format(time.time() - t0))
 
 # 0 = shadow
@@ -247,6 +257,7 @@ plt.title('Classification')
 plt.imshow(out, cmap='inferno', vmin=0, vmax=3)
 plt.colorbar()
 plt.show()
+plt.savefig('tile_20170314T023321_classification.png')
 
 plt.figure(figsize=(16, 16))
 plt.title('Confidence (%)')
@@ -265,6 +276,7 @@ plt.title('Confidence (%)')
 plt.imshow(confidence, cmap='inferno', vmin=0, vmax=1)
 plt.colorbar()
 plt.show()
+plt.savefig('tile_20170314T023321_confidence.png')
 
 plt.figure(figsize=(16, 16))
 plt.title('Classification')
@@ -293,8 +305,9 @@ plt.show()
 
 ## Combine two images based on highest confidence for land/water per pixel
 
-images_fn = ['/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif', '/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif']
-
+images_fn = ['/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif',
+             '/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif']
+             #'/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif']
 
 def combine(image_filenames):
     def input_predict_data(data_set):
@@ -377,19 +390,19 @@ scipy.misc.imsave('/media/sf_M_DRIVE/s2a_tif/combined_bw.tif', blackwhite)
 blackwhite = np.mean(combined[(1,2,3),:,:],axis=0)
 
 plt.figure(figsize=(16,16))
-plt.imshow(blackwhite, cmap='gray', vmax=3000)
+plt.imshow(blackwhite, cmap='gray', vmax=2000)
 plt.colorbar()
 plt.show()
+plt.savefig('bw_tiles_combined.png')
 
-## No idea where classify_landwater below comes from, therefore its not found.
-## The original code also seems to use a resampled 200meter version of the two scenes instead of 20m, but that doesn't answer the question.
+## No idea where the function call classify_landwater() below comes from, therefore it's obviously not found.
+## The original code also seems to use a resampled 200meter version of the two scenes instead of 60m, but that doesn't answer the question.
 
 ## Classification to detect only land and water
 
 '''
 img1_class, img1_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170103T022102_N0204_R003_T51PUR_20170103T023326_resampled.tif')
 img2_class, img2_conf = classify_landwater('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
-
 
 # plots of the images
 

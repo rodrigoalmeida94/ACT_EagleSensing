@@ -16,7 +16,7 @@ root = tree.getroot()
 #Loops at the root to look for elements and performs changes
 print "1.NUMBER OF PROCESSES = AUTO - the processor determines the number of processes automatically, using cpu_count"
 for i in root.iter('Nr_Processes'):
-    i.text = i.text.replace('1', 'AUTO')
+    i.text = i.text.replace('1', '2')
 
 print "2.AEROSOL TYPE = AUTO"
 for i in root.iter('Aerosol_Type'):

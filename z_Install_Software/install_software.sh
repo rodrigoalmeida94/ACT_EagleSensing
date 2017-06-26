@@ -26,6 +26,7 @@ dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
 sudo apt-get install -y poppler-utils
+sudo apt-get install parallel
 
 #2. Call sen2cor install
 cd $pardir

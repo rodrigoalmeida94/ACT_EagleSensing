@@ -12,45 +12,34 @@ import shutil
 
 # 1. ONE BY ONE PROCESSING
 
-def run_sen2cor (res, dir): #Gets only L1C folders with .SAFE and process it
-    datafiles = os.listdir(dir)
-    #checker = "L1C"
-
-    for folders in datafiles:
-    #    if folders[7:10] == checker:
-        tfile = folders
-        os.system ("L2A_Process --resolution="+ str(res) + " " + str(dir) + "/" + tfile)
-
+def run_sen2cor (res, prod): #Gets only L1C folders with .SAFE and process it
+    os.system("L2A_Process --resolution=" + str(res) + " " + str(prod))
 
 
 # 2. BATCH PROCESSING
 
 def sen2_batch (res, dir): # Creates a list of arguments based on number of files to run
+    os.chdir(dir)
     datafiles = os.listdir(dir)
-    checker = "L2A"
-
-    for folders in datafiles:
-        if folders[7:10] == checker:
-            each_folder_dir = str(os.listdir(dir)) + '/' + str(folders)
+    slist = []
+    for files in datafiles:
+        checker1 = "L1C"
+        if files[7:10] == checker1:
+            slist.append((res, files))
+        checker2 = "L2A"
+        if files[7:10] == checker2:
+            each_folder_dir = str(os.listdir(dir)) + '/' + str(files)
             for subf in each_folder_dir:
                 if len(subf) <= 8:
-                    shutil.rmtree(folders)
-                    print "unfinished folder deleted"
-                else:
-                    print "no unfinished folder"
-        else:
-            print "processing can proceed"
+                    shutil.rmtree(files, ignore_errors=True)
+    pool = Pool(4) #adjust accordingly depending on computer processor capacity and files to be run
+    all_L2A = parmap.starmap(run_sen2cor, slist, pool=pool)
+    return all_L2A
 
-    multiplier = len(datafiles)
-    print multiplier
-    slist = [(res, dir)]*multiplier
-    #pool = Pool(4) #adjust accordingly depending on computer processor capacity and files to be run
-    parmap.starmap(run_sen2cor, slist)
+dir_L1C = '/media/sf_M_DRIVE/L1C'
+sen2_batch(60, dir_L1C)
 
-
-#datadir_L1C = r'/media/sf_M_DRIVE/L1C' #sample directory
-
-## Delete unfinished L2A folder always!
 
 if __name__ == '__main__':
     fire.Fire(sen2_batch)
+

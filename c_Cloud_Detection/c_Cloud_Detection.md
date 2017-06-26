@@ -21,7 +21,8 @@ Components for technical documentation:
 
 Fmask is installed by executing the bash script fmask_install.sh (under ./z_Install_Software/). This 
 automatically creates the conda environment "clouddetect", in which all the packages specific for fmask are 
-  contained. These packages are listed in fmaskenv_requirements.txt. 
+  contained. These packages are also listed in fmaskenv_requirements.txt from where they can be installed with pip
+   if need be. 
   
 
 ###Required conda packages
@@ -38,7 +39,7 @@ Fmask is run by executing the bash script fmask_subprocess.sh (under ./c_Cloud_D
  In this bash script, the default output is a single thematic raster in .tif format, but this 
   can be altered by simply changing the extension in the bash file. 
 
-Total run time of the fmask for a single tile is approximately 12 minutes.
+Total run time of the fmask for a single tile with a resolution of 20x20m is approximately 12 minutes.
 
 ###Configuring Fmask
 

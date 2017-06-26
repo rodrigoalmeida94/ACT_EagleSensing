@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 ## Set working directory as the Sentinel2 L1C granule from the image directory
-cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
+cd "${0%/*}"
+#cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
 
 ## Run Fmask from the clouddetect environment
 source activate clouddetect

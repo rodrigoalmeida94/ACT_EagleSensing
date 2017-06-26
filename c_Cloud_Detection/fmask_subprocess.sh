@@ -3,7 +3,20 @@
 ## Set working directory as the Sentinel2 L1C granule from the image directory
 #printf "Please select folder in which Sentinel2 L1C granule imagery is stored :\n"
 #select d in */; do test -n "$d" && break; echo ">>> Invalid Selection"; done
-cd "$(dirname ${BASH_SOURCE[0]})"
+dirs=(*/)
+
+read -p "$(
+        f=0
+        for dirname in "${dirs[@]}" ; do
+                echo "$((++f)): $dirname"
+        done
+
+        echo -ne 'Please select a directory > '
+)" selection
+
+selected_dir="${dirs[$((selection-1))]}"
+
+echo "You selected '$selected_dir'"
 #cd "$d" && pwdcd "${0%/*}"
 #cd ./Sentinel_2_image.SAFE/GRANULE/L1C_PUR_/IMG_DATA
 

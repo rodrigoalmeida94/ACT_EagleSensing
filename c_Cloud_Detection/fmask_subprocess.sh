@@ -8,7 +8,7 @@
 cd "/"
 
 # 2. prompt for name of file or directory
-echo -n "Enter the full path to the directory containing the Sentinel2 Level 1C granule imagery:"
+echo -n "Please enter the full path to the folder in which Sentinel2 L1C granule imagery is stored:"
 # ...  and read it
 read WORKDIR
 

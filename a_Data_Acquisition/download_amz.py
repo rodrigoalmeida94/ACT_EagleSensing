@@ -19,6 +19,8 @@ def download_amz(file_path,
                  start_date='NOW-30DAYS',
                  end_date='NOW',
                  exclude_date=datetime.datetime(2016,12,6)):
+    start_date = str(start_date)
+    end_date = str(end_date)
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # This error occurs due to the max directory size in Windows! Still, I think it's good to have the option

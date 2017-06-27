@@ -2,6 +2,7 @@
 
 ## Necessary libraries
 * rgdal
+* utils
 * raster
 * XML
 * tools

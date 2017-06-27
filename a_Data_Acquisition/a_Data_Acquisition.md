@@ -31,6 +31,15 @@ Or:
 For help:
 
     python download_hub.py -- --help
+    
+## Inputs
+* FILE_PATH - relative (in relation with script directory) or absolute, between "". Should be in GeoTiff format.
+* ACCOUNTS_FILE - relative (in relation with script directory) or absolute, between "". Should be a text file with each account in each line. The username and login in each line should be separated by a space.
+* START_DATE - YYYYMMDD, NOW-XDAYS, defaults to NOW-30DAYS.
+* END_DATE - YYYYMMDD, NOW-XDAYS, defaults to NOW.
+Example of command:
+
+      python download_hub.py 'ACT_EagleSensing/Source_Data/Phillipines/RGBtile.tif' 'ACT_EagleSensing/a_Data_Acquisition/Data/accounts_hub.txt' '20160102' '20160120'
 
 ## Modules
 * **download_amz.py**
@@ -52,7 +61,8 @@ For help:
         * end_date (in format YYYYMMDD, NOW will work)
         * downloads_per_account (default is 1, maximum allowed is 2)
         * max_downloads (default = 10)
-    * Creates a directory in /Data with timestamp (in format hubDayDaynumberMonthYearHourMinuteSeconda)
+    * Creates a directory in /Data with timestamp (in format hubDayDaynumberMonthYearHourMinuteSecond)
+    * It is able to download files from before 6/12/2016, but beware, since the downloaded directories are very long and surpass the MS Windows directory character limit.
 * get_extent.py
     * Gets the extent of a raster file and saves it into GeoJSON.
     * Handles differente CRS and provides JSON object in WGS84.
@@ -60,6 +70,6 @@ For help:
     * Gets Sentinel Hub user credentials out of a text file (accounts_hub.txt in this case) into a dictionary for use in the download process.
     * Credentials contain: username & password
 * get_products_aoi.py
-    * Gets a list of product names matching a given time interval that intersect with a provided raster.
+    * Gets a list of product names matching a given time interval that intersect with a provided raster. Also, provides credentials object.
     * contains get_products_aoi function: 
          * Creates an ordered dictionary of products that intersect with the extent of a raster file in a provided date interval.

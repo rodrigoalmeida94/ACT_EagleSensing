@@ -10,7 +10,7 @@ requirements.
 
 Instructions:
 
-Step 1: Run the supplied anaconda download script (Anaconda.sh) 
+Step 1: Run the supplied anaconda download script (anaconda_install.sh) 
 
 Step 2: Navigate in the terminal to the DL_temp folder (in home directory).
 

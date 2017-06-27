@@ -180,7 +180,7 @@ for(prod in products) {
     mask_20 <- paste0(prod,'/mask20.tif')
     mask_dir(mask_20,files_20)
   }
-  if(length(masked_products_vrt10)==0 && length(products_vrt20)!=0) {
+  if(length(products_vrt10)==0 && length(products_vrt20)!=0) {
     files_20 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
     mask_20 <- paste0(prod,'/mask20.tif')
     mask_dir(mask_20,files_20)

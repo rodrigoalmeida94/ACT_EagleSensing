@@ -28,7 +28,7 @@ LABEL = "label"
 # formally define feature columns for tensorflow
 feature_cols = [tf.contrib.layers.real_valued_column(k) for k in FEATURES]
 
-# instantiate dense neural network (DNN) classifier
+# instantiate deep neural network (DNN) classifier
 classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_cols,
                                           hidden_units=[7],
                                           n_classes=4,
@@ -242,9 +242,9 @@ def classify(filename):
 print(time.time())
 
 t0 = time.time()
-#out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
+out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
 #out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_MSIL1C_20170324T021601_N0204_R003_T50PQS_20170324T023304_resampled.tif')
-out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif')
+#out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif')
 print('Time taken: {} seconds'.format(time.time() - t0))
 
 # 0 = shadow

@@ -25,7 +25,7 @@ II - Running sen2cor
 -The script calls the 'L2A_Process' its command line interpreter which uses argparse to guide users on arguments needed.
 -Arguments of this L2A_Process.py include: resolution, GIPP inputs, scene or tree options.
 -Our script provides flexibility for single or batch/parallel runs.
--In parallel runs, it is important to
+-In parallel runs, it is important to know the virtual machine (VM)/machine's specs.
 
 Script      :         run_sen2cor.py
 

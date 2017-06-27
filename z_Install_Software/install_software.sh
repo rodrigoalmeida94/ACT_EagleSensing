@@ -49,6 +49,7 @@ pip install sentinelsat
 pip install parmap
 pip install requests
 pip install fire
+pip install getpass
 source deactivate
 
 #6. Install packages needed for the mosaicing script.

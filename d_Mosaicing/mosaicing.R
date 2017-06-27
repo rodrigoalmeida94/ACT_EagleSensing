@@ -204,19 +204,19 @@ for(elem in products) {
   output_file10 = paste0(elem,'/masked_bands10.vrt')
   
   if(dir.exists(granule_dir60)){
-    granule_dir60 = paste0(granule_dir60,'MSK_*')
+    granule_dir60 = paste0(granule_dir60,'MSK_*.tif')
     system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
     masked_products_vrt60 <- c(masked_products_vrt60,stack(output_file60))
   }
   
   if(dir.exists(granule_dir20)){
-    granule_dir20 = paste0(granule_dir20,'MSK_*')
+    granule_dir20 = paste0(granule_dir20,'MSK_*.tif')
     system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
     masked_products_vrt20 <- c(masked_products_vrt20,stack(output_file20))
   }
   
   if(dir.exists(granule_dir10)){
-    granule_dir10 = paste0(granule_dir10,'MSK_*')
+    granule_dir10 = paste0(granule_dir10,'MSK_*.tif')
     system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
     masked_products_vrt10 <- c(masked_products_vrt10,stack(output_file10))
   }

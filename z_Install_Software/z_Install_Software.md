@@ -10,16 +10,12 @@ requirements.
 
 Instructions:
 
-Step 1: Run the supplied anaconda download script (Anaconda.sh) 
+Step 1: Run the supplied anaconda download script (anaconda_install.sh) 
 
-Step 2: Navigate in the terminal to the DL_temp folder (in home directory).
+Step 2: Use defaults by pressing enter throughout the installation instructions.
 
-Step 3: Install the Anaconda script with: "bash anaconda.sh". Make sure you use bash, otherwise it will not work!
+Step 3: Close all terminal windows to ensure the python environment is anaconda!
 
-Step 4: Use defaults by pressing enter throughout the installation instructions.
+Step 4: Run install_software.sh to install Sen2Cor and Sen2Three.
 
-Step 5: Close all terminal windows to ensure the python environment is anaconda!
-
-Step 6: Run install_software.sh to install Sen2Cor and Sen2Three.
-
-(Step 7: You can install SNAP additionally if you like for manual visual assessments)
+(Step 5: You can install SNAP additionally if you like for manual visual assessments)

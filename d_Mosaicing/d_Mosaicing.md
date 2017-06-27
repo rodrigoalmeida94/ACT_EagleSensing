@@ -9,7 +9,7 @@
 
 ## Command Line Interface for mosaicing
 
-    Rscript mosaicing.R INPUT_DIR [OUTPUT_DIR]
+    Rscript mosaicing.R --default-packages=rgdal,utils,raster,XML,tools --verbose INPUT_DIR [OUTPUT_DIR]
 
 ## Modules
 

@@ -30,7 +30,7 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
     slist = []
     for files in datafiles: # checks for L1C folders
         checker1 = "L1C"
-        if files[7:10] == checker1: #####add checker for old file format!!!!!!!!!!
+        if files[7:10] == checker1: #or files[12:14] == checker1:
             slist.append((res, files))
         checker2 = "L2A" # checks for unfinished L2A folders an deletes it
         if files[7:10] == checker2:

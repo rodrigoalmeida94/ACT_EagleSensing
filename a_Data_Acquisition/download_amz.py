@@ -14,7 +14,8 @@ sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
 
-def download_amz(file_path,
+def download_amz(download_dir,
+                 file_path,
                  accounts_file,
                  start_date='NOW-30DAYS',
                  end_date='NOW',
@@ -34,7 +35,7 @@ def download_amz(file_path,
         product.pop(x)
 
     owd = os.getcwd()  # original working directory (owd)
-    new_dir = 'Data/amz%s' % time.strftime('%a%d%b%Y%H%M%S')
+    new_dir = download_dir+'/amz%s' % time.strftime('%a%d%b%Y%H%M%S')
     os.mkdir(new_dir)
     os.chdir(new_dir)
     for elem in product:

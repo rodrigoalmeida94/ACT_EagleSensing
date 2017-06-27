@@ -13,7 +13,8 @@ from sentinelsat.sentinel import SentinelAPI
 sys.path.insert(0, 'a_Data_Acquisition')
 from get_products_aoi import get_products_aoi
 
-def download_hub(file_path,
+def download_hub(download_dir,
+                 file_path,
                  accounts_file,
                  start_date='NOW-30DAYS',
                  end_date='NOW',
@@ -25,7 +26,7 @@ def download_hub(file_path,
 
     # Creates directory for download files
     owd = os.getcwd()  # original working directory (owd)
-    new_dir = 'Data/hub%s' % time.strftime('%a%d%b%Y%H%M%S')
+    new_dir = download_dir+'/amz%s' % time.strftime('%a%d%b%Y%H%M%S')
     os.mkdir(new_dir)
     os.chdir(new_dir)
 

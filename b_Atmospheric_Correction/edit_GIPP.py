@@ -19,7 +19,7 @@ root = tree.getroot()
 #Loops at the root to look for elements and performs changes
 print "1.NUMBER OF PROCESSES = AUTO - the processor determines the number of processes automatically, using cpu_count"
 for i in root.iter('Nr_Processes'):
-    i.text = i.text.replace('1', '2')
+    i.text = i.text.replace('1', 'AUTO')
 
 print "2.OZONE = 0 - best approximation from metadata"
 for i in root.iter('Ozone_Content'):

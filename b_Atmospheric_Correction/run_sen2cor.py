@@ -12,11 +12,12 @@ import shutil
 
 # 1. ONE BY ONE PROCESSING
 
-def run_sen2cor (res, prod): #Gets only L1C folders with .SAFE and process it
-    if res == int:
-        os.system("L2A_Process --resolution=" + str(res) + " " + str(prod))
+def sen2_single (res, prod): # resolution should be 10, 20, 60, or all
+    if res == all:
+        os.system("L2A_Process" + " " + prod)
     else:
-        os.system("L2A_Process" + " " + str(prod)) #processes all if resolution is ommitted
+        os.system("L2A_Process --resolution=" + str(res) + " " + str(prod))
+
 
 # 2. BATCH PROCESSING
 
@@ -24,22 +25,22 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
     os.chdir(dir)
     datafiles = os.listdir(dir)
     slist = []
-    for files in datafiles:
+    for files in datafiles: # checks for L1C folders
         checker1 = "L1C"
         if files[7:10] == checker1:
             slist.append((res, files))
             print slist[-1]
-        checker2 = "L2A"
+        checker2 = "L2A" # checks for unfinished L2A folders an deletes it
         if files[7:10] == checker2:
             each_folder_dir = str(os.listdir(dir)) + '/' + str(files)
             for subf in each_folder_dir:
                 if len(subf) <= 8:
                     shutil.rmtree(files, ignore_errors=True) #resolving the bug that shows error after deleting files
     pool = Pool(4) #adjust accordingly depending on computer processor capacity and files to be run
-    all_L2A = parmap.starmap(run_sen2cor, slist, pool=pool)
+    all_L2A = parmap.starmap(sen2_single, slist, pool=pool)
     return all_L2A
 
-dir_L1C = '/media/sf_M_DRIVE/L1C'
+#dir_L1C = '/media/sf_M_DRIVE/L1C'
 
 
 if __name__ == '__main__':

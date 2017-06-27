@@ -38,6 +38,7 @@ pip install lxml
 pip install shutil
 pip install itertools
 pip install multiprocessing
+pip install getpass
 
 ## Close the conda environment.
 source deactivate

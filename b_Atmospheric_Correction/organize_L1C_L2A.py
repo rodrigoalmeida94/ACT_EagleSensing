@@ -14,8 +14,8 @@ def folder_arrange (dir_L1C, dir_L2A):
         if folders [7:10] == checker1:
             shutil.move(os.path.join(dir_L1C, folders), dir_L2A)
             print "L2A folders successfully moved"
-        else:
-            print "no L2A folders yet"
+    movedL2a = os.listdir(dir_L2A) #list of L2A folders
+    return movedL2a
 
 datadir_L1C = r'/media/sf_M_DRIVE/L1C'
 datadir_L2A = r'/media/sf_M_DRIVE/L2A'  # modify own directory

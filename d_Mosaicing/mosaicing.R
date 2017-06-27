@@ -5,6 +5,7 @@
 ## DANGER
 setwd("/media/sf_D_DRIVE/hubTue20Jun20171214/L2A/")
 
+# ---- Setting up ----
 # Conda environment as well? Or just install packages?
 library(rgdal)
 library(raster)
@@ -37,6 +38,7 @@ if(!dir.exists(args[1])){
 # Directory inputed by the user, where L2A products are, if no output, use the same as input
 setwd(args[1])
 
+# ---- Load products into VRT ----
 # Get list of products in the directory
 products <- dir(pattern='*.SAFE')
 
@@ -85,6 +87,7 @@ for(elem in products) {
 }
 rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10,date,xml_meta)
 
+# ---- Reclassification of SCL, mask creation ----
 # Band 11 is SCL at R20m, let's hope the order is always the same.
 # Band 13 is SCL at R60m, let's hope the order is always the same.
 
@@ -152,12 +155,13 @@ for(i in seq(length(products))){
     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
     mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb',filename=paste0(products[i],'/mask10.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
-  if(length(products_vrt10)==0){
+  if(length(masked_products_vrt10)==0 && length(products_vrt20)!=0){
     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
 }
 rm(i,mask_scl,mask_scl10)
 
+# ---- Masking of all files in products ----
 # Masks every file with the computed cloud mask
 for(prod in products) {
   print(paste('Starting masking of',prod,'...'))
@@ -175,7 +179,7 @@ for(prod in products) {
     mask_20 <- paste0(prod,'/mask20.tif')
     mask_dir(mask_20,files_20)
   }
-  if(length(products_vrt10)==0) {
+  if(length(masked_products_vrt10)==0 && length(products_vrt20)!=0) {
     files_20 <- list.files(paste0(prod,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
     mask_20 <- paste0(prod,'/mask20.tif')
     mask_dir(mask_20,files_20)
@@ -185,6 +189,7 @@ for(prod in products) {
 
 rm(products_vrt10,products_vrt20,products_vrt60, files_10, mask_10,files_20,mask_20,files_60,mask_60)
 
+# ---- Loading masked products to VRT ----
 # Load masked products into VRT
 masked_products_vrt60 <- c()
 masked_products_vrt20 <- c()
@@ -201,31 +206,115 @@ for(elem in products) {
   if(dir.exists(granule_dir60)){
     granule_dir60 = paste0(granule_dir60,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file60, granule_dir60))
-    temp <- stack(output_file60)
-    temp[temp==0] <- NA
-    masked_products_vrt60 <- c(masked_products_vrt60,temp)
+    masked_products_vrt60 <- c(masked_products_vrt60,stack(output_file60))
   }
   
   if(dir.exists(granule_dir20)){
     granule_dir20 = paste0(granule_dir20,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file20, granule_dir20))
-    temp <- stack(output_file20)
-    temp[temp==0] <- NA
-    masked_products_vrt20 <- c(masked_products_vrt20,temp)
+    masked_products_vrt20 <- c(masked_products_vrt20,stack(output_file20))
   }
   
   if(dir.exists(granule_dir10)){
     granule_dir10 = paste0(granule_dir10,'MSK_*')
     system(paste('gdalbuildvrt -separate',output_file10, granule_dir10))
-    temp <- stack(output_file10)
-    temp[temp==0] <- NA
-    masked_products_vrt10 <- c(masked_products_vrt10,temp)
+    masked_products_vrt10 <- c(masked_products_vrt10,stack(output_file10))
   }
 }
-rm(temp,elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10)masked_products_vrt10
+rm(elem, granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10)
 
+# ---- Passes 0 to NA ----
+# At 60 m
+if(length(masked_products_vrt60)!=0) {
+  for(i in 1:length(masked_products_vrt60)){
+      masked_products_vrt60[[i]][masked_products_vrt60[[i]]==0] <- NA
+    }
+}
+# At 10 m
+if(length(masked_products_vrt10)!=0) {
+  for(i in 1:length(masked_products_vrt10)){
+    masked_products_vrt10[[i]][masked_products_vrt10[[i]]==0] <- NA
+  }
+}
+# At 20 m
+if(length(masked_products_vrt20)!=0) {
+  for(i in 1:length(masked_products_vrt20)){
+    masked_products_vrt20[[i]][masked_products_vrt20[[i]]==0] <- NA
+  }
+}
+rm(i)
+
+# ---- Reproject stacks to same CRS if different ----
 # Handle different CRS or use merge
+# At 60 m
+if(length(masked_products_vrt60)!=0) {
+  crs60 <- c()
+  for(elem in masked_products_vrt60){
+    crs60 <- c(crs60,elem@crs@projargs)
+  }
+  crs60 <- as.data.frame(table(crs60),stringsAsFactors = F)
+  for(i in 1:length(masked_products_vrt60)){
+    if(masked_products_vrt60[[i]]@crs@projargs == crs60$crs60[1]){
+      template60 <- masked_products_vrt60[[i]]
+      break
+    }
+  }
+  if(length(crs60) != 1){
+    for(i in 1:length(masked_products_vrt60)){
+      
+      if(masked_products_vrt60[[i]]@crs@projargs != crs60$crs60[1]){
+        masked_products_vrt60[[i]] <- projectRaster(masked_products_vrt60[[i]],template60)
+      }
+    }
+  }
+}
+# At 10 m
+if(length(masked_products_vrt10)!=0) {
+  crs10 <- c()
+  for(elem in masked_products_vrt10){
+    crs10 <- c(crs10,elem@crs@projargs)
+  }
+  crs10 <- as.data.frame(table(crs10),stringsAsFactors = F)
+  for(i in 1:length(masked_products_vrt10)){
+    if(masked_products_vrt10[[i]]@crs@projargs == crs10$crs10[1]){
+      template10 <- masked_products_vrt10[[i]]
+      break
+    }
+  }
+  if(length(crs10) != 1){
+    for(i in 1:length(masked_products_vrt10)){
+      
+      if(masked_products_vrt10[[i]]@crs@projargs != crs10$crs10[1]){
+        masked_products_vrt10[[i]] <- projectRaster(masked_products_vrt10[[i]],template10)
+      }
+    }
+  }
+}
+# At 20 m
+if(length(masked_products_vrt20)!=0) {
+  crs20 <- c()
+  for(elem in masked_products_vrt20){
+    crs20 <- c(crs20,elem@crs@projargs)
+  }
+  crs20 <- as.data.frame(table(crs20),stringsAsFactors = F)
+  for(i in 1:length(masked_products_vrt20)){
+    if(masked_products_vrt20[[i]]@crs@projargs == crs20$crs20[1]){
+      template20 <- masked_products_vrt20[[i]]
+      break
+    }
+  }
+  if(length(crs20) != 1){
+    for(i in 1:length(masked_products_vrt20)){
+      
+      if(masked_products_vrt20[[i]]@crs@projargs != crs20$crs20[1]){
+        masked_products_vrt20[[i]] <- projectRaster(masked_products_vrt20[[i]],template20)
+      }
+    }
+  }
+}
+rm(crs10,crs20,crs60,elem,template20,template10,template60)
 
+# ---- Make Mosaic using mean for each resolution ----
 # Run the mosaicing using do.call
 if(length(masked_products_vrt60)!=0) {
   rasters.mosaicargs <- masked_products_vrt60
@@ -244,6 +333,7 @@ if(length(masked_products_vrt20)!=0) {
   }
 rm(rasters.mosaicargs)
 
+# ---- Save Level 3 product to file ----
 # Set the directory to output directory, input by user, create dir if not exists?
 if(!is.na(args[2])){setwd(args[2])}
 

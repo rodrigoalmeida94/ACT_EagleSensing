@@ -19,6 +19,8 @@ def download_hub(file_path,
                  end_date='NOW',
                  downloads_per_account=1,  # maximum allowed is 2
                  max_downloads=10):
+    start_date = str(start_date)
+    end_date = str(end_date)
     products, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # Creates directory for download files

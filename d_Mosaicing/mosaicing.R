@@ -3,11 +3,12 @@
 # Gets a directory of L2A products and mosaics the non-cloud covered areas into one file.
 
 ## DANGER
-setwd("/media/sf_D_DRIVE/hubTue20Jun20171214/L2A/")
+#setwd("/media/sf_D_DRIVE/hubTue20Jun20171214/L2A/")
 
 # ---- Setting up ----
 # Conda environment as well? Or just install packages?
 library(rgdal)
+library(utils)
 library(raster)
 library(XML)
 library(tools)

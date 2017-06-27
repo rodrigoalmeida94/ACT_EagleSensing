@@ -156,7 +156,7 @@ for(i in seq(length(products))){
     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
     mask_scl10 <- resample(mask_scl,products_vrt10[[i]]$bands10.1,method='ngb',filename=paste0(products[i],'/mask10.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
-  if(length(masked_products_vrt10)==0 && length(products_vrt20)!=0){
+  if(length(products_vrt10)==0 && length(products_vrt20)!=0){
     mask_scl <- reclassify(products_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(products[i],'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
 }

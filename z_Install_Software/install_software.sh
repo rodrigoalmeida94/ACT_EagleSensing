@@ -26,7 +26,6 @@ dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
 sudo apt-get install -y poppler-utils
-sudo apt-get install parallel
 
 #2. Call sen2cor install
 cd $pardir
@@ -49,7 +48,7 @@ pip install sentinelsat
 pip install parmap
 pip install requests
 pip install fire
-conda install -c conda-forge gdal
+yes yes | conda install -c conda-forge gdal
 source deactivate
 
 #6. Install packages needed for the mosaicing script.
@@ -58,6 +57,6 @@ source activate mosaicing
 GDALCONDAREPO=https://anaconda.org/conda-forge/gdal/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
-conda install -c conda-forge gdal=${GDALCONDAVERSION}
+yes yes | conda install -c conda-forge gdal=${GDALCONDAVERSION}
 ## Close the conda environment.
 source deactivate

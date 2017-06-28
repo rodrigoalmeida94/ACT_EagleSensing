@@ -128,15 +128,15 @@ pre_process <- function(product_name, reclass_var) {
   # Write masked result into file
   # At 60 m
   if(exists('masked_product_vrt60')) {
-    writeRaster(masked_product_vrt60, filename=product_name+'/masked_bands60.tif',format='GTiff')
+    writeRaster(masked_product_vrt60, filename=paste0(product_name,'/masked_bands60.tif'),format='GTiff')
   }
   # At 10 m
   if(exists('masked_product_vrt10')) {
-    writeRaster(masked_product_vrt10, filename=product_name+'/masked_bands10.tif',format='GTiff')
+    writeRaster(masked_product_vrt10, filename=paste0(product_name,'/masked_bands10.tif'),format='GTiff')
   }
   # At 20 m
   if(exists('masked_product_vrt20')) {
-    writeRaster(masked_product_vrt20, filename=product_name+'/masked_bands20.tif',format='GTiff')
+    writeRaster(masked_product_vrt20, filename=paste0(product_name,'/masked_bands20.tif'),format='GTiff')
   }
   
   return(date)

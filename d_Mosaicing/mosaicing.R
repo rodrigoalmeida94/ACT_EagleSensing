@@ -116,6 +116,8 @@ reclass_matrix <- matrix(data=c(0,0,
 # product_dir +'/masked_bands20.tif'
 # product_dir +'/masked_bands10.tif'
 
+
+# product/NDVI_R020.tif
 masked_products_vrt60 <- c()
 masked_products_vrt20 <- c()
 masked_products_vrt10 <- c()

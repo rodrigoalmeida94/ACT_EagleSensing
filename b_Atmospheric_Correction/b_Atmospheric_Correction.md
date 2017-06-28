@@ -35,6 +35,7 @@ II - Running sen2cor
 -Arguments of this L2A_Process.py include: resolution, GIPP inputs, scene or tree options.
 -Our script provides flexibility for single or batch/parallel runs.
 -In parallel runs, it is important to know the virtual machine (VM)/machine's specs.
+-Accepts old format but do not run old and new format in one folder in parallel.
 
 Script      :         run_sen2cor.py
 

@@ -6,7 +6,6 @@
 pre_process <- function(product_name, reclass_var) {
   
   # Make VRT, save into file
-  product_name = product_name
   granule = dir(paste0(product_name,'/GRANULE/'))
   granule_dir60 = paste0(product_name,'/GRANULE/',granule,'/IMG_DATA/R60m/')
   output_file60 = paste0(product_name,'/bands60.vrt')
@@ -47,7 +46,7 @@ pre_process <- function(product_name, reclass_var) {
     mask_scl10 <- resample(mask_scl,product_vrt10$bands10.1,method='ngb',filename=paste0(product_name,'/mask10.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
   if(length(product_vrt10)==0 && length(product_vrt20)!=0){
-    mask_scl <- reclassify(product_vrt20[[i]]$bands20.11,reclass_matrix,filename=paste0(product_name,'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
+    mask_scl <- reclassify(product_vrt20$bands20.11,reclass_var,filename=paste0(product_name,'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
   }
   
   rm(mask_scl,mask_scl10)
@@ -78,13 +77,13 @@ pre_process <- function(product_name, reclass_var) {
   rm(product_vrt10,product_vrt20,product_vrt60, files_10, mask_10,files_20,mask_20,files_60,mask_60)
   
   # Make masked VRT, save into file
-  granule = dir(paste0(product, '/GRANULE/'))
-  granule_dir60 = paste0(product, '/GRANULE/', granule, '/IMG_DATA/R60m/')
-  output_file60 = paste0(product, '/masked_bands60.vrt')
-  granule_dir20 = paste0(product, '/GRANULE/', granule, '/IMG_DATA/R20m/')
-  output_file20 = paste0(product, '/masked_bands20.vrt')
-  granule_dir10 = paste0(product, '/GRANULE/', granule, '/IMG_DATA/R10m/')
-  output_file10 = paste0(product, '/masked_bands10.vrt')
+  granule = dir(paste0(product_name, '/GRANULE/'))
+  granule_dir60 = paste0(product_name, '/GRANULE/', granule, '/IMG_DATA/R60m/')
+  output_file60 = paste0(product_name, '/masked_bands60.vrt')
+  granule_dir20 = paste0(product_name, '/GRANULE/', granule, '/IMG_DATA/R20m/')
+  output_file20 = paste0(product_name, '/masked_bands20.vrt')
+  granule_dir10 = paste0(product_name, '/GRANULE/', granule, '/IMG_DATA/R10m/')
+  output_file10 = paste0(product_name, '/masked_bands10.vrt')
   
   if (dir.exists(granule_dir60)) {
     granule_dir60 = paste0(granule_dir60, 'MSK_*.tif')
@@ -131,15 +130,15 @@ pre_process <- function(product_name, reclass_var) {
   # Write masked result into file
   # At 60 m
   if(length(masked_product_vrt60)!=0) {
-    writeRaster(masked_product_vrt60, filename=product+'/MSK_60.tif',format='GTiff')
+    writeRaster(masked_product_vrt60, filename=product_name+'/MSK_60.tif',format='GTiff')
   }
   # At 10 m
   if(length(masked_product_vrt10)!=0) {
-    writeRaster(masked_product_vrt10, filename=product+'/MSK_10.tif',format='GTiff')
+    writeRaster(masked_product_vrt10, filename=product_name+'/MSK_10.tif',format='GTiff')
   }
   # At 20 m
   if(length(masked_product_vrt20)!=0) {
-    writeRaster(masked_product_vrt20, filename=product+'/MSK_20.tif',format='GTiff')
+    writeRaster(masked_product_vrt20, filename=product_name+'/MSK_20.tif',format='GTiff')
   }
   
   return(date)

@@ -32,7 +32,6 @@ echo "export GDAL_DATA=\"${defdir}/anaconda2/envs/atmosphere/lib/python2.7/site-
 source $HOME/.bashrc
 
 ## Install additional packages
-pip install --upgrade pip
 pip install parmap
 pip install lxml
 pip install shutil

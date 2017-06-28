@@ -49,6 +49,7 @@ pip install sentinelhub
 pip install sentinelsat
 pip install parmap
 pip install requests
+yes yes | conda install -c conda-forge fire
 yes yes | conda install -c conda-forge gdal
 source deactivate
 

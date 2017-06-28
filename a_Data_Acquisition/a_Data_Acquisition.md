@@ -76,3 +76,5 @@ Example of command:
     * Gets a list of product names matching a given time interval that intersect with a provided raster. Also, provides credentials object.
     * contains get_products_aoi function: 
          * Creates an ordered dictionary of products that intersect with the extent of a raster file in a provided date interval.
+
+

@@ -107,15 +107,37 @@ reclass_matrix <- matrix(data=c(0,0,
                                 10,0,
                                 11,1),nrow=12,ncol=2,byrow=TRUE)
 
-for(prod in products){
-  dates_products <- c(dates_products,pre_process(prod,reclass_matrix))
-}
-
+#for(prod in products) {
+#  dates_products <- c(dates_products,pre_process(prod,reclass_matrix))
+#}
 # Returns date
 # Files are at product dir in
-# product_dir +'/MSK_60.tif'
-# product_dir +'/MSK_20.tif'
-# product_dir +'/MSK_10.tif'
+# product_dir +'/masked_bands60.tif'
+# product_dir +'/masked_bands20.tif'
+# product_dir +'/masked_bands10.tif'
+
+masked_products_vrt60 <- c()
+masked_products_vrt20 <- c()
+masked_products_vrt10 <- c()
+
+for(prod in products) {
+	if(file.exists(paste0(prod,'/masked_bands60.tif'))) {
+        ndvi <- stack(paste0(prod,'/masked_bands60.tif'))
+        ndvi <- (ndvi$masked_bands60.9 - ndvi$masked_bands60.5)/(ndvi$masked_bands60.9 + ndvi$masked_bands60.5)
+        masked_products_vrt60 <- c(masked_products_vrt60, ndvi)
+  }
+  if(file.exists(paste0(prod,'/masked_bands20.tif'))) {
+    ndvi <- stack(paste0(prod,'/masked_bands20.tif'))
+    ndvi <- (ndvi$masked_bands20.10 - ndvi$masked_bands20.4)/(ndvi$masked_bands20.10 + ndvi$masked_bands20.4)
+    masked_products_vrt20 <- c(masked_products_vrt20, ndvi)
+  }
+  if(file.exists(paste0(prod,'/masked_bands10.tif'))) {
+    ndvi <- stack(paste0(prod,'/masked_bands10.tif'))
+    ndvi <- (ndvi$masked_bands10.4 - ndvi$masked_bands10.3)/(ndvi$masked_bands10.4 + ndvi$masked_bands10.3)
+    masked_products_vrt10 <- c(masked_products_vrt10,ndvi)
+  }
+}
+rm(ndvi)
 
 # ---- Reproject stacks to same CRS if different ----
 # Handle different CRS or use merge
@@ -134,7 +156,7 @@ if(length(masked_products_vrt60)!=0) {
   }
   if(length(crs60) != 1){
     for(i in 1:length(masked_products_vrt60)){
-      
+
       if(masked_products_vrt60[[i]]@crs@projargs != crs60$crs60[1]){
         masked_products_vrt60[[i]] <- projectRaster(masked_products_vrt60[[i]],template60)
       }
@@ -156,7 +178,7 @@ if(length(masked_products_vrt10)!=0) {
   }
   if(length(crs10) != 1){
     for(i in 1:length(masked_products_vrt10)){
-      
+
       if(masked_products_vrt10[[i]]@crs@projargs != crs10$crs10[1]){
         masked_products_vrt10[[i]] <- projectRaster(masked_products_vrt10[[i]],template10)
       }
@@ -178,7 +200,7 @@ if(length(masked_products_vrt20)!=0) {
   }
   if(length(crs20) != 1){
     for(i in 1:length(masked_products_vrt20)){
-      
+
       if(masked_products_vrt20[[i]]@crs@projargs != crs20$crs20[1]){
         masked_products_vrt20[[i]] <- projectRaster(masked_products_vrt20[[i]],template20)
       }
@@ -192,17 +214,17 @@ rm(crs10,crs20,crs60,elem,template20,template10,template60)
 if(length(masked_products_vrt60)!=0) {
   rasters.mosaicargs <- masked_products_vrt60
   rasters.mosaicargs$fun <- mean
-  level3_60 <- do.call(mosaic, rasters.mosaicargs)   
+  level3_60 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt10)!=0) {
   rasters.mosaicargs <- masked_products_vrt10
   rasters.mosaicargs$fun <- mean
-  level3_10 <- do.call(mosaic, rasters.mosaicargs)   
+  level3_10 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt20)!=0) {
   rasters.mosaicargs <- masked_products_vrt20
   rasters.mosaicargs$fun <- mean
-  level3_20 <- do.call(mosaic, rasters.mosaicargs)  
+  level3_20 <- do.call(mosaic, rasters.mosaicargs)
   }
 rm(rasters.mosaicargs)
 
@@ -212,21 +234,22 @@ if(!is.na(args[2])){setwd(args[2])}
 
 # Naming contruct for Level 3
 # Example: S2_MSIL3_FROMDATE_TODATE_R060.tif
+dates_products <- c('2017-03-14T02:33:21.026Z','2017-03-24T02:16:01.026Z','2017-04-23T02:33:31.026Z')
 dates_products <- as.Date(dates_products)
 max_date <- as.character(format.Date(max(dates_products),'%Y%m%d'))
 min_date <- as.character(format.Date(min(dates_products),'%Y%m%d'))
 
 if(length(masked_products_vrt60)!=0) {
-  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R060.tif')
-  writeRaster(level3_60,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R060.tif')
+  writeRaster(level3_60,fname = export_name, format = 'GTiff', overwrite=TRUE)
 }
 if(length(masked_products_vrt10)!=0) {
-  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R010.tif')
-  writeRaster(level3_10,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R010.tif')
+  writeRaster(level3_10,fname = export_name, format = 'GTiff', overwrite=TRUE)
 }
 if(length(masked_products_vrt20)!=0) {
-  export_name = paste0('S2_MSIL3_',min_date,'_',max_date,'_R020.tif')
-  writeRaster(level3_20,fname = export_name, format = 'GTiff', overwrite=TRUE, bandorder='BIL',options="INTERLEAVE=BAND",bylayer=T)
+  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R020.tif')
+  writeRaster(level3_20,fname = export_name, format = 'GTiff', overwrite=TRUE)
 }
 
 removeTmpFiles(h=0)

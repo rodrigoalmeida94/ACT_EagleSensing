@@ -16,12 +16,8 @@ import shutil
 def sen2_single (res, prod): # resolution should be 10, 20, 60, or all
     if res == all:
         os.system("L2A_Process" + " " + prod)
-    elif res == 10 or 20 or 60:
-        os.system("L2A_Process --resolution=" + str(res) + " " + str(prod))
     else:
-        print "wrong input"
-
-
+        os.system("L2A_Process --resolution=" + str(res) + " " + str(prod))
 
 # 2. BATCH PROCESSING
 
@@ -34,12 +30,12 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
         checker1 = "L1C"
         if files[7:10] == checker1 or files[16:19] == checker1:
             slist.append((res, files))
-        checker2 = "L2A" # checks for unfinished L2A folders an deletes it
 
+        checker2 = "L2A" # checks for unfinished L2A folders an deletes it
         if files[7:10] == checker2 or files[16:19] == checker2:
             each_folder_dir = str(os.listdir(dir)) + '/' + str(files)
             for subf in each_folder_dir:
-                if len(subf) <= 8:
+                if len(subf) <= 9:
                     shutil.rmtree(files, ignore_errors=True) #resolving the bug that shows error after deleting files
 
     #pool = Pool(4) #can be manually modified

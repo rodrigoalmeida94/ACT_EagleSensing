@@ -10,6 +10,7 @@ def generate_L2A (res, dir_L1C, dir_L2A):
     sen2_batch(res, dir_L1C)
     checker1 = "L2A"
     dfiles = os.listdir(dir_L1C)
+
     if not os.path.exists(dir_L2A):
         os.makedirs(dir_L2A)
     for folders in dfiles:
@@ -18,6 +19,7 @@ def generate_L2A (res, dir_L1C, dir_L2A):
             print "L2A folders successfully moved"
         else:
             print "no finished L2A folders to move"
+
     new_dir = dir_L2A
     return new_dir
 

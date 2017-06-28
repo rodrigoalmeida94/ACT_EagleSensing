@@ -3,9 +3,9 @@ Academic Consultancy Project for EagleSensing. Remote Sensing and GIS Integratio
 
 main script for command line:
 
-python organize_L2A.py resolution, directory of L1C folders, desired directory of L2A folders
+python generate_L2A.py resolution, directory of L1C folders, desired directory of L2A folders
 
-example: python, organize_L2A.py /media/sf_M_DRIVE/L1C /media/sf_M_DRIVE/L2A
+example: python generate_L2A.py 10 /media/sf_M_DRIVE/L1C /media/sf_M_DRIVE/L2A
 
 
 
@@ -42,9 +42,9 @@ Variables:
 datafiles             -gets all files from source folder
 checker               -checks for L1C folders
 
-Functions:
-run_sen2cor           -runs all L1C folders taking resolution and directory as argumnets
-sen2_batch            -runs all L1c folders in parallel using parmap.starmap function taking resolution and directory as arguments
+Functions and Parameters:
+run_sen2cor           -runs all L1C folders - resolution and product as arguments
+sen2_batch            -runs all L1c folders in parallel using parmap.starmap function - resolution and source file directory as arguments
 
 Imports: os, multiprocessing, itertools, parmap
 
@@ -63,8 +63,8 @@ datadir               -gets all files from source folder
 checker               -checks for L2A folders
 
 
-Functions:
-sen2_batch            -calls run_sen2cor.py function to chain the commands.
+Functions and Parameters:
+sen2_batch            -calls run_sen2cor.py function to chain the commands (see previous script).
 folder_arrange        -takes two directories as arguments: dir_L1C(origin) and dir_L2A(destination).
 
 Imports: os, shutil, sen2_batch

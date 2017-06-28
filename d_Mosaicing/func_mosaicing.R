@@ -2,6 +2,14 @@
 # func_mosaicing.R
 # Utilities and pre-processing functions for the main mosaicing script.
 
+# mask_dir
+mask_dir <- function(mask_file,input_file_list) {
+  for(a_file in input_file_list) {
+    masked_file <- paste0(dirname(a_file),'/MSK_',basename(file_path_sans_ext(a_file)),'.tif')
+    system(paste0('gdal_calc.py -A "', mask_file,'" -B "',a_file,'" --outfile="',masked_file,'" --calc="A*B" --overwrite'))
+  }
+}
+
 # pre_process
 pre_process <- function(product_name, reclass_var) {
   
@@ -142,13 +150,5 @@ pre_process <- function(product_name, reclass_var) {
   }
   
   return(date)
-}
-
-# mask_dir
-mask_dir <- function(mask_file,input_file_list) {
-  for(a_file in input_file_list) {
-    masked_file <- paste0(dirname(a_file),'/MSK_',basename(file_path_sans_ext(a_file)),'.tif')
-    system(paste0('gdal_calc.py -A "', mask_file,'" -B "',a_file,'" --outfile="',masked_file,'" --calc="A*B" --overwrite'))
-  }
 }
 

@@ -20,3 +20,20 @@ fi
 
 source deactivate
 
+
+
+## Start the atmospheric correction with sen2cor
+
+source activate atmosphere
+
+python b_Atmospheric_Correction/run_sen2cor.py "${sen_dl_dir}" "${resolution}"
+
+source deactivate
+
+
+
+## Start the mosaicing
+
+source activate mosaicing
+
+source deactivate

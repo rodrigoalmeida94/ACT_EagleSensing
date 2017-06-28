@@ -26,6 +26,8 @@ dldir=${defdir}/DL_temp
 profilefile=/etc/bash.bashrc
 profilenondebian=$HOME/.bashrc
 sudo apt-get install -y poppler-utils
+sudo apt-get install -y python-dev
+pip install fire
 
 #2. Call sen2cor install
 cd $pardir
@@ -47,7 +49,6 @@ pip install sentinelhub
 pip install sentinelsat
 pip install parmap
 pip install requests
-pip install fire
 yes yes | conda install -c conda-forge gdal
 source deactivate
 

@@ -40,7 +40,7 @@ For help:
 * END_DATE - YYYYMMDD, NOW-XDAYS, defaults to NOW.
 Example of command:
 
-      python download_hub.py 'ACT_EagleSensing/Source_Data/Phillipines/RGBtile.tif' 'ACT_EagleSensing/a_Data_Acquisition/Data/accounts_hub.txt' '20160102' '20160120'
+      python download_hub.py 'Data/' 'ACT_EagleSensing/Source_Data/Phillipines/RGBtile.tif' 'ACT_EagleSensing/a_Data_Acquisition/Data/accounts_hub.txt' '20160102' '20160120'
 
 ## Modules
 * **download_amz.py**

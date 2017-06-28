@@ -14,7 +14,7 @@ if(!require(XML)){install.packages('XML')}
 if(!require(tools)){install.packages('tools')}
 
 # Sources
-source('func_mosaicing.R')
+source('d_Mosaicing/func_mosaicing.R')
 
 # Handles arguments passed by CLI
 args = commandArgs(trailingOnly=TRUE)

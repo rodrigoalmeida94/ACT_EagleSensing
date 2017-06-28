@@ -46,15 +46,19 @@ pre_process <- function(product_name, reclass_var) {
   rm(granule, granule_dir60,output_file60, granule_dir20,output_file20,granule_dir10,output_file10,xml_meta)
   
   # Make the reclass mask, save into file
-  if(length(product_vrt60)!=0){
+  if(exists('product_vrt60')){
     mask_scl <- reclassify(product_vrt60$bands60.13,reclass_var, filename=paste0(product_name,'/mask60.tif'),format='GTiff',datatype='INT2U',overwrite=T)
+    system(paste0('gdal_translate "',product_name,'/mask60.tif" "',product_name,'/mask60_0.tif" -a_nodata 0'))
   }
-  if(length(product_vrt10)!=0){
+  if(exists('product_vrt10')){
     mask_scl <- reclassify(product_vrt20$bands20.11,reclass_var,filename=paste0(product_name,'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
     mask_scl10 <- resample(mask_scl,product_vrt10$bands10.1,method='ngb',filename=paste0(product_name,'/mask10.tif'),format='GTiff',datatype='INT2U',overwrite=T)
-  }
-  if(length(product_vrt10)==0 && length(product_vrt20)!=0){
+    system(paste0('gdal_translate "',product_name,'/mask20.tif" "',product_name,'/mask20_0.tif" -a_nodata 0'))
+    system(paste0('gdal_translate "',product_name,'/mask10.tif" "',product_name,'/mask10_0.tif" -a_nodata 0')) 
+ }
+  if(!exists('product_vrt10') && exists('product_vrt20')){
     mask_scl <- reclassify(product_vrt20$bands20.11,reclass_var,filename=paste0(product_name,'/mask20.tif'),format='GTiff',datatype='INT2U',overwrite=T)
+    system(paste0('gdal_translate "',product_name,'/mask20.tif" "',product_name,'/mask20_0.tif" -a_nodata 0')) 
   }
   
   rm(mask_scl,mask_scl10)
@@ -62,22 +66,22 @@ pre_process <- function(product_name, reclass_var) {
   # Masking product, save into file
   print(paste('Starting masking of',product_name,'...'))
   granule = dir(paste0(product_name,'/GRANULE/'))
-  if(length(product_vrt60)!=0) {
+  if(exists('product_vrt60')) {
     files_60 <- list.files(paste0(product_name,'/GRANULE/',granule,'/IMG_DATA/R60m'),pattern=glob2rx('*.jp2'), full.names=T)
-    mask_60 <- paste0(product_name,'/mask60.tif')
+    mask_60 <- paste0(product_name,'/mask60_0.tif')
     mask_dir(mask_60,files_60)
   }
-  if(length(product_vrt10)!=0) {
+  if(exists('product_vrt10')) {
     files_10 <- list.files(paste0(product_name,'/GRANULE/',granule,'/IMG_DATA/R10m'),pattern=glob2rx('*.jp2'), full.names=T)
-    mask_10 <- paste0(product_name,'/mask10.tif')
+    mask_10 <- paste0(product_name,'/mask10_0.tif')
     mask_dir(mask_10,files_10)
     files_20 <- list.files(paste0(product_name,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
-    mask_20 <- paste0(product_name,'/mask20.tif')
+    mask_20 <- paste0(product_name,'/mask20_0.tif')
     mask_dir(mask_20,files_20)
   }
-  if(length(product_vrt10)==0 && length(product_vrt20)!=0) {
+  if(!exists('product_vrt10') && exists('product_vrt20')) {
     files_20 <- list.files(paste0(product_name,'/GRANULE/',granule,'/IMG_DATA/R20m'),pattern=glob2rx('*.jp2'), full.names=T)
-    mask_20 <- paste0(product_name,'/mask20.tif')
+    mask_20 <- paste0(product_name,'/mask20_0.tif')
     mask_dir(mask_20,files_20)
   }
   print(paste('Finished masking of',product_name,'.'))
@@ -120,33 +124,19 @@ pre_process <- function(product_name, reclass_var) {
     granule_dir10,
     output_file10
   )
-  
-  # Pass 0 to NA
-  # At 60 m
-  if(length(masked_product_vrt60)!=0) {
-      masked_product_vrt60[masked_product_vrt60==0] <- NA
-  }
-  # At 10 m
-  if(length(masked_product_vrt10)!=0) {
-      masked_product_vrt10[masked_product_vrt10==0] <- NA
-  }
-  # At 20 m
-  if(length(masked_product_vrt20)!=0) {
-      masked_product_vrt20[masked_product_vrt20==0] <- NA
-  }
 
   # Write masked result into file
   # At 60 m
-  if(length(masked_product_vrt60)!=0) {
-    writeRaster(masked_product_vrt60, filename=product_name+'/MSK_60.tif',format='GTiff')
+  if(exists('masked_product_vrt60')) {
+    writeRaster(masked_product_vrt60, filename=product_name+'/masked_bands60.tif',format='GTiff')
   }
   # At 10 m
-  if(length(masked_product_vrt10)!=0) {
-    writeRaster(masked_product_vrt10, filename=product_name+'/MSK_10.tif',format='GTiff')
+  if(exists('masked_product_vrt10')) {
+    writeRaster(masked_product_vrt10, filename=product_name+'/masked_bands10.tif',format='GTiff')
   }
   # At 20 m
-  if(length(masked_product_vrt20)!=0) {
-    writeRaster(masked_product_vrt20, filename=product_name+'/MSK_20.tif',format='GTiff')
+  if(exists('masked_product_vrt20')) {
+    writeRaster(masked_product_vrt20, filename=product_name+'/masked_bands20.tif',format='GTiff')
   }
   
   return(date)

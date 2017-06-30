@@ -50,11 +50,10 @@ def download_amz(download_dir,
         sentinelhub.download_safe_format(product[elem]['title'])
     os.chdir(owd)
 
-    return new_dir
-    text_file = open(download_dir+'TIME_DIR.txt','w')
+    text_file = open(download_dir+'/TIME_DIR.txt','w')
     text_file.write(new_dir)
     text_file.close()
-
+    return new_dir
 
 if __name__ == '__main__':
     fire.Fire(download_amz)

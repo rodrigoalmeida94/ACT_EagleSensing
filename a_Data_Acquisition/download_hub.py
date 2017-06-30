@@ -63,6 +63,7 @@ def download_hub(download_dir,
     os.chdir(owd)
 
     return new_dir
+    os.environ['TIME_DIR'] = new_dir
 
 
 def download(product, credentials):

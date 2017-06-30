@@ -68,9 +68,9 @@ if(length(products)==1){
 # band 5 - B5
 # band 6 - B6
 # band 7 - B7
-# band 8 - B11
-# band 9 - B12
-# band 10 - B8A
+# band 8 - B8A
+# band 9 - B11
+# band 10 - B12
 # band 11 - SCL
 # band 12 - TCI
 # band 13 - VIS
@@ -106,6 +106,21 @@ reclass_matrix <- matrix(data=c(0,0,
                                 9,0,
                                 10,0,
                                 11,1),nrow=12,ncol=2,byrow=TRUE)
+# To remove/add classified pixels to the mask, just change the corresponding
+# value in the matrix with 1/0. For instance, to mask out water, change 6 to 0
+# classes legend
+# 0 - NODATA
+# 1 - SATURATED OR DEFECTIVE
+# 2 - DARK AREA PIXELS
+# 3 - CLOUD SHADOW
+# 4 - VEGETATION
+# 5 - BARE SOIL
+# 6 - WATER
+# 7 - CLOUD LOW PROB
+# 8 - CLOUD MED PROB
+# 9 - CLOUD HIGH PROB
+# 10 - THIN CIRRUS
+# 11 - SNOW
 
 #for(prod in products) {
 #  dates_products <- c(dates_products,pre_process(prod,reclass_matrix))
@@ -116,26 +131,28 @@ reclass_matrix <- matrix(data=c(0,0,
 # product_dir +'/masked_bands20.tif'
 # product_dir +'/masked_bands10.tif'
 
-
+# NDVI files are at
 # product/NDVI_R020.tif
+# product/NDVI_R010.tif
+# product/NDVI_R060.tif
 masked_products_vrt60 <- c()
 masked_products_vrt20 <- c()
 masked_products_vrt10 <- c()
 
 for(prod in products) {
 	if(file.exists(paste0(prod,'/masked_bands60.tif'))) {
-        ndvi <- stack(paste0(prod,'/masked_bands60.tif'))
-        ndvi <- (ndvi$masked_bands60.9 - ndvi$masked_bands60.5)/(ndvi$masked_bands60.9 + ndvi$masked_bands60.5)
+        calc_ndvi(paste0(prod,'/masked_bands60.tif'),60)
+        ndvi <- raster(paste0(prod,'/NDVI_R060.tif'))
         masked_products_vrt60 <- c(masked_products_vrt60, ndvi)
   }
   if(file.exists(paste0(prod,'/masked_bands20.tif'))) {
-    ndvi <- stack(paste0(prod,'/masked_bands20.tif'))
-    ndvi <- (ndvi$masked_bands20.10 - ndvi$masked_bands20.4)/(ndvi$masked_bands20.10 + ndvi$masked_bands20.4)
+    calc_ndvi(paste0(prod,'/masked_bands20.tif'),20)
+    ndvi <- raster(paste0(prod,'/NDVI_R020.tif'))
     masked_products_vrt20 <- c(masked_products_vrt20, ndvi)
   }
   if(file.exists(paste0(prod,'/masked_bands10.tif'))) {
-    ndvi <- stack(paste0(prod,'/masked_bands10.tif'))
-    ndvi <- (ndvi$masked_bands10.4 - ndvi$masked_bands10.3)/(ndvi$masked_bands10.4 + ndvi$masked_bands10.3)
+   calc_ndvi(paste0(prod,'/masked_bands10.tif'),10)
+    ndvi <- raster(paste0(prod,'/NDVI_R010.tif'))
     masked_products_vrt10 <- c(masked_products_vrt10,ndvi)
   }
 }
@@ -150,15 +167,14 @@ if(length(masked_products_vrt60)!=0) {
     crs60 <- c(crs60,elem@crs@projargs)
   }
   crs60 <- as.data.frame(table(crs60),stringsAsFactors = F)
-  for(i in 1:length(masked_products_vrt60)){
-    if(masked_products_vrt60[[i]]@crs@projargs == crs60$crs60[1]){
+  for(i in 1:length(masked_products_vrt60)) {
+    if(masked_products_vrt60[[i]]@crs@projargs == crs60$crs60[1]) {
       template60 <- masked_products_vrt60[[i]]
       break
     }
   }
   if(length(crs60) != 1){
-    for(i in 1:length(masked_products_vrt60)){
-
+    for(i in 1:length(masked_products_vrt60)) {
       if(masked_products_vrt60[[i]]@crs@projargs != crs60$crs60[1]){
         masked_products_vrt60[[i]] <- projectRaster(masked_products_vrt60[[i]],template60)
       }
@@ -211,49 +227,41 @@ if(length(masked_products_vrt20)!=0) {
 }
 rm(crs10,crs20,crs60,elem,template20,template10,template60)
 
+# Naming contruct for Level 3
+# Example: S2_MSIL3_FROMDATE_TODATE_R060.tif
+# dates_products <- c('2017-03-14T02:33:21.026Z','2017-03-24T02:16:01.026Z','2017-04-23T02:33:31.026Z')
+dates_products <- as.Date(dates_products)
+max_date <- as.character(format.Date(max(dates_products),'%Y%m%d'))
+min_date <- as.character(format.Date(min(dates_products),'%Y%m%d'))
+
 # ---- Make Mosaic using mean for each resolution ----
+# ---- Save Level 3 product to file ----
+# Set the directory to output directory, input by user, create dir if not exists?
+if(!is.na(args[2])){setwd(args[2])}
+
 # Run the mosaicing using do.call
 if(length(masked_products_vrt60)!=0) {
   rasters.mosaicargs <- masked_products_vrt60
   rasters.mosaicargs$fun <- mean
+  rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R060.tif')
   level3_60 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt10)!=0) {
   rasters.mosaicargs <- masked_products_vrt10
   rasters.mosaicargs$fun <- mean
+  rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R010.tif')
   level3_10 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt20)!=0) {
   rasters.mosaicargs <- masked_products_vrt20
   rasters.mosaicargs$fun <- mean
+  rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R020.tif')
   level3_20 <- do.call(mosaic, rasters.mosaicargs)
   }
 rm(rasters.mosaicargs)
 
-# ---- Save Level 3 product to file ----
-# Set the directory to output directory, input by user, create dir if not exists?
-if(!is.na(args[2])){setwd(args[2])}
-
 # Naming contruct for Level 3
 # Example: S2_MSIL3_FROMDATE_TODATE_R060.tif
-dates_products <- c('2017-03-14T02:33:21.026Z','2017-03-24T02:16:01.026Z','2017-04-23T02:33:31.026Z')
-dates_products <- as.Date(dates_products)
-max_date <- as.character(format.Date(max(dates_products),'%Y%m%d'))
-min_date <- as.character(format.Date(min(dates_products),'%Y%m%d'))
-
-if(length(masked_products_vrt60)!=0) {
-  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R060.tif')
-  writeRaster(level3_60,fname = export_name, format = 'GTiff', overwrite=TRUE)
-}
-if(length(masked_products_vrt10)!=0) {
-  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R010.tif')
-  writeRaster(level3_10,fname = export_name, format = 'GTiff', overwrite=TRUE)
-}
-if(length(masked_products_vrt20)!=0) {
-  export_name = paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R020.tif')
-  writeRaster(level3_20,fname = export_name, format = 'GTiff', overwrite=TRUE)
-}
-
 removeTmpFiles(h=0)
 
 # Back to initial directory

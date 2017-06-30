@@ -25,6 +25,7 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
     os.chdir(dir)
     datafiles = os.listdir(dir)
     slist = []
+
     for files in datafiles: # checks for L1C folders
         checker1 = "L1C"
         if files[7:10] == checker1 or files[16:19] == checker1:
@@ -33,8 +34,9 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
         if files[7:10] == checker2 or files[16:19] == checker2:
             each_folder_dir = str(os.listdir(dir)) + '/' + str(files)
             for subf in each_folder_dir:
-                if len(subf) <= 9:
+                if len(subf) <= 8:
                     shutil.rmtree(files, ignore_errors=True) #resolving the bug that shows error after deleting files
+
     parmap.starmap(sen2_single, slist) #goes for optimal processing setup since GIPP parallelizing is set to AUTO
     dir_L1C = dir
     return dir_L1C

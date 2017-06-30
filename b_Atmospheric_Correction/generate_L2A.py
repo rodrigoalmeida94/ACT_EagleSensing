@@ -13,8 +13,9 @@ def generate_L2A (res, dir_L1C, dir_L2A):
 
     if not os.path.exists(dir_L2A):
         os.makedirs(dir_L2A)
+
     for folders in dfiles:
-        if folders [7:10] == checker1:
+        if folders [7:10] == checker1 or folders [16:19] == checker1:
             shutil.move(os.path.join(dir_L1C, folders), dir_L2A)
             print "L2A folders successfully moved"
         else:

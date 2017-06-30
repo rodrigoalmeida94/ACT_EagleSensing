@@ -18,8 +18,6 @@ def generate_L2A (res, dir_L1C, dir_L2A):
         if folders [7:10] == checker1 or folders [16:19] == checker1:
             shutil.move(os.path.join(dir_L1C, folders), dir_L2A)
             print "L2A folders successfully moved"
-        else:
-            print "no finished L2A folders to move"
 
     new_dir = dir_L2A
     return new_dir

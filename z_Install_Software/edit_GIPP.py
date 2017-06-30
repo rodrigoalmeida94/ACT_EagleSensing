@@ -7,8 +7,8 @@ import getpass
 
 
 #Set directory
-username = getpass.getuser()
-datadir = '/home/' + str(username) + '/anaconda2/envs/atmosphere/lib/python2.7/site-packages/sen2cor-2.3.1-py2.7.egg/sen2cor/cfg' #set into anaconda's environment
+
+datadir= os.environ.get("gippdir")
 os.chdir(datadir)
 
 #Parse the xml

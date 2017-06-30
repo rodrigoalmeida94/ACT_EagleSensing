@@ -37,5 +37,10 @@ yes yes | conda install -c conda-forge fire
 pip install parmap
 pip install lxml
 
+#Create path variable for Sen2Cors GIPP file and execute edit_GIPP.py after installation of sen2cor
+export gippdir=${defdir}/anaconda2/envs/atmosphere/lib/python2.7/site-packages/sen2cor-${SEN2VERSION}-py2.7.egg/sen2cor/cfg/
+
+python $pardir/z_Install_Software/edit_GIPP.py
+
 ## Close the conda environment.
 source deactivate

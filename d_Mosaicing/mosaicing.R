@@ -122,9 +122,9 @@ reclass_matrix <- matrix(data=c(0,0,
 # 10 - THIN CIRRUS
 # 11 - SNOW
 
-#for(prod in products) {
-#  dates_products <- c(dates_products,pre_process(prod,reclass_matrix))
-#}
+for(prod in products) {
+  dates_products <- c(dates_products,pre_process(prod,reclass_matrix))
+}
 # Returns date
 # Files are at product dir in
 # product_dir +'/masked_bands60.tif'

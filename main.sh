@@ -20,14 +20,15 @@ Allowed options are: [-a arg] [-p arg] [-x arg] [-s arg] [-e arg] [-d arg] [-r a
     -s  Specify a start date (yyyymmdd)
     -e  Specify an end date (yyyymmdd)
     -d  Specify the directory path where the images will be stored
-    -r  Specify the resolution for the atmospheric correction (in m)"
+    -r  Specify the resolution for the atmospheric correction (in m)
+    -l  Specify the atmospheric corrected L2A product directory"
 
-if [[ $# -ne 14 ]] && [[ $1 != -h ]]; then
-	echo "Not enough parameters used, please only use all 7 parameters with arguments! See help (use the -h option)"
+if [[ $# -ne 16 ]] && [[ $1 != -h ]]; then
+	echo "Not enough parameters used, please only use all 8 parameters with arguments! See help (use the -h option)"
 exit 0
 fi
 
-while getopts ':ha:p:x:s:e:d:r:' option; do
+while getopts ':ha:p:x:s:e:d:r:l:' option; do
   case "$option" in
     h) echo "$usage"
        exit
@@ -70,7 +71,7 @@ while getopts ':ha:p:x:s:e:d:r:' option; do
     d) sen_dl_dir=$OPTARG
 	echo "selected processing directory: $sen_dl_dir"
 	if [ ! -d "$sen_dl_dir" ]; then
-	echo "Directory does not exist! (consider using mkdir first!)"
+	echo "This download directory does not exist! (consider using mkdir first!)"
 	exit 1
 	fi
        ;;
@@ -78,6 +79,13 @@ while getopts ':ha:p:x:s:e:d:r:' option; do
 	echo "selected resolution: $resolution"
 	if [ $resolution -le 10 ]; then
 	echo "Please use for resolution positive numbers greater than or equal to 10"
+	exit 1
+	fi
+       ;;
+    l) sen_l2a_dir=$OPTARG
+	echo "selected resolution: $resolution"
+	if [ ! -d "$sen_l2a_dir" ]; then
+	echo "This l2a product directory does not exist! (consider using mkdir first!)"
 	exit 1
 	fi
        ;;
@@ -100,12 +108,17 @@ shift $((OPTIND - 1))
 source activate data_acquisition
 
 if [ "${hub}" = "ama" ]
-    then python a_Data_Acquisition/download_amz.py ${sen_dl_dir} ${extent_file} ${accounts_txt} ${from_date} ${to_date}
+    then python a_Data_Acquisition/download_amz.py ${sen_dl_dir} ${extent_file} ${account_txt} ${from_date} ${to_date}
 elif [ "${hub}" = "esa" ]
-    then python a_Data_Acquisition/download_hub.py ${sen_dl_dir} ${extent_file} ${accounts_txt} ${from_date} ${to_date}
+    then python a_Data_Acquisition/download_hub.py ${sen_dl_dir} ${extent_file} ${account_txt} ${from_date} ${to_date}
 fi
 
 source deactivate
+
+
+## Get the created dir with timestamp by python from txt file 
+
+sen_l1c_dir=$(grep "${sen_dl_dir}" ${sen_dl_dir}/TIME_DIR.txt) 
 
 
 
@@ -113,7 +126,7 @@ source deactivate
 
 source activate atmosphere
 
-python b_Atmospheric_Correction/run_sen2cor.py "${sen_dl_dir}" "${resolution}"
+python b_Atmospheric_Correction/run_sen2cor.py ${resolution} ${sen_l1c_dir} ${sen_l2a_dir} 
 
 source deactivate
 

@@ -101,18 +101,22 @@ pre_process <- function(product_name, reclass_var) {
     granule_dir60 = paste0(granule_dir60, 'MSK_*.tif')
     system(paste('gdalbuildvrt -separate', output_file60, granule_dir60))
     masked_product_vrt60 <- stack(output_file60)
+    system(paste('find',granule_dir60,'-type f -name MSK_*.tif -exec rm {}'))
   }
 
   if (dir.exists(granule_dir20)) {
     granule_dir20 = paste0(granule_dir20, 'MSK_*.tif')
     system(paste('gdalbuildvrt -separate', output_file20, granule_dir20))
     masked_product_vrt20 <- stack(output_file20)
+    system(paste('find',granule_dir20,'-type f -name MSK_*.tif -exec rm {}'))
   }
 
   if (dir.exists(granule_dir10)) {
     granule_dir10 = paste0(granule_dir10, 'MSK_*.tif')
     system(paste('gdalbuildvrt -separate', output_file10, granule_dir10))
     masked_product_vrt10 <- stack(output_file10)
+    system(paste('find',granule_dir10,'-type f -name MSK_*.tif -exec rm {}'))
+
   }
 
   rm(
@@ -146,12 +150,12 @@ pre_process <- function(product_name, reclass_var) {
 calc_ndvi <- function(input_file,res) {
     out_file <- paste0(dirname(input_file),'/NDVI_R0',res,'.tif')
     if(res==60){
-        system(paste0('gdal_calc.py -A "', input_file,'" --A_band=9 -B "',input_file,'" --B_band=5 --outfile="',out_file,'" --calc="((A-B)/(A+B))" --overwrite'))
+        system(paste0('gdal_calc.py -A "', input_file,'" --A_band=9 -B "',input_file,'" --B_band=5 --outfile="',out_file,'" --calc="((A-B)/(A+B))*10000" type="Int16" --overwrite -'))
     }
     if(res==20){
-    system(paste0('gdal_calc.py -A "', input_file,'" --A_band=10 -B "',input_file,'" --B_band=4 --outfile="',out_file,'" --calc="((A-B)/(A+B))" --overwrite'))
+    system(paste0('gdal_calc.py -A "', input_file,'" --A_band=8 -B "',input_file,'" --B_band=4 --outfile="',out_file,'" --calc="((A-B)/(A+B))*10000" type="Int16" --overwrite'))
     }
     if(res==10){
-        system(paste0('gdal_calc.py -A "',input_file,'" --A_band=4 -B "',input_file,'" --B_band=3 --outfile="',out_file,'" --calc="((A-B)/(A+B))" --overwrite'))
+        system(paste0('gdal_calc.py -A "',input_file,'" --A_band=4 -B "',input_file,'" --B_band=3 --outfile="',out_file,'" --calc="((A-B)/(A+B))*10000" type="Int16" --overwrite'))
     }
 }

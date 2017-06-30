@@ -99,10 +99,10 @@ shift $((OPTIND - 1))
 
 source activate data_acquisition
 
-if [ ${hub}="ama" ]
-    then python a_Data_Acquisition/download_amz.py "${sen_dl_dir}" "${extent_file}" "${from_date}" "{$to_date}"
-elif [ ${hub}="esa" ]
-    then python a_Data_Acquisition/download_hub.py "${sen_dl_dir}" "${extent_file}" "${from_date}" "{$to_date}"
+if [ "${hub}" = "ama" ]
+    then python a_Data_Acquisition/download_amz.py ${sen_dl_dir} ${extent_file} ${accounts_txt} ${from_date} ${to_date}
+elif [ "${hub}" = "esa" ]
+    then python a_Data_Acquisition/download_hub.py ${sen_dl_dir} ${extent_file} ${accounts_txt} ${from_date} ${to_date}
 fi
 
 source deactivate

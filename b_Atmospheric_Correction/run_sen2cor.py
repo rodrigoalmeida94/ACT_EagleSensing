@@ -37,6 +37,11 @@ def sen2_batch (res, dir): # Creates a list of arguments based on number of file
                 if len(subf) <= 8:
                     shutil.rmtree(files, ignore_errors=True) #resolving the bug that shows error after deleting files
 
+    if not os.path.isdir(dir):
+        raise ValueError('working_directory: '+ dir + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+
+
+
     parmap.starmap(sen2_single, slist) #goes for optimal processing setup since GIPP parallelizing is set to AUTO
     dir_L1C = dir
     return dir_L1C

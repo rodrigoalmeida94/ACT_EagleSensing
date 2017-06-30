@@ -119,7 +119,7 @@ source deactivate
 ## Get the created dir with timestamp by python from txt file 
 
 sen_l1c_dir=$(grep "${sen_dl_dir}" ${sen_dl_dir}/TIME_DIR.txt) 
-
+rm ${sen_dl_dir}/TIME_DIR.txt
 
 
 ## Start the atmospheric correction with sen2cor
@@ -134,5 +134,7 @@ source deactivate
 ## Start the mosaicing
 
 source activate mosaicing
+
+Rscript d_Mosaicing/mosaicing.R --default-packages=rgdal,utils,raster,XML,tools --verbose ${sen_l2a_dir} [OUTPUT_DIR]
 
 source deactivate

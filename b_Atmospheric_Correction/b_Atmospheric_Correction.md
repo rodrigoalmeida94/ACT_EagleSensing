@@ -7,6 +7,10 @@ python generate_L2A.py resolution, directory of L1C folders, desired directory o
 
 example: python generate_L2A.py 10 /media/sf_M_DRIVE/L1C /media/sf_M_DRIVE/L2A
 
+    generate_L2A.py RES DIR_L1C DIR_L2A
+    generate_L2A.py --res RES --dir-L1C DIR_L1C --dir-L2A DIR_L2A
+
+
 
 
 

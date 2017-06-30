@@ -51,6 +51,7 @@ def download_amz(download_dir,
     os.chdir(owd)
 
     return new_dir
+    os.environ['TIME_DIR'] = new_dir
 
 
 if __name__ == '__main__':

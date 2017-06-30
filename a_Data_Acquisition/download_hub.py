@@ -22,6 +22,14 @@ def download_hub(download_dir,
                  max_downloads=10):
     start_date = str(start_date)
     end_date = str(end_date)
+
+    if not os.path.isdir(download_dir):
+        raise ValueError('download_dir: '+ download_dir + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+    if not os.path.exists(file_path):
+        raise ValueError('file_path: '+ file_path + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+    if not os.path.exists(accounts_file):
+        raise ValueError('accounts_file: '+ accounts_file + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+
     products, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # Creates directory for download files

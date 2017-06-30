@@ -24,6 +24,7 @@ def account(filepath):
             delete += [cred]
 
     for x in delete:
+        print 'User '+ delete[0] + ' removed since username or password are invalid.'
         d.pop(x)
 
     if len(d) == 0:

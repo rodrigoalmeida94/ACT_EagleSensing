@@ -7,7 +7,6 @@ import sys
 import time
 import fire
 import datetime
-
 import sentinelhub
 
 sys.path.insert(0, 'a_Data_Acquisition')
@@ -19,16 +18,25 @@ def download_amz(download_dir,
                  accounts_file,
                  start_date='NOW-30DAYS',
                  end_date='NOW',
-                 exclude_date=datetime.datetime(2016,12,6)):
+                 exclude_date='20161206'):
     start_date = str(start_date)
     end_date = str(end_date)
+    exclude_date = datetime.datetime.strptime(str(exclude_date),'%Y%m%d')
+
+    if not os.path.isdir(download_dir):
+        raise ValueError('download_dir: '+ download_dir + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+    if not os.path.exists(file_path):
+        raise ValueError('file_path: '+ file_path + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+    if not os.path.exists(accounts_file):
+        raise ValueError('accounts_file: '+ accounts_file + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
+
     product, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
 
     # This error occurs due to the max directory size in Windows! Still, I think it's good to have the option
     delete = []
     for tile in product:
         if product[tile]['beginposition'] <= exclude_date:
-           print(product[tile]['title']+' was excluded since '+product[tile]['beginposition']+' is previous to exclude date.')
+           print(product[tile]['title']+' was excluded since '+str(product[tile]['beginposition'])+' is previous to exclude date.')
            delete += [tile]
 
     for x in delete:

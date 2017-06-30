@@ -51,7 +51,9 @@ def download_amz(download_dir,
     os.chdir(owd)
 
     return new_dir
-    os.environ['TIME_DIR'] = new_dir
+    text_file = open(download_dir+'TIME_DIR.txt','w')
+    text_file.write(new_dir)
+    text_file.close()
 
 
 if __name__ == '__main__':

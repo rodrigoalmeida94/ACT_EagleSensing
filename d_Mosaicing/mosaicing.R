@@ -45,7 +45,7 @@ if(length(products)==0){
   stop('Input L2A product directory is empty or does not contain files in the .SAFE format.')
 }
 if(length(products)==1){
-  warning('Input L2A product directory contains only 1 file. Processing with the masking procedure.')
+  warning('Input L2A product directory contains only 1 file. Proceeding with the masking procedure.')
 }
 
 # ---- Reclassification of SCL, mask creation ----

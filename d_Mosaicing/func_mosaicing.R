@@ -99,24 +99,60 @@ pre_process <- function(product_name, reclass_var) {
 
   if (dir.exists(granule_dir60)) {
     granule_dir60 = paste0(granule_dir60, 'MSK_*.tif')
-    system(paste('gdalbuildvrt -separate', output_file60, granule_dir60))
+    system(paste('gdalbuildvrt -separate', output_file60, granule_dir60,'-overwrite'))
     masked_product_vrt60 <- stack(output_file60)
-    system(paste('find',granule_dir60,'-type f -name MSK_*.tif -exec rm {}'))
   }
 
   if (dir.exists(granule_dir20)) {
     granule_dir20 = paste0(granule_dir20, 'MSK_*.tif')
-    system(paste('gdalbuildvrt -separate', output_file20, granule_dir20))
+    system(paste('gdalbuildvrt -separate', output_file20, granule_dir20,'-overwrite'))
     masked_product_vrt20 <- stack(output_file20)
-    system(paste('find',granule_dir20,'-type f -name MSK_*.tif -exec rm {}'))
   }
 
   if (dir.exists(granule_dir10)) {
     granule_dir10 = paste0(granule_dir10, 'MSK_*.tif')
-    system(paste('gdalbuildvrt -separate', output_file10, granule_dir10))
+    system(paste('gdalbuildvrt -separate', output_file10, granule_dir10,'-overwrite'))
     masked_product_vrt10 <- stack(output_file10)
-    system(paste('find',granule_dir10,'-type f -name MSK_*.tif -exec rm {}'))
 
+  }
+
+  # Write masked result into file
+  # At 60 m
+  if(exists('masked_product_vrt60')) {
+    writeRaster(masked_product_vrt60, filename=paste0(product_name,'/masked_bands60.tif'),format='GTiff',overwrite=TRUE)
+  }
+  # At 10 m
+  if(exists('masked_product_vrt10')) {
+    writeRaster(masked_product_vrt10, filename=paste0(product_name,'/masked_bands10.tif'),format='GTiff',overwrite=TRUE)
+  }
+  # At 20 m
+  if(exists('masked_product_vrt20')) {
+    writeRaster(masked_product_vrt20, filename=paste0(product_name,'/masked_bands20.tif'),format='GTiff',overwrite=TRUE)
+  }
+
+  # Clean Up, delete files
+  if (dir.exists(granule_dir60)) {
+    system(paste('find',granule_dir60,'-type f -name "MSK_*.tif" -delete'))
+    system(paste0('rm ', product_name,'/bands60.vrt'))
+    system(paste0('rm ', product_name,'/masked_bands60.vrt'))
+    system(paste0('rm ', product_name,'/mask60.tif'))
+    system(paste0('rm ', product_name,'/mask60_0.tif'))
+  }
+
+  if (dir.exists(granule_dir20)) {
+    system(paste('find',granule_dir20,'-type f -name "MSK_*.tif" -delete'))
+    system(paste0('rm ', product_name,'/bands20.vrt'))
+    system(paste0('rm ', product_name,'/masked_bands20.vrt'))
+    system(paste0('rm ', product_name,'/mask20.tif'))
+    system(paste0('rm ', product_name,'/mask20_0.tif'))
+  }
+
+  if (dir.exists(granule_dir10)) {
+    system(paste('find',granule_dir10,'-type f -name "MSK_*.tif" -delete'))
+    system(paste0('rm ', product_name,'/bands10.vrt'))
+    system(paste0('rm ', product_name,'/masked_bands10.vrt'))
+    system(paste0('rm ', product_name,'/mask10.tif'))
+    system(paste0('rm ', product_name,'/mask10_0.tif'))
   }
 
   rm(
@@ -128,20 +164,6 @@ pre_process <- function(product_name, reclass_var) {
     granule_dir10,
     output_file10
   )
-
-  # Write masked result into file
-  # At 60 m
-  if(exists('masked_product_vrt60')) {
-    writeRaster(masked_product_vrt60, filename=paste0(product_name,'/masked_bands60.tif'),format='GTiff')
-  }
-  # At 10 m
-  if(exists('masked_product_vrt10')) {
-    writeRaster(masked_product_vrt10, filename=paste0(product_name,'/masked_bands10.tif'),format='GTiff')
-  }
-  # At 20 m
-  if(exists('masked_product_vrt20')) {
-    writeRaster(masked_product_vrt20, filename=paste0(product_name,'/masked_bands20.tif'),format='GTiff')
-  }
 
   return(date)
 }

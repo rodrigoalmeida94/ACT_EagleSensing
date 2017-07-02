@@ -83,7 +83,7 @@ while getopts ':ha:p:x:s:e:d:r:l:' option; do
 	fi
        ;;
     l) sen_l2a_dir=$OPTARG
-	echo "selected resolution: $resolution"
+	echo "selected sen_l2a_dir: sen_l2a_dir"
 	if [ ! -d "$sen_l2a_dir" ]; then
 	echo "This l2a product directory does not exist! (consider using mkdir first!)"
 	exit 1
@@ -126,7 +126,7 @@ rm ${sen_dl_dir}/TIME_DIR.txt
 
 source activate atmosphere
 
-python b_Atmospheric_Correction/run_sen2cor.py ${resolution} ${sen_l1c_dir} ${sen_l2a_dir} 
+python b_Atmospheric_Correction/generate_L2A.py ${resolution} ${sen_l1c_dir} ${sen_l2a_dir}
 
 source deactivate
 

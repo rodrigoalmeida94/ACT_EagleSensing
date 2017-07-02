@@ -17,7 +17,7 @@ def generate_L2A (res, dir_L1C, dir_L2A):
     for folders in dfiles:
         if folders [7:10] == checker or folders [16:19] == checker:
             shutil.move(os.path.join(dir_L1C, folders), dir_L2A)
-            print "L2A folders successfully done and moved"
+            print "L2A folder successfully done and moved"
 
     if not os.path.isdir(dir_L1C):
         raise ValueError('L1C_directory: '+ dir_L1C + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')

@@ -20,7 +20,7 @@ def account(filepath):
     delete =[]
     for cred in d:
         resp = requests.post(url, data={'login_username': d[cred][0], 'login_password': d[cred][1]})
-        if resp.status_code <> 200:
+        if resp.status_code != 200:
             delete += [cred]
 
     for x in delete:

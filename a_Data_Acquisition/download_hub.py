@@ -31,7 +31,6 @@ def download_hub(download_dir,
         raise ValueError('accounts_file: '+ accounts_file + ' does not exist or is inaccesible. Your current working directory is '+os.getcwd()+'.')
 
     products, credentials = get_products_aoi(file_path, accounts_file, start_date=start_date, end_date=end_date)
-
     # Creates directory for download files
     owd = os.getcwd()  # original working directory (owd)
     new_dir = download_dir+'/hub%s' % time.strftime('%a%d%b%Y%H%M%S')
@@ -50,7 +49,7 @@ def download_hub(download_dir,
     div_products = dict_divider(products, n_threads)
 
     if n_products > 1:
-        div_credentials = credentials.values() * (n_threads // n_accounts)
+        div_credentials = credentials.values() * (n_accounts//n_threads)
     else:
         div_credentials = [credentials.values()[0]]
 

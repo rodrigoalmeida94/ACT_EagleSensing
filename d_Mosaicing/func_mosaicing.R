@@ -131,7 +131,7 @@ pre_process <- function(product_name, reclass_var) {
   }
 
   # Clean Up, delete files
-  if (dir.exists(granule_dir60)) {
+  if (exists('masked_product_vrt60')) {
     system(paste('find',granule_dir60,'-type f -name "MSK_*.tif" -delete'))
     system(paste0('rm ', product_name,'/bands60.vrt'))
     system(paste0('rm ', product_name,'/masked_bands60.vrt'))
@@ -139,7 +139,7 @@ pre_process <- function(product_name, reclass_var) {
     system(paste0('rm ', product_name,'/mask60_0.tif'))
   }
 
-  if (dir.exists(granule_dir20)) {
+  if (exists('masked_product_vrt10')) {
     system(paste('find',granule_dir20,'-type f -name "MSK_*.tif" -delete'))
     system(paste0('rm ', product_name,'/bands20.vrt'))
     system(paste0('rm ', product_name,'/masked_bands20.vrt'))
@@ -147,7 +147,7 @@ pre_process <- function(product_name, reclass_var) {
     system(paste0('rm ', product_name,'/mask20_0.tif'))
   }
 
-  if (dir.exists(granule_dir10)) {
+  if (exists('masked_product_vrt20')) {
     system(paste('find',granule_dir10,'-type f -name "MSK_*.tif" -delete'))
     system(paste0('rm ', product_name,'/bands10.vrt'))
     system(paste0('rm ', product_name,'/masked_bands10.vrt'))

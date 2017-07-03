@@ -6,16 +6,16 @@ echo 'Incorrect usage, please use the -h option to get information on usage'
 exit 0
 fi
 
-usage="$(basename "$0") 
+usage="$(basename "$0")
 
-Program to convert Sentinel-2A L1C  products into L3 products and storing intermediate L2A products. 
+Program to convert Sentinel-2A L1C  products into L3 products and storing intermediate L2A products.
 
-Allowed options are: [-a arg] [-p arg] [-x arg] [-s arg] [-e arg] [-d arg] [-r arg] .
+Arguments are as follow: -a arg -p arg -x arg -s arg -e arg -d arg -r arg
 
     (-h  Shows this help text)
 
     -a  Specify the path to dummy accounts (txt) to login to the platforms
-    -p  Specify the platform (ama for amazon, esa for esa's scihub)    
+    -p  Specify the platform (ama for amazon, esa for esa's scihub)
     -x  Specify the path of the extent dataset (i.e. plantation geotiff)
     -s  Specify a start date (yyyymmdd)
     -e  Specify an end date (yyyymmdd)
@@ -83,7 +83,7 @@ while getopts ':ha:p:x:s:e:d:r:l:' option; do
 	fi
        ;;
     l) sen_l2a_dir=$OPTARG
-	echo "selected sen_l2a_dir: sen_l2a_dir"
+	echo "selected sen_l2a_dir: ${sen_l2a_dir}"
 	if [ ! -d "$sen_l2a_dir" ]; then
 	echo "This l2a product directory does not exist! (consider using mkdir first!)"
 	exit 1
@@ -116,9 +116,9 @@ fi
 source deactivate
 
 
-## Get the created dir with timestamp by python from txt file 
+## Get the created dir with timestamp by python from txt file
 
-sen_l1c_dir=$(grep "${sen_dl_dir}" ${sen_dl_dir}/TIME_DIR.txt) 
+sen_l1c_dir=$(grep "${sen_dl_dir}" ${sen_dl_dir}/TIME_DIR.txt)
 rm ${sen_dl_dir}/TIME_DIR.txt
 
 
@@ -133,8 +133,4 @@ source deactivate
 
 ## Start the mosaicing
 
-source activate mosaicing
-
-Rscript d_Mosaicing/mosaicing.R --default-packages=rgdal,utils,raster,XML,tools --verbose ${sen_l2a_dir} [OUTPUT_DIR]
-
-source deactivate
+Rscript d_Mosaicing/mosaicing.R ${sen_l2a_dir}

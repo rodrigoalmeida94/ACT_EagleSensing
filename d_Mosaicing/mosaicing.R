@@ -100,11 +100,11 @@ reclass_matrix <- matrix(data=c(0,0,
                                 3,1,
                                 4,1,
                                 5,1,
-                                6,0,
+                                6,1,
                                 7,1,
-                                8,0,
+                                8,1,
                                 9,0,
-                                10,0,
+                                10,1,
                                 11,1),nrow=12,ncol=2,byrow=TRUE)
 # To remove/add classified pixels to the mask, just change the corresponding
 # value in the matrix with 1/0. For instance, to mask out water, change 6 to 0
@@ -244,18 +244,21 @@ if(length(masked_products_vrt60)!=0) {
   rasters.mosaicargs <- masked_products_vrt60
   rasters.mosaicargs$fun <- mean
   rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R060.tif')
+  rasters.mosaicargs$overwrite <- TRUE
   level3_60 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt10)!=0) {
   rasters.mosaicargs <- masked_products_vrt10
   rasters.mosaicargs$fun <- mean
   rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R010.tif')
+  rasters.mosaicargs$overwrite <- TRUE
   level3_10 <- do.call(mosaic, rasters.mosaicargs)
   }
 if(length(masked_products_vrt20)!=0) {
   rasters.mosaicargs <- masked_products_vrt20
   rasters.mosaicargs$fun <- mean
   rasters.mosaicargs$filename <- paste0('S2_MSIL3_NDVI_',min_date,'_',max_date,'_R020.tif')
+  rasters.mosaicargs$overwrite <- TRUE
   level3_20 <- do.call(mosaic, rasters.mosaicargs)
   }
 rm(rasters.mosaicargs)

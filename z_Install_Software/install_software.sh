@@ -60,5 +60,10 @@ GDALCONDAREPO=https://anaconda.org/conda-forge/gdal/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
 yes yes | conda install -c conda-forge gdal=${GDALCONDAVERSION}
+sudo apt-get install r-base
+sudo apt-get install gdal-bin
+sudo apt-get install python-gdal
+sudo apt-get install libgdal
+sudo apt-get install libproj
 ## Close the conda environment.
 source deactivate

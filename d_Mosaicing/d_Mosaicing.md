@@ -24,3 +24,4 @@
     * Contains the following functions:
         * mask_dir <- takes a mask_file and an input_file_list.
         * pre_process <- takes a product_name and a reclass_var/matrix.
+        * ndvi_calc <- takes a product_name and returns a file of the NDVI with a certain resolution.

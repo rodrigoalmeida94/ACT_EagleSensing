@@ -22,18 +22,7 @@ Sen2Cor is a processor for Sentinel-2 Level 2A product generation and formatting
 After running installation scripts, it is now assumed that this component has its own environmnet called 'atmosphere' and should be activated before running all 'b' scripts.
 
 ### Preliminary
--GIPP.xml file of sen2cor is Extensible Markup Language (XML) is a markup language that defines a set of rules for encoding documents that contains sen2cor parameters.
--Key parameters were identified including: Number of Processes (for parallel runs), Aerosol Thickness, Climate, Cirrus Correction, and BRDF Correction.
--All parameters of these were set into AUTO.
-
-
-Script      :         edit_GIPP.py
-
-Variables:
-tree                  -makes the xml parsed
-root                  -accesses the child and elements
-
-Imports: os, lxml
+-At this point, it is assumed that the key GIPP parameters have been edited already into AUTO.
 
 ### Running sen2cor
 -The script calls the 'L2A_Process' its command line interpreter which uses argparse to guide users on arguments needed.

@@ -54,10 +54,12 @@ def download_hub(download_dir,
         div_credentials = [credentials.values()[0]]
 
     parmap.starmap(download, izip(div_products, div_credentials))
-
-    for elem in products:
-        os.system('unzip ' + products[elem]['title'] + '.zip')
-        os.remove(products[elem]['title'] + '.zip')
+    # try zip
+    #for elem in products:
+    #    print elem
+    #    print products
+    #    os.system('unzip ' + products[elem]['title'] + '.zip')
+    #    os.remove(products[elem]['title'] + '.zip')
 
     os.chdir(owd)
 
@@ -69,6 +71,9 @@ def download_hub(download_dir,
 def download(product, credentials):
     api = SentinelAPI(credentials[0], credentials[1], 'https://scihub.copernicus.eu/dhus')
     api.download_all(product)
+    for elem in product:
+        os.system('unzip ' + product[elem]['title'] + '.zip')
+        os.remove(product[elem]['title'] + '.zip')
 
 
 def dict_divider(raw_dict, num):

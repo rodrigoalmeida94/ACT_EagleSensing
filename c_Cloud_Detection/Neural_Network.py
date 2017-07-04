@@ -242,9 +242,9 @@ def classify(filename):
 print(time.time())
 
 t0 = time.time()
-out, confidence = classify('/media/sf_M_DRIVE/s2a_tif/S2A_MSIL1C_20170413T021601_N0204_R003_T51PUR_20170413T023314_resampled.tif')
+#out, confidence = classify('/home/user/03_24/S2A_MSIL1C_20170423T023331_N0204_R003_T50PRB_20170423T023327_resampled.tif')
 #out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_MSIL1C_20170324T021601_N0204_R003_T50PQS_20170324T023304_resampled.tif')
-#out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif')
+out, confidence = classify('/media/sf_M_DRIVE/comparison_tiles/S2A_prediction_20170314/S2A_MSIL1C_20170314T023321_N0204_R003_T51PUR_20170314T023317_resampled.tif')
 print('Time taken: {} seconds'.format(time.time() - t0))
 
 # 0 = shadow
@@ -320,7 +320,7 @@ def combine(image_filenames):
         with rasterio.open(fn) as src:
             print('Width, height: {}'.format((src.width, src.height)))
             print('Read block size: {}'.format(src.block_shapes[0]))
-            block_size = src.block_shapes[0][0]  # read this size blocks for faster reads
+            block_size = src.block_shapes[0][0]  # take this blocksize for faster reads
 
             #             classification = np.zeros((src.width, src.height))
             confidence = np.zeros((src.width, src.height))

@@ -1,6 +1,6 @@
 # c_Cloud_Detection
 ## Fmask
-###Prerequisites
+### Prerequisites
 * Fmask installed (via the original bitbucket repository or the conda-forge channel)
 * Anaconda installed
 * 'clouddetect' conda environment is activated 
@@ -11,7 +11,7 @@ automatically creates the conda environment "clouddetect", in which all the pack
    if need be. 
   
 
-###Required conda packages
+### Required conda packages
 * certifi==2017.4.17
 * GDAL==2.2.0
 * numpy==1.12.1
@@ -19,7 +19,7 @@ automatically creates the conda environment "clouddetect", in which all the pack
 * rios==1.4.3
 * scipy==0.19.0
 
-###Running Fmask  
+### Running Fmask  
 Fmask is run by executing the bash script fmask_subprocess.sh (under ./c_Cloud_Detection/). Here, the 
  user must specify the directory in which the Sentinel2 L1C imagery is contained.
  In this bash script, the default output is a single thematic raster in .tif format, but this 

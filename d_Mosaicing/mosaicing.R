@@ -7,11 +7,11 @@
 
 # ---- Setting up ----
 # Libraries
-if(!require(rgdal)){install.packages('rgdal')}
-if(!require(utils)){install.packages('utils')}
-if(!require(raster)){install.packages('raster')}
-if(!require(XML)){install.packages('XML')}
-if(!require(tools)){install.packages('tools')}
+if(!require(rgdal)){install.packages('rgdal', repos='http://cran-mirror.cs.uu.nl/')}
+if(!require(utils)){install.packages('utils', repos='http://cran-mirror.cs.uu.nl/')}
+if(!require(raster)){install.packages('raster',, repos='http://cran-mirror.cs.uu.nl/')}
+if(!require(XML)){install.packages('XML', repos='http://cran-mirror.cs.uu.nl/')}
+if(!require(tools)){install.packages('tools', repos='http://cran-mirror.cs.uu.nl/')}
 
 # Sources
 source('d_Mosaicing/func_mosaicing.R')

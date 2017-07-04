@@ -53,9 +53,9 @@ yes yes | conda install -c conda-forge fire
 yes yes | conda install -c conda-forge gdal
 source deactivate
 
-#6. Install packages needed for the mosaicing script.
-yes yes | conda create --name mosaicing pip
-source activate mosaicing
+#6. Install packages needed for the mosaicing script. NO ENV for mosaicing
+# yes yes | conda create --name mosaicing pip
+# source activate mosaicing
 GDALCONDAREPO=https://anaconda.org/conda-forge/gdal/
 GDALCONDADL=$(wget -q -O - ${GDALCONDAREPO} | grep 'conda-forge gdal')
 GDALCONDAVERSION=$(echo ${GDALCONDADL} | egrep -o '[[:alnum:]]\.[[:alnum:]]\.[[:alnum:]]')
@@ -66,4 +66,4 @@ sudo apt-get install python-gdal
 sudo apt-get install libgdal-dev
 sudo apt-get install libproj-dev
 ## Close the conda environment.
-source deactivate
+#source deactivate

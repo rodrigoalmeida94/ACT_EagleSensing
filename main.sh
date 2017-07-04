@@ -10,7 +10,7 @@ usage="$(basename "$0")
 
 Program to convert Sentinel-2A L1C  products into L3 products and storing intermediate L2A products.
 
-Arguments are as follow: -a arg -p arg -x arg -s arg -e arg -d arg -r arg
+Arguments are as follow: -a arg -p arg -x arg -s arg -e arg -d arg -r arg -l arg
 
     (-h  Shows this help text)
 
@@ -133,8 +133,4 @@ source deactivate
 
 ## Start the mosaicing
 
-source activate mosaicing
-
 Rscript d_Mosaicing/mosaicing.R ${sen_l2a_dir}
-
-source deactivate

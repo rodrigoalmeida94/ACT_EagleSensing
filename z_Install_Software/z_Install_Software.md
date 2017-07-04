@@ -29,6 +29,8 @@ Navigate to ACT_EagleSensing:
 
 ### (Step 5: You can install SNAP additionally if you like for manual visual assessments)
 
+### Step 6: Please restart the computer/machine before running the script.
+
 ## Environments
 
     atmosphere             ~/anaconda2/envs/atmosphere

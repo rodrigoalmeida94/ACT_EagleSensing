@@ -1,5 +1,25 @@
 # ACT_EagleSensing
 
+## Command Line Tool
+
+Program to download and process Sentinel-2A L1C  products into L3 products and storing intermediate L2A products.
+
+    $ bash main.sh -a A -p P -x X -s S -e E -d D -r R -l L
+
+    (-h  Shows this help text)
+    -a  Specify the path to dummy accounts (txt) to login to the platforms
+    -p  Specify the platform (ama for amazon, esa for esa's scihub)
+    -x  Specify the path of the extent dataset (i.e. Plantation GeoTiff)
+    -s  Specify a start date (yyyymmdd)
+    -e  Specify an end date (yyyymmdd)
+    -d  Specify the directory path where the images will be stored (has to exist)
+    -r  Specify the resolution for the atmospheric correction (in m)
+    -l  Specify the atmospheric corrected L2A product directory (has to exist)
+
+Example:
+
+    $ bash main.sh -a a_Data_Acquisition/Data/accounts_hub.txt -p ama -x RGBmerge.tif -s 20170101 -e 20170201 -d Data -r 60 -l Results
+
 ## Project description
 EagleSensing wants to explore Sentinel-2 integration into their platform that currently provides (large) plantation holders with airborne sensed imagery and its derived products. Sentinel-2 images are free of charge and the temporal resolution is high. Moreover, Sentinel-2's high spatial resolution for a satellite can be useful for a wide range of applications. Therefore, Sentinel-2 integration can benefit EagleSensing by: increasing monitoring frequency (very useful for existing clients); reaching small plantation holders with a limited budget and it assists EagleSensing in tackling the increase i technological competition in the GI sector by diversifying the product range.
 
@@ -7,7 +27,7 @@ However, for inclusion into EagleSensing's platform, a processing chain is neede
 ### Scripts header
 
 - Component name
-- Name of script/module (spaces should be underscore)
+- Name of script/module
 - Brief description of content
 - Sources, if any
 

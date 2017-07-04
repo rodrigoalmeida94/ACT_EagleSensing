@@ -1,18 +1,4 @@
 # c_Cloud_Detection
-Components for technical documentation:
-*    Disclaimer
-*    Description of project
-*    Sources used (repositories, packages, etc.)
-*    Quality of sources and specifications
-*    Parameters and options used in the scripts
-*    Manual interaction
-*    Outputs
-*    Run time
-*    Error messages
-*    Further development
-*    APPENDIX: Component diagram
-
-
 ## Fmask
 ###Prerequisites
 * Fmask installed (via the original bitbucket repository or the conda-forge channel)

@@ -38,3 +38,19 @@ Navigate to ACT_EagleSensing:
     mosaicing                ~/anaconda2/envs/mosaicing
     sen2three                ~/anaconda2/envs/sen2three
 
+
+## Post-installation
+
+GIPP editing
+-GIPP.xml file of sen2cor is Extensible Markup Language (XML) is a markup language that defines a set of rules for encoding documents that contains sen2cor parameters.
+-Key parameters were identified including: Number of Processes (for parallel runs), Aerosol Thickness, Climate, Cirrus Correction, and BRDF Correction.
+-All parameters of these were set into AUTO.
+
+
+Script      :         edit_GIPP.py
+
+Variables:
+tree                  -makes the xml parsed
+root                  -accesses the child and elements
+
+Imports: os, lxml

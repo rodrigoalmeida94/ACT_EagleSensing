@@ -8,23 +8,31 @@ with the Sen2Cor and Sen2Three applications will run smoothly without interferin
 requirements. 
 
 
-Instructions:
+## Instructions
 
 Navigate to ACT_EagleSensing:
 
-Step 1: Run the supplied anaconda download script with (anaconda_install.sh) 
+### Step 1: Run the supplied anaconda download script with (anaconda_install.sh) 
 
     $ bash z_Install_Software/anaconda_install.sh
 
-Step 2: Use defaults by pressing enter throughout the installation instructions.
+### Step 2: Use defaults by pressing enter throughout the installation instructions.
 
-Step 3: Close all terminal windows to ensure the python environment is anaconda!
+### Step 3: Close all terminal windows to ensure the python environment is anaconda!
 
     $ python
     Python 2.7.13 |Anaconda 4.4.0 (64-bit)| (default, Dec 20 2016, 23:09:15) 
 
-Step 4: Run install_software.sh to install Sen2Cor and Sen2Three.
+### Step 4: Run install_software.sh to install Sen2Cor and Sen2Three.
 
     $ bash z_Install_Software/install_software.sh 
 
-(Step 5: You can install SNAP additionally if you like for manual visual assessments)
+### (Step 5: You can install SNAP additionally if you like for manual visual assessments)
+
+## Environments
+
+    atmosphere             ~/anaconda2/envs/atmosphere
+    data_acquisition  ~/anaconda2/envs/data_acquisition
+    mosaicing                ~/anaconda2/envs/mosaicing
+    sen2three                ~/anaconda2/envs/sen2three
+

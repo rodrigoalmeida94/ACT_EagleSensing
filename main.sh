@@ -133,4 +133,8 @@ source deactivate
 
 ## Start the mosaicing
 
+source activate mosaicing
+
 Rscript d_Mosaicing/mosaicing.R ${sen_l2a_dir}
+
+source deactivate

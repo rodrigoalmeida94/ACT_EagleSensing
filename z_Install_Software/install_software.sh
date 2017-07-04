@@ -33,9 +33,9 @@ sudo apt-get install -y python-dev
 cd $pardir
 source ./sen2cor_install.sh
 
-#3. (UNUSED) Call sen2three install
-#cd $pardir
-#source ./sen2three_install.sh
+#3. Call sen2three install
+cd $pardir
+source ./sen2three_install.sh
 
 #4. (UNUSED) Call snap install
 #cd $pardir

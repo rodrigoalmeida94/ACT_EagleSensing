@@ -10,12 +10,21 @@ requirements.
 
 Instructions:
 
-Step 1: Run the supplied anaconda download script (anaconda_install.sh) 
+Navigate to ACT_EagleSensing:
+
+Step 1: Run the supplied anaconda download script with (anaconda_install.sh) 
+
+    $ bash z_Install_Software/anaconda_install.sh
 
 Step 2: Use defaults by pressing enter throughout the installation instructions.
 
 Step 3: Close all terminal windows to ensure the python environment is anaconda!
 
+    $ python
+    Python 2.7.13 |Anaconda 4.4.0 (64-bit)| (default, Dec 20 2016, 23:09:15) 
+
 Step 4: Run install_software.sh to install Sen2Cor and Sen2Three.
+
+    $ bash z_Install_Software/install_software.sh 
 
 (Step 5: You can install SNAP additionally if you like for manual visual assessments)
